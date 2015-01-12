@@ -23,13 +23,14 @@ public class StartActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        Log.d(TAG, "LOL");
+
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
 
+        Log.d(TAG, "START");
         Intent intent = new Intent(this, CompositionEngine.class);
         startService(intent);
     }
