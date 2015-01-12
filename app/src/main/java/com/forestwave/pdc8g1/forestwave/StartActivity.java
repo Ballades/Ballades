@@ -3,7 +3,9 @@ package com.forestwave.pdc8g1.forestwave;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,18 +13,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
+import com.forestwave.pdc8g1.forestwave.services.CompositionEngine;
+
 
 public class StartActivity extends Activity {
+    public static final String TAG = "StartActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        Log.d(TAG, "LOL");
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        Intent intent = new Intent(this, CompositionEngine.class);
+        startService(intent);
     }
 
 
