@@ -19,15 +19,15 @@ public class CompositionEngine extends Service {
             Log.d(TAG, "here");
 
             // Premiers sons
-            /*MediaPlayer mp1 = MediaPlayer.create(this, R.raw.guitar);
+            MediaPlayer mp1 = MediaPlayer.create(this, R.raw.guitar);
             MediaPlayer mp2 = MediaPlayer.create(this, R.raw.mallet);
-            MediaPlayer mp3 = MediaPlayer.create(this, R.raw.some);
+            //MediaPlayer mp3 = MediaPlayer.create(this, R.raw.some);
             mp1.setLooping(true);
             mp2.setLooping(true);
-            mp3.setLooping(true);
+            //mp3.setLooping(true);
             mp1.start();
             mp2.start();
-            mp3.start();*/
+            //mp3.start();
 
         }
 
