@@ -18,6 +18,14 @@ public class Tree {
         this.id = id;
     }
 
+    public Tree(Long id, String species, Integer height) {
+        this.id = id;
+        this.species = species;
+        this.height = height;
+        this.latitude = null;
+        this.longitude = null;
+    }
+
     public Tree(Long id, String species, Integer height, double latitude, double longitude) {
         this.id = id;
         this.species = species;

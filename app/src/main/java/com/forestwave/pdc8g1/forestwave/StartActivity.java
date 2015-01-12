@@ -13,11 +13,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.forestwave.pdc8g1.forestwave.Model.DaoMaster;
 import com.forestwave.pdc8g1.forestwave.Model.DaoSession;
 import com.forestwave.pdc8g1.forestwave.Model.Tree;
 import com.forestwave.pdc8g1.forestwave.Model.TreeDao;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -42,15 +50,9 @@ public class StartActivity extends Activity {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "forestWaves-db", null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
-        DaoSession daoSession = daoMaster.newSession();
-        TreeDao treeDao = daoSession.getTreeDao();
-
-        //get all arbres json
-        //foreach all
-            // treeDao.insert(tree);
-            //Log.d("DaoExample", "insert tree with Id : " + tree.getId());
+//        DaoSession daoSession = daoMaster.newSession();
+//        TreeDao treeDao = daoSession.getTreeDao();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

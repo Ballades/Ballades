@@ -5,6 +5,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.forestwave.pdc8g1.forestwave.App;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import de.greenrobot.dao.AbstractDaoMaster;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 
@@ -35,6 +46,7 @@ public class DaoMaster extends AbstractDaoMaster {
         public void onCreate(SQLiteDatabase db) {
             Log.i("greenDAO", "Creating tables for schema version " + SCHEMA_VERSION);
             createAllTables(db, false);
+            App.initDatabase();
         }
     }
 
@@ -64,5 +76,4 @@ public class DaoMaster extends AbstractDaoMaster {
     public DaoSession newSession(IdentityScopeType type) {
         return new DaoSession(db, type, daoConfigMap);
     }
-
 }
