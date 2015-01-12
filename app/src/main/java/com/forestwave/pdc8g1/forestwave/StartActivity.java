@@ -42,19 +42,12 @@ public class StartActivity extends Activity {
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
         DaoSession daoSession = daoMaster.newSession();
-
         TreeDao treeDao = daoSession.getTreeDao();
-        Tree tree = new Tree(null, "chêne", 17, 4.532453, 48.346436);
-        Tree tree2 = new Tree(null, "chêne", 18, 5.532453, 48.676767);
-        Tree tree3 = new Tree(null, "chêne", 19, 6.532453, 48.1212121);
-        treeDao.insert(tree);
-        treeDao.insert(tree2);
-        treeDao.insert(tree3);
 
-        List trees = treeDao.queryBuilder()
-                                    .where(TreeDao.Properties.Height.eq(17))
-                                    .list();
-        Log.d("DaoExample", "species : " + trees.size());
+        //get all arbres json
+        //foreach all
+            // treeDao.insert(tree);
+            //Log.d("DaoExample", "insert tree with Id : " + tree.getId());
     }
 
 
