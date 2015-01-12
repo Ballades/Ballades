@@ -28,13 +28,19 @@ public class StartActivity extends Activity {
         // Premiers sons
         MediaPlayer mp1 = MediaPlayer.create(this, R.raw.guitar);
         MediaPlayer mp2 = MediaPlayer.create(this, R.raw.mallet);
-        MediaPlayer mp3 = MediaPlayer.create(this, R.raw.some);
+        MediaPlayer mp3 = MediaPlayer.create(this, R.raw.flute_piano);
+        MediaPlayer mp4 = MediaPlayer.create(this, R.raw.rhodes);
+        MediaPlayer mp5 = MediaPlayer.create(this, R.raw.pad_synth);
         mp1.setLooping(true);
         mp2.setLooping(true);
         mp3.setLooping(true);
+        mp4.setLooping(true);
+        mp5.setLooping(true);
         mp1.start();
         mp2.start();
         mp3.start();
+        mp4.start();
+        mp5.start();
     }
 
 
