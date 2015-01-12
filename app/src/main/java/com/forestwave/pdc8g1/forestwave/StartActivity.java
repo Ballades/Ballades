@@ -15,7 +15,6 @@ import android.os.Build;
 
 import com.forestwave.pdc8g1.forestwave.services.CompositionEngine;
 
-
 public class StartActivity extends Activity {
     public static final String TAG = "StartActivity";
 
