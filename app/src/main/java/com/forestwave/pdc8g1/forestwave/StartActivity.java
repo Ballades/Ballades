@@ -3,6 +3,7 @@ package com.forestwave.pdc8g1.forestwave;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +24,17 @@ public class StartActivity extends Activity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        // Premiers sons
+        MediaPlayer mp1 = MediaPlayer.create(this, R.raw.guitar);
+        MediaPlayer mp2 = MediaPlayer.create(this, R.raw.mallet);
+        MediaPlayer mp3 = MediaPlayer.create(this, R.raw.some);
+        mp1.setLooping(true);
+        mp2.setLooping(true);
+        mp3.setLooping(true);
+        mp1.start();
+        mp2.start();
+        mp3.start();
     }
 
 
