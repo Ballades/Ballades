@@ -1,26 +1,29 @@
-package com.forestwave.pdc8g1.forestwave;
+package com.forestwave.pdc8g1.forestwave.ui.activities;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+
+import com.forestwave.pdc8g1.forestwave.R;
+import com.forestwave.pdc8g1.forestwave.ui.fragments.MainScreenFragment;
 
 
-public class StartActivity extends Activity {
-
+public class StartActivity extends Activity implements MainScreenFragment.OnFragmentInteractionListener {
+    MainScreenFragment mainScreenFragment = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         if (savedInstanceState == null) {
+            mainScreenFragment = mainScreenFragment.newInstance();
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, mainScreenFragment)
                     .commit();
         }
     }
@@ -48,19 +51,9 @@ public class StartActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
 
-        public PlaceholderFragment() {
-        }
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_start, container, false);
-            return rootView;
-        }
     }
 }
