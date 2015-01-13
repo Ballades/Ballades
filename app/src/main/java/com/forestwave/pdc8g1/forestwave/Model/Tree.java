@@ -22,8 +22,8 @@ public class Tree {
         this.id = id;
         this.species = species;
         this.height = height;
-        this.latitude = null;
-        this.longitude = null;
+        this.latitude = 1.0;
+        this.longitude = 1.0;
     }
 
     public Tree(Long id, String species, Integer height, double latitude, double longitude) {

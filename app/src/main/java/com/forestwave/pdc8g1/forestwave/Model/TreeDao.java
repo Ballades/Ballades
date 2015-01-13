@@ -95,9 +95,7 @@ public class TreeDao extends AbstractDao<Tree, Long>{
         Tree entity = new Tree(
                 cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
                 cursor.getString(offset + 1), // species
-                cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // height
-                cursor.isNull(offset + 3) ? null :  cursor.getDouble(offset + 3),// latitude
-                cursor.isNull(offset + 4) ? null :  cursor.getDouble(offset + 4)// longitude
+                cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2)
         );
         return entity;
     }

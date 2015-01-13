@@ -1,7 +1,6 @@
 package com.forestwave.pdc8g1.forestwave;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,25 +10,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.forestwave.pdc8g1.forestwave.Model.DaoMaster;
 import com.forestwave.pdc8g1.forestwave.Model.DaoSession;
 import com.forestwave.pdc8g1.forestwave.Model.Tree;
 import com.forestwave.pdc8g1.forestwave.Model.TreeDao;
 
-import org.json.JSONObject;
-
 import java.util.List;
-
-import de.greenrobot.dao.query.QueryBuilder;
 
 public class StartActivity extends Activity {
 
@@ -50,8 +37,13 @@ public class StartActivity extends Activity {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "forestWaves-db", null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
-//        DaoSession daoSession = daoMaster.newSession();
-//        TreeDao treeDao = daoSession.getTreeDao();
+        DaoSession daoSession = daoMaster.newSession();
+        TreeDao treeDao = daoSession.getTreeDao();
+
+        List<Tree> trees = treeDao.queryBuilder()
+                                .list();
+
+        Log.d("NB ARBRES", Integer.toString(trees.size()));
     }
 
     @Override
