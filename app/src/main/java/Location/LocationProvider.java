@@ -84,22 +84,21 @@ public class LocationProvider implements
         else {
             Log.v("LocationlocationLocation onLocationChanged","bite");
         }
-
-
     }
 
     public Location getLocation() {
         return this.location;
     }
 
+
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.v("OnconnectionSuspended","called");
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        Log.v("OnconnectionFailed","called");
     }
 
     private void enable(){
