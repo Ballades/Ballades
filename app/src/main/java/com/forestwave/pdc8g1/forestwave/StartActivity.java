@@ -3,6 +3,7 @@ package com.forestwave.pdc8g1.forestwave;
 import android.app.Activity;
 import android.app.Fragment;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.ConnectionResult;
+import android.util.Log;
+import android.widget.TextView;
+import Location.LocationProvider;
+import android.os.Handler;
+import java.util.Date;
 
 import com.forestwave.pdc8g1.forestwave.Model.DaoMaster;
 import com.forestwave.pdc8g1.forestwave.Model.DaoSession;
@@ -23,7 +31,7 @@ public class StartActivity extends Activity {
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private TreeDao treeDao;
-
+	LocationProvider provider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +52,16 @@ public class StartActivity extends Activity {
                                 .list();
 
         Log.d("NB ARBRES", Integer.toString(trees.size()));
+
+        if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()) == ConnectionResult.SUCCESS) {
+            Log.v("LocationTest", "Play Services available");
+            provider = new LocationProvider(this);
+        }
+        else{
+            Log.v("LocationTest", "Play Services unavailable, " +GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()));
+        }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
