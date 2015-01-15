@@ -1,4 +1,4 @@
-package Location;
+package com.forestwave.pdc8g1.forestwave.Location;
 
 /**
  * Created by Quentin on 12/01/2015.
