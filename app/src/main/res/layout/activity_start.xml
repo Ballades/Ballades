@@ -1,4 +1,83 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    tools:context=".StartActivity" tools:ignore="MergeRootFrame" />
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <Button android:id="@+id/play_button" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:text="@string/play_button_text" />
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:rowCount="3"
+        android:orientation="horizontal">
+    <CheckBox android:id="@+id/bass_box" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:checked="true"
+        android:text="@string/bass_label"
+        android:layout_column="0"
+        android:layout_gravity="left|top"/>
+    <CheckBox android:id="@+id/snare_box" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:checked="true"
+        android:text="@string/snare_label"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        />
+    <CheckBox android:id="@+id/melody_box" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:checked="true"
+        android:text="@string/melody_label"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        />
+    <CheckBox android:id="@+id/hihat_box" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:checked="true"
+        android:text="@string/hihat_label"
+        android:layout_column="1"
+        android:layout_row="1"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_gravity="right|top"
+        />
+    <CheckBox android:id="@+id/kick_box" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:checked="true"
+        android:text="@string/kick_label"
+        android:layout_column="1"
+        android:layout_row="0"
+        android:layout_gravity="right|top"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        />
+
+    </GridLayout>
+    <EditText android:id="@+id/msg_box" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:lines="1"
+        android:inputType="text" android:text="@string/default_msg" />
+    <Button android:id="@+id/pref_button" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:text="@string/pref_button_text" />
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBarTempo"
+        android:layout_gravity="center_horizontal" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/tempo"
+        android:id="@+id/textViewTempo"
+        android:layout_gravity="center_horizontal" />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBarStyle"
+        android:layout_gravity="center_horizontal" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/style"
+        android:id="@+id/textViewStyle"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView android:id="@+id/log_box" android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:gravity="bottom"
+        android:scrollbars="vertical" android:text="" />
+</LinearLayout>

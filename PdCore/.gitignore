@@ -1,10 +1,7 @@
 *.o
-PdCore/jni/libpd/pure-data/src/libpdnative.so
-PdCore/jni/libpd/pure-data/src/libpd.so
 bin
 gen
 obj
-jni
 libs
 local.properties
 .gradle

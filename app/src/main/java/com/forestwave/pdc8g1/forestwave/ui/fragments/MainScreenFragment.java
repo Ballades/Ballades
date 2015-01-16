@@ -4,26 +4,33 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.forestwave.pdc8g1.forestwave.R;
+import com.forestwave.pdc8g1.forestwave.ui.activities.StartActivity;
 
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.io.PdAudio;
+import org.puredata.android.service.PdPreferences;
 import org.puredata.android.service.PdService;
 import org.puredata.core.PdBase;
+import org.puredata.core.PdReceiver;
 import org.puredata.core.utils.IoUtils;
 
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,11 +40,13 @@ import java.io.IOException;
  * Use the {@link MainScreenFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainScreenFragment extends Fragment {
+public class MainScreenFragment extends Fragment  {
     public static final String TAG= "MainScreenFragment";
     private static final int MIN_SAMPLE_RATE = 44100;
 
     private OnFragmentInteractionListener mListener;
+
+    private PdService pdService = null;
 
     /**
      * Use this factory method to create a new instance of
@@ -53,10 +62,25 @@ public class MainScreenFragment extends Fragment {
         // Required empty public constructor
     }
 
+
+
+    private final ServiceConnection pdConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            pdService = ((PdService.PdBinder)service).getService();
+            initPd();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            // this method will never be called
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(this.getActivity() != null) {
+       /* if(this.getActivity() != null) {
             try {
                 initPd();
             } catch (IOException e) {
@@ -64,9 +88,26 @@ public class MainScreenFragment extends Fragment {
             }
         }else {
             Log.d(TAG,"Activity was null on fragment creation");
+        }*/
+        AudioParameters.init(this.getActivity());
+        PdPreferences.initPreferences(this.getActivity().getApplicationContext());
+        this.getActivity().bindService(new Intent(this.getActivity(), PdService.class), pdConnection, getActivity().BIND_AUTO_CREATE);
+    }
+    private void initPd() {
+        Resources res = getResources();
+        File patchFile = null;
+        try {
+            PdBase.subscribe("android");
+            InputStream in = res.openRawResource(R.raw.test);
+            patchFile = IoUtils.extractResource(in, "test.pd", getActivity().getCacheDir());
+            PdBase.openPatch(patchFile);
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+            getActivity().finish();
+        } finally {
+            if (patchFile != null) patchFile.delete();
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,9 +118,7 @@ public class MainScreenFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        PdAudio.startAudio(this.getActivity());
-        PdBase.sendList("playchord", 1, 1);
-
+        startAudio();
     }
 
     @Override
@@ -87,29 +126,31 @@ public class MainScreenFragment extends Fragment {
         PdAudio.stopAudio();
         super.onStop();
     }
-
+    private void startAudio() {
+        try {
+            pdService.initAudio(-1, -1, -1, -1);   // negative values will be replaced with defaults/preferences
+            pdService.startAudio();
+        } catch (IOException e) {
+        }
+    }
+    private void cleanup() {
+        try {
+            getActivity().unbindService(pdConnection);
+        } catch (IllegalArgumentException e) {
+            // already unbound
+            pdService = null;
+        }
+    }
+    private void stopAudio() {
+        pdService.stopAudio();
+    }
     @Override
     public void onDestroy() {
         cleanup();
         super.onDestroy();
     }
 
-    private void initPd() throws IOException {
-        AudioParameters.init(this.getActivity());
-        int srate = Math.max(MIN_SAMPLE_RATE, AudioParameters.suggestSampleRate());
-        PdAudio.initAudio(srate, 0, 2, 1, true);
 
-        File dir = this.getActivity().getFilesDir();
-        File patchFile = new File(dir, "chords.pd");
-        IoUtils.extractZipResource(getResources().openRawResource(R.raw.patch), dir, true);
-        PdBase.openPatch(patchFile.getAbsolutePath());
-    }
-
-    private void cleanup() {
-        // make sure to release all resources
-        PdAudio.release();
-        PdBase.release();
-    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

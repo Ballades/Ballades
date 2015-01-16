@@ -2,8 +2,26 @@
 <resources>
 
     <string name="app_name">Forest Wave</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="bass_label">Bass</string>
+    <string name="snare_label">Snare</string>
+    <string name="melody_label">Melody</string>
+    <string name="hihat_label">HighHat</string>
+    <string name="kick_label">Kick</string>
+
+    <string name="default_msg">Enter message to Pure Data</string>
+    <string name="pref_button_text">Preferences</string>
+    <string name="about_title">About Pure Data</string>
+	<string name="about_msg">Pure Data is a real-time graphical programming
+		environment for audio, video, and graphical processing, originally
+		developed by Miller Puckette and company at IRCAM. Android port by
+		Peter Brinkmann, Peter Kirn, Hans-Christoph Steiner, and others.
+	</string>
+    <string name="play_button_text">Play/Pause</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_settings">action_settings</string>
+    <string name="tempo">Choose tempo</string>
+    <string name="style">Choose musical style</string>
 
 </resources>
+
+
