@@ -4,9 +4,15 @@ package com.forestwave.pdc8g1.forestwave.Location;
  * Created by Quentin on 12/01/2015.
  */
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Bundle;
 
+import com.forestwave.pdc8g1.forestwave.App;
+import com.forestwave.pdc8g1.forestwave.Model.DaoMaster;
+import com.forestwave.pdc8g1.forestwave.Model.DaoSession;
+import com.forestwave.pdc8g1.forestwave.Model.Tree;
+import com.forestwave.pdc8g1.forestwave.Model.TreeDao;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderApi;
@@ -14,8 +20,13 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import android.util.Log;
+
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.WhereCondition;
 
 public class LocationProvider implements
         LocationListener,

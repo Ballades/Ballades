@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,12 +21,14 @@ import com.forestwave.pdc8g1.forestwave.Model.TreeDao;
 
 import java.util.List;
 
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.WhereCondition;
+
 public class StartActivity extends Activity {
 
-    private DaoMaster daoMaster;
-    private DaoSession daoSession;
-    private TreeDao treeDao;
 	LocationProvider provider;
+    Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,14 +45,33 @@ public class StartActivity extends Activity {
         DaoSession daoSession = daoMaster.newSession();
         TreeDao treeDao = daoSession.getTreeDao();
 
-        List<Tree> trees = treeDao.queryBuilder()
-                                .list();
-
-        Log.d("NB ARBRES", Integer.toString(trees.size()));
-
         if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()) == ConnectionResult.SUCCESS) {
             Log.v("LocationTest", "Play Services available");
             provider = new LocationProvider(this);
+            handler = new Handler();
+            final Runnable runnable = new Runnable() {
+
+                @Override
+                public void run() {
+                    DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(App.getContext(), "forestWaves-db", null);
+                    SQLiteDatabase db = helper.getWritableDatabase();
+                    DaoMaster daoMaster = new DaoMaster(db);
+                    DaoSession daoSession = daoMaster.newSession();
+                    TreeDao treeDao = daoSession.getTreeDao();
+
+                    if(provider.getLocation() != null) {
+
+                        Double latitude = provider.getLocation().getLatitude();
+                        Double longitude = provider.getLocation().getLongitude();
+
+                        Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111, latitude + 0.01/111), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
+                        List<Tree> trees = query.list();
+                        Log.d("NB TREE", Integer.toString(trees.size()));
+                    }
+                    handler.postDelayed(this, 1000);
+                }
+            };
+            handler.post(runnable);
         }
         else{
             Log.v("LocationTest", "Play Services unavailable, " +GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()));
