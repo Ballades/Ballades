@@ -72,11 +72,15 @@ public class App extends Application {
                             JSONObject jTree = new JSONObject(jTrees.getJSONArray("results").get(cpt).toString());
                             String species = jTree.getString("name");
                             Integer height = jTree.getInt("height");
-                            Tree tree = new Tree(null, species, height);
+                            Double latitude = jTree.getDouble("latitude");
+                            Double longitude = jTree.getDouble("longitude");
+                            if(latitude != null && longitude != null) {
 
-                            treeDao.insert(tree);
+                                Tree tree = new Tree(null, species, height, latitude, longitude);
+                                treeDao.insert(tree);
+                                Log.d("FORESTWAVES", "insert " + Integer.toString(cpt) + " ème tree with species : " + tree.getSpecies());
+                            }
                             db.close();
-                            Log.d("FORESTWAVES", "insert " + Integer.toString(cpt) + " ème tree with species : " + tree.getSpecies());
                         }
                     } catch (JSONException e) {
                         Log.d("JSONException", e.getMessage());

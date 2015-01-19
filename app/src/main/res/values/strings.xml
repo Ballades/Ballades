@@ -24,7 +24,6 @@
 	</string>
     <string name="play_button_text">Play/Pause</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="action_settings">action_settings</string>
     <string name="tempo">Choose tempo</string>
     <string name="style">Choose musical style</string>
 
