@@ -64,7 +64,11 @@ public class StartActivity extends Activity {
                         Double latitude = provider.getLocation().getLatitude();
                         Double longitude = provider.getLocation().getLongitude();
 
-                        Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111, latitude + 0.01/111), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
+                        Log.d("LATITUDE-:", Double.toString(latitude - 5.0/111.0));
+                        Log.d("LATITUDE+:", Double.toString(latitude + 5.0/111.0));
+                        Log.d("LONGITUDE-:", Double.toString(longitude - 5.0/76.0));
+                        Log.d("LONGITUDE+:", Double.toString(longitude + 5.0/76.0));
+                        Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 5.0/111.0, latitude + 5.0/111.0), TreeDao.Properties.Longitude.between(longitude - 5.0/76.0, longitude + 5.0/76.0)).build();
                         List<Tree> trees = query.list();
                         Log.d("NB TREE", Integer.toString(trees.size()));
                     }
