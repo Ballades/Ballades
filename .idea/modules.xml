@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidMidi/AndroidMidi.iml" filepath="$PROJECT_DIR$/AndroidMidi/AndroidMidi.iml" />
       <module fileurl="file://$PROJECT_DIR$/ForestWave.iml" filepath="$PROJECT_DIR$/ForestWave.iml" />
       <module fileurl="file://$PROJECT_DIR$/ForestWaves.iml" filepath="$PROJECT_DIR$/ForestWaves.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PdCore/PdCore.iml" filepath="$PROJECT_DIR$/PdCore/PdCore.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/libs/libs.iml" filepath="$PROJECT_DIR$/app/libs/libs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/libs/volley/volley.iml" filepath="$PROJECT_DIR$/app/libs/volley/volley.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/libs/volley/volley.iml" filepath="$PROJECT_DIR$/app/libs/volley/volley.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/libs/volley/volley.iml" filepath="$PROJECT_DIR$/app/libs/volley/volley.iml" />
     </modules>

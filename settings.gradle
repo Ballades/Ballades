@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':PdCore', ':AndroidMidi'
 include ':app:libs:volley'
