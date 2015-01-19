@@ -1,4 +1,4 @@
-package com.forestwave.pdc8g1.forestwave.Model;
+package com.forestwave.pdc8g1.forestwave.model;
 
 /**
  * Created by leo on 12/01/15.

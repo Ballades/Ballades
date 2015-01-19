@@ -1,4 +1,4 @@
-package com.forestwave.pdc8g1.forestwave.Model;
+package com.forestwave.pdc8g1.forestwave.model;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

@@ -49,11 +49,11 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.forestwave.pdc8g1.forestwave.App;
-import com.forestwave.pdc8g1.forestwave.Location.LocationProvider;
-import com.forestwave.pdc8g1.forestwave.Model.DaoMaster;
-import com.forestwave.pdc8g1.forestwave.Model.DaoSession;
-import com.forestwave.pdc8g1.forestwave.Model.Tree;
-import com.forestwave.pdc8g1.forestwave.Model.TreeDao;
+import com.forestwave.pdc8g1.forestwave.location.LocationProvider;
+import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
+import com.forestwave.pdc8g1.forestwave.model.DaoSession;
+import com.forestwave.pdc8g1.forestwave.model.Tree;
+import com.forestwave.pdc8g1.forestwave.model.TreeDao;
 import com.forestwave.pdc8g1.forestwave.R;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
