@@ -1,5 +1,10 @@
 package com.forestwave.pdc8g1.forestwave.model;
 
+import android.location.Location;
+import android.util.Log;
+
+import java.lang.reflect.Array;
+
 /**
  * Created by leo on 12/01/15.
  */
@@ -64,5 +69,12 @@ public class Tree {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public float computeUserRange(Double latitude, Double longitude) {
+
+        float[] results = new float[3];
+        Location.distanceBetween(latitude, longitude, this.latitude, this.longitude, results);
+        return results[0];
     }
 }

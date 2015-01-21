@@ -27,11 +27,13 @@ import org.puredata.core.utils.IoUtils;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
@@ -172,7 +174,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
 
         if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()) == ConnectionResult.SUCCESS) {
             Log.v("LocationTest", "Play Services available");
-            provider = new LocationProvider(this);
+            provider = new LocationProvider(this, (SensorManager) getSystemService(Context.SENSOR_SERVICE));
             handler = new Handler();
             final Runnable runnable = new Runnable() {
 
@@ -191,7 +193,6 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
 
                         Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111, latitude + 0.01/111), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
                         List<Tree> trees = query.list();
-                        Log.d("NB TREE", Integer.toString(trees.size()));
                     }
                     handler.postDelayed(this, 1000);
                 }
