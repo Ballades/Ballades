@@ -31,6 +31,7 @@ public class LocationProvider implements
     private GoogleApiClient googleApiClient;
     private Location location;
     private FusedLocationProviderApi fusedLocationProviderApi = LocationServices.FusedLocationApi;
+    private double userOrientation;
 
     public LocationProvider(Activity locationActivity) {
 
@@ -78,6 +79,7 @@ public class LocationProvider implements
         if (newLocation != null  ) {
             this.location = newLocation;
             Log.v("LocationLocationLocation onLocationChanged",this.location.toString());
+            userOrientation = location.getBearing();
         }
         else {
             Log.v("LocationlocationLocation onLocationChanged","bite");
@@ -106,4 +108,10 @@ public class LocationProvider implements
     private void disable(){
         fusedLocationProviderApi.removeLocationUpdates(googleApiClient,this);
     }
+
+    public double getUserOrientation() {
+
+        return userOrientation;
+    }
+
 }

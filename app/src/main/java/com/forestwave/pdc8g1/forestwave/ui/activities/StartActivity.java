@@ -32,6 +32,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -274,7 +275,6 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 PdBase.sendBang("applystyle");
-
             }
         });
 
