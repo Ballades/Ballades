@@ -64,19 +64,6 @@ public class MainScreenFragment extends Fragment  {
 
 
 
-    private final ServiceConnection pdConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            pdService = ((PdService.PdBinder)service).getService();
-            initPd();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            // this method will never be called
-        }
-    };
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,25 +76,9 @@ public class MainScreenFragment extends Fragment  {
         }else {
             Log.d(TAG,"Activity was null on fragment creation");
         }*/
-        AudioParameters.init(this.getActivity());
-        PdPreferences.initPreferences(this.getActivity().getApplicationContext());
-        this.getActivity().bindService(new Intent(this.getActivity(), PdService.class), pdConnection, getActivity().BIND_AUTO_CREATE);
+
     }
-    private void initPd() {
-        Resources res = getResources();
-        File patchFile = null;
-        try {
-            PdBase.subscribe("android");
-            InputStream in = res.openRawResource(R.raw.test);
-            patchFile = IoUtils.extractResource(in, "test.pd", getActivity().getCacheDir());
-            PdBase.openPatch(patchFile);
-        } catch (IOException e) {
-            Log.e(TAG, e.toString());
-            getActivity().finish();
-        } finally {
-            if (patchFile != null) patchFile.delete();
-        }
-    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -133,22 +104,8 @@ public class MainScreenFragment extends Fragment  {
         } catch (IOException e) {
         }
     }
-    private void cleanup() {
-        try {
-            getActivity().unbindService(pdConnection);
-        } catch (IllegalArgumentException e) {
-            // already unbound
-            pdService = null;
-        }
-    }
-    private void stopAudio() {
-        pdService.stopAudio();
-    }
-    @Override
-    public void onDestroy() {
-        cleanup();
-        super.onDestroy();
-    }
+
+
 
 
     // TODO: Rename method, update argument and hook method into UI event
