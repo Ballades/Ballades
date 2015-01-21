@@ -6,8 +6,8 @@ package com.forestwave.pdc8g1.forestwave.model;
 public class Tree {
 
     private Long id;
-    private String species;
-    private Integer height;
+    private Species species;
+    private java.lang.Integer height;
     private Double latitude;
     private Double longitude;
 
@@ -18,7 +18,7 @@ public class Tree {
         this.id = id;
     }
 
-    public Tree(Long id, String species, Integer height, double latitude, double longitude) {
+    public Tree(Long id, Species species, java.lang.Integer height, double latitude, double longitude) {
         this.id = id;
         this.species = species;
         this.height = height;
@@ -34,19 +34,19 @@ public class Tree {
         this.id = id;
     }
 
-    public String getSpecies() {
+    public Species getSpecies() {
         return species;
     }
 
-    public void setSpecies(String species) {
+    public void setSpecies(Species species) {
         this.species = species;
     }
 
-    public Integer getHeight() {
+    public java.lang.Integer getHeight() {
         return height;
     }
 
-    public void setHeight(Integer height) {
+    public void setHeight(java.lang.Integer height) {
         this.height = height;
     }
 
@@ -64,5 +64,9 @@ public class Tree {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public Double[] getLocation() {
+        return new Double[]{latitude, longitude};
     }
 }

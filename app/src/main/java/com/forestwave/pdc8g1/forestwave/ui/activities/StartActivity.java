@@ -56,6 +56,7 @@ import com.forestwave.pdc8g1.forestwave.model.Tree;
 import com.forestwave.pdc8g1.forestwave.model.TreeDao;
 import com.forestwave.pdc8g1.forestwave.R;
 
+import com.forestwave.pdc8g1.forestwave.services.CompositionEngineService;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.ConnectionResult;
 
@@ -173,6 +174,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
             Log.v("LocationTest", "Play Services available");
             provider = new LocationProvider(this);
             handler = new Handler();
+            final CompositionEngineService compositionEngineService = new CompositionEngineService();
             final Runnable runnable = new Runnable() {
 
                 @Override
@@ -191,8 +193,11 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                         Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111, latitude + 0.01/111), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
                         List<Tree> trees = query.list();
                         Log.d("NB TREE", Integer.toString(trees.size()));
+                        double userOrientation = 0;
+
+                        compositionEngineService.play(trees, provider);
                     }
-                    handler.postDelayed(this, 1000);
+                    handler.postDelayed(this, 5);
                 }
             };
             handler.post(runnable);
