@@ -72,9 +72,10 @@ public class App extends Application {
                             JSONObject jTree = new JSONObject(jTrees.getJSONArray("results").get(cpt).toString());
                             String species = jTree.getString("name");
                             Integer height = jTree.getInt("height");
-                            Double latitude = jTree.getDouble("latitude");
-                            Double longitude = jTree.getDouble("longitude");
-                            if(latitude != null && longitude != null) {
+                            if(!jTree.isNull("latitude") && !jTree.isNull("longitude")) {
+
+                                Double latitude = jTree.getDouble("latitude");
+                                Double longitude = jTree.getDouble("longitude");
 
                                 Tree tree = new Tree(null, species, height, latitude, longitude);
                                 treeDao.insert(tree);

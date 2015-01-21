@@ -191,7 +191,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                         Double latitude = provider.getLocation().getLatitude();
                         Double longitude = provider.getLocation().getLongitude();
 
-                        Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111, latitude + 0.01/111), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
+                        Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111.0, latitude + 0.01/111.0), TreeDao.Properties.Longitude.between(longitude - 0.01/76.0, longitude + 0.01/76.0)).build();
                         List<Tree> trees = query.list();
                     }
                     handler.postDelayed(this, 1000);
