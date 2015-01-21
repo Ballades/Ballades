@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.forestwave.pdc8g1.forestwave.R;
 import com.forestwave.pdc8g1.forestwave.ui.activities.StartActivity;
 
 import org.puredata.android.io.AudioParameters;
@@ -77,13 +76,6 @@ public class MainScreenFragment extends Fragment  {
             Log.d(TAG,"Activity was null on fragment creation");
         }*/
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main_screen_fragment, container, false);
     }
 
     @Override
