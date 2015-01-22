@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.puredata.android.io.AudioParameters;
@@ -54,6 +55,7 @@ import com.forestwave.pdc8g1.forestwave.App;
 import com.forestwave.pdc8g1.forestwave.location.LocationProvider;
 import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
 import com.forestwave.pdc8g1.forestwave.model.DaoSession;
+import com.forestwave.pdc8g1.forestwave.model.InfosTrees;
 import com.forestwave.pdc8g1.forestwave.model.Tree;
 import com.forestwave.pdc8g1.forestwave.model.TreeDao;
 import com.forestwave.pdc8g1.forestwave.R;
@@ -108,7 +110,7 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
     private PdReceiver receiver = new PdReceiver() {
 
         private void pdPost(String msg) {
-            toast("Pure Data says, \"" + msg + "\"");
+            Log.d(TAG, "Pure Data says, \"" + msg + "\"");
         }
 
         @Override
@@ -196,9 +198,23 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
                         Log.d("NB TREE", Integer.toString(trees.size()));
                         double userOrientation = 0;
 
-                        compositionEngineService.play(trees, provider);
+                        Map<Integer, InfosTrees> desiredState = compositionEngineService.calculateDesiredState(trees, provider);
+                        this.applyState(desiredState);
                     }
                     handler.postDelayed(this, 120);
+                }
+
+                /**
+                 * Applique l'état désiré sur la sortie sonore
+                 */
+                private void applyState(Map<Integer, InfosTrees> desiredState) {
+
+                    for (Map.Entry<Integer, InfosTrees> entry : desiredState.entrySet())
+                    {
+                        int track = entry.getKey();
+                        InfosTrees infos = entry.getValue();
+                        Log.v(TAG, "track : " + track + ", volume : " + infos.getVolume());
+                    }
                 }
             };
             handler.post(runnable);
@@ -221,6 +237,12 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startAudio();
+    }
+
     private void initGui() {
     }
 
@@ -233,8 +255,6 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
         try {
             PdBase.setReceiver(receiver);
             PdBase.subscribe("android");
-            InputStream in = res.openRawResource(R.raw.groovebox1r3);
-            patchFile = IoUtils.extractResource(in, "groovebox1r3.pd", getCacheDir());
 
             // Charger les tracks
             for (String trackName : trackNames) {
@@ -245,8 +265,9 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
             InputStream in2 = res.openRawResource(R.raw.acoustic_guitar);
             patchFile = IoUtils.extractResource(in2, "acoustic_guitar.wav", getCacheDir());
 
+            InputStream in = res.openRawResource(R.raw.groovebox1r3);
+            patchFile = IoUtils.extractResource(in, "groovebox1r3.pd", getCacheDir());
             PdBase.openPatch(patchFile);
-
         } catch (IOException e) {
             Log.e(TAG, e.toString());
             finish();

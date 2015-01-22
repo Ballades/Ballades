@@ -7,9 +7,14 @@ import com.forestwave.pdc8g1.forestwave.location.LocationProvider;
 import android.location.Location;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.forestwave.pdc8g1.forestwave.model.*;
 
+import org.puredata.android.service.PdService;
+import org.puredata.core.PdReceiver;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +42,9 @@ public class CompositionEngineService extends Service {
     }
 
     /**
-     * Fonction princpale : appelle le nécessaire pour jouer la composition "ambient"
+     * Fonction princpale : Calcule l'état désiré
      */
-    public void play(List<Tree> trees, LocationProvider locationProvider) {
+    public Map<Integer, InfosTrees> calculateDesiredState(List<Tree> trees, LocationProvider locationProvider) {
         this.locationProvider = locationProvider;
 
         Map<Species, InfosTrees> infosBySpecies = new HashMap<>();
@@ -76,10 +81,9 @@ public class CompositionEngineService extends Service {
         }
 
         // Calculer l'état désiré
-        Map<Integer, InfosTrees> desiredState = this.calculateDesiredState(infosBySpecies);
+        Map<Integer, InfosTrees> desiredState = this.scoresToVolumes(infosBySpecies);
 
-        // Appliquer cet état
-        this.applyState(desiredState);
+        return desiredState;
     }
 
     /**
@@ -111,7 +115,7 @@ public class CompositionEngineService extends Service {
     /**
      * Calcule l'etat sonore désiré (tracks avec volume et position)
      */
-    private Map<Integer, InfosTrees> calculateDesiredState(Map<Species, InfosTrees> infosBySpecies) {
+    private Map<Integer, InfosTrees> scoresToVolumes(Map<Species, InfosTrees> infosBySpecies) {
         Map<Integer, InfosTrees> infosByTrack = new HashMap<>();
 
         // Regrouper les scores par track
@@ -156,16 +160,4 @@ public class CompositionEngineService extends Service {
         return multiplier;
     }
 
-    /**
-     * Applique l'état désiré sur la sortie sonore
-     */
-    private void applyState(Map<Integer, InfosTrees> desiredState) {
-
-        for (Map.Entry<Integer, InfosTrees> entry : desiredState.entrySet())
-        {
-            int track = entry.getKey();
-            InfosTrees infos = entry.getValue();
-            Log.v(TAG, "track : " + track + ", volume : " + infos.getVolume());
-        }
-    }
 }
