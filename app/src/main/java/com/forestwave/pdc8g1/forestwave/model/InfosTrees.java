@@ -5,18 +5,20 @@ import android.location.Location;
 import java.util.ArrayList;
 
 /**
- * Created by nicorr on 21/01/15.
+ * Cette classe a pour objectif de stocker des informations de traitement pour le compositionEngine, de manière pratique
  */
 public class InfosTrees {
 
     private Integer count;
     private Double score;
     private Double[] location;
+    private Double volume;
 
-    public InfosTrees(Integer count, Double score, Double[] location) {
+    public InfosTrees(Integer count, Double score, Double[] location, Double volume) {
         this.count = count;
         this.score = score;
         this.location = location;
+        this.volume = volume;
     }
 
     public Integer getCount() {
@@ -50,5 +52,16 @@ public class InfosTrees {
 
     public void setLocation(Double[] location) {
         this.location = location;
+    }
+
+    public Double getVolume() {
+        if (volume == null) {
+            volume = 0.0;
+        }
+        return volume;
+    }
+
+    public void setVolume(Double volume) {
+        this.volume = volume;
     }
 }

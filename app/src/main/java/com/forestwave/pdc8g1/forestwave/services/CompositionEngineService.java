@@ -6,20 +6,21 @@ import com.forestwave.pdc8g1.forestwave.location.LocationProvider;
 
 import android.location.Location;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.forestwave.pdc8g1.forestwave.model.*;
-import com.forestwave.pdc8g1.forestwave.model.Integer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CompositionEngineService extends Service {
 
+    private static final String TAG = "CompositionEngineService";
     public static final int SPECIES_EQUALITY_FACTOR = 1;
     public static final int SCORE_FACILITY = 1;
     public static final int SOUND_DISTANCE_DEACREASE_SLOWNESS = 1;
+    private LocationProvider locationProvider;
 
     public CompositionEngineService() {
     }
@@ -39,12 +40,10 @@ public class CompositionEngineService extends Service {
      * Fonction princpale : appelle le nécessaire pour jouer la composition "ambient"
      */
     public void play(List<Tree> trees, LocationProvider locationProvider) {
-
-        Location userLocation = locationProvider.getLocation();
-        //Double azimuth = locationProvider.getAzimuth(); //TODO : Attendre Léo
-        double azimuth = 0; //TEMP
+        this.locationProvider = locationProvider;
 
         Map<Species, InfosTrees> infosBySpecies = new HashMap<>();
+        Log.v(TAG, "START");
 
         // Remplir les infos
         for (Tree tree : trees) {
@@ -52,7 +51,7 @@ public class CompositionEngineService extends Service {
             InfosTrees infosSpecies = infosBySpecies.get(species);
 
             // Remplir les scores
-            Double treeScore = this.getScore(tree, userLocation);
+            Double treeScore = this.getScore(tree);
             infosSpecies.setScore(infosSpecies.getScore()+treeScore);
 
             // Remplir la location
@@ -77,17 +76,17 @@ public class CompositionEngineService extends Service {
         }
 
         // Calculer l'état désiré
-        Map<java.lang.Integer, Double> desiredState = this.calculateDesiredState(infosBySpecies, userLocation, azimuth);
+        Map<Integer, InfosTrees> desiredState = this.calculateDesiredState(infosBySpecies);
 
         // Appliquer cet état
-
-
+        this.applyState(desiredState);
     }
 
     /**
      * Renvoie le score d'un arbre
      */
-    private Double getScore(Tree tree, Location userLocation) {
+    private Double getScore(Tree tree) {
+        Location userLocation = this.locationProvider.getLocation();
         //double distance = tree.getDistance(userLocation); //TODO : Attendre Léo
         double distance = 10; //TEMP
         double score = SOUND_DISTANCE_DEACREASE_SLOWNESS*SCORE_FACILITY/(distance+SOUND_DISTANCE_DEACREASE_SLOWNESS);
@@ -112,45 +111,39 @@ public class CompositionEngineService extends Service {
     /**
      * Calcule l'etat sonore désiré (tracks avec volume et position)
      */
-    private Map<java.lang.Integer, Double> calculateDesiredState(Map<Species, InfosTrees> infosBySpecies, Location userLocation, Double azimuth) {
-        Map<java.lang.Integer, Double[]> scoreByTrack = new HashMap<>(); // 0 : score, 1 : count, 2 : centerPositionLat, 3 : centerPositionLong
-        Map<java.lang.Integer, Double[]> volumeByTrack = new HashMap<>();
-
+    private Map<Integer, InfosTrees> calculateDesiredState(Map<Species, InfosTrees> infosBySpecies) {
+        Map<Integer, InfosTrees> infosByTrack = new HashMap<>();
 
         // Regrouper les scores par track
-        for (Map.Entry<Integer, Double[]> entry : infosBySpecies.entrySet())
+        for (Map.Entry<Species, InfosTrees> entry : infosBySpecies.entrySet())
         {
-            Integer species = entry.getKey();
-            Double[] infos = entry.getValue();
-            Double[] trackInfos = (scoreByTrack.get(track) != null) ? scoreByTrack.get(track) : new Double[]{0.0, 0.0, 0.0};
+            Species species = entry.getKey();
+            InfosTrees infos = entry.getValue();
+            //int trackId = species.getTrack(); // TODO : connecter avec DAO
+            Integer trackId = 1; //TEMP
+            InfosTrees infoTrack = infosByTrack.get(trackId);
 
             // Grouper les scores
-            double speciesScore = infos[0];
-            //int track = species.getTrack(); // TODO : connecter avec DAO
-            java.lang.Integer track = 1; //TEMP
-            infos[0] = trackInfos[0]+speciesScore;
+            infoTrack.setScore(infoTrack.getScore() + infos.getScore());
 
-            //Grouper les positions
-            double speciesCenterPositionLat = infos[2];
-            double speciesCenterPositionLong = infos[3];
-            ArrayList<Double> newPosition = this.getNewCenterPosition(tree, speciesCenterPositionLat, speciesCenterPositionLong, countForSpecies);
-            infos[2] = newPosition.get(0);
-            infos[3] = newPosition.get(1);
+            // Grouper les positions
+            Double[] newPosition = this.getNewCenterPosition(infos.getLocation(), infos.getCount(), infoTrack.getLocation(), infoTrack.getCount());
+            infoTrack.setLocation(newPosition);
 
-            scoreByTrack.put(track, infos);
+            // Mettre à jour les counts
+            infoTrack.setCount(infoTrack.getCount() + infos.getCount());
         }
 
         // Calculer les volumes par track
-        for (Map.Entry<java.lang.Integer, Double> entry : scoreByTrack.entrySet())
+        for (Map.Entry<Integer, InfosTrees> entry : infosByTrack.entrySet())
         {
             int track = entry.getKey();
-            double score = entry.getValue();
-            double volume = Math.tanh(score);
+            InfosTrees infos = entry.getValue();
 
-            scoreByTrack.put(track, volume);
+            infos.setVolume(Math.tanh(infos.getScore()));
         }
 
-        return volumeByTrack;
+        return infosByTrack;
     }
 
     /**
@@ -159,7 +152,20 @@ public class CompositionEngineService extends Service {
     private double getSpeciesVolumeScoreMultiplier(Species species) {
         //int speciesCount = species.getCount(); //TODO : Brancher avec la DAO
         int speciesCount = 100; //TEMP
-        double multiplier = SPECIES_EQUALITY_FACTOR /(speciesCount+ SPECIES_EQUALITY_FACTOR);
+        double multiplier = SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR);
         return multiplier;
+    }
+
+    /**
+     * Applique l'état désiré sur la sortie sonore
+     */
+    private void applyState(Map<Integer, InfosTrees> desiredState) {
+
+        for (Map.Entry<Integer, InfosTrees> entry : desiredState.entrySet())
+        {
+            int track = entry.getKey();
+            InfosTrees infos = entry.getValue();
+            Log.v(TAG, "track : " + track + ", volume : " + infos.getVolume());
+        }
     }
 }
