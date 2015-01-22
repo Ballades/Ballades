@@ -310,8 +310,8 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         try {
             PdBase.setReceiver(receiver);
             PdBase.subscribe("android");
-            InputStream in2 = res.openRawResource(R.raw.ds);
-            patchFile = IoUtils.extractResource(in2, "woods.wav", getCacheDir());
+            InputStream in2 = res.openRawResource(R.raw.acoustic_guitar);
+            patchFile = IoUtils.extractResource(in2, "acoustic_guitar.wav", getCacheDir());
             InputStream in = res.openRawResource(R.raw.groovebox1r3);
             patchFile = IoUtils.extractResource(in, "groovebox1r3.pd", getCacheDir());
             PdBase.openPatch(patchFile);

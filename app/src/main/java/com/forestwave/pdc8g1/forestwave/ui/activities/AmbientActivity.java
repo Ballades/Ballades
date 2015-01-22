@@ -67,9 +67,11 @@ import de.greenrobot.dao.query.Query;
 public class AmbientActivity extends Activity implements OnClickListener, OnEditorActionListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "AmbientActivity";
-    private static final String[] trackNames = {"acoustic_guitar", "ballons", "banjo", "clarinet", "ds", "ebow", "electribe", "electric_bass",
-                                                "flute_piano", "guitar", "harmon_trumpet", "information", "love", "mallet", "omnichord_qchord",
-                                                "pad_synth", "piano_tender", "rhodes", "strings", "vocals"};
+    //private static final String[] trackNames = {"acoustic_guitar", "ballons", "banjo", "clarinet", "ds", "ebow", "electribe", "electric_bass",
+    //                                            "flute_piano", "guitar", "harmon_trumpet", "information", "love", "mallet", "omnichord_qchord",
+    //                                             "pad_synth", "piano_tender", "rhodes", "strings", "vocals"};
+    private static final String[] trackNames = {"acoustic_guitar"}; // TEMP
+
     private EditText msg;
     private Button play;
     private TextView logs;
@@ -196,7 +198,7 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
 
                         compositionEngineService.play(trees, provider);
                     }
-                    handler.postDelayed(this, 5);
+                    handler.postDelayed(this, 120);
                 }
             };
             handler.post(runnable);
@@ -220,12 +222,6 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
     }
 
     private void initGui() {
-        setContentView(R.layout.activity_ambient);
-        play = (Button) findViewById(R.id.play_button);
-        play.setOnClickListener(this);
-
-        logs = (TextView) findViewById(R.id.log_box);
-        logs.setMovementMethod(new ScrollingMovementMethod());
     }
 
     /**
@@ -242,9 +238,12 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
 
             // Charger les tracks
             for (String trackName : trackNames) {
-                InputStream in2 = res.openRawResource(getResources().getIdentifier(trackName, "raw" , this.getClass().getPackage().getName()));
-                patchFile = IoUtils.extractResource(in2, trackName+".wav", getCacheDir());
+                //InputStream in2 = res.openRawResource(getResources().getIdentifier(trackName, "raw" , this.getClass().getPackage().getName()));
+                //patchFile = IoUtils.extractResource(in2, trackName+".wav", getCacheDir());
             }
+            //TEMP
+            InputStream in2 = res.openRawResource(R.raw.acoustic_guitar);
+            patchFile = IoUtils.extractResource(in2, "acoustic_guitar.wav", getCacheDir());
 
             PdBase.openPatch(patchFile);
 
