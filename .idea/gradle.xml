@@ -12,8 +12,6 @@
             <option value="$PROJECT_DIR$/AndroidMidi" />
             <option value="$PROJECT_DIR$/PdCore" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/app/libs" />
-            <option value="$PROJECT_DIR$/app/libs/volley" />
           </set>
         </option>
       </GradleProjectSettings>
