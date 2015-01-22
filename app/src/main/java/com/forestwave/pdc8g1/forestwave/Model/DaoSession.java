@@ -21,13 +21,11 @@ public class DaoSession extends AbstractDaoSession {
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
         super(db);
-
         treeDaoConfig = daoConfigMap.get(TreeDao.class).clone();
         treeDaoConfig.initIdentityScope(type);
-
         treeDao = new TreeDao(treeDaoConfig, this);
-
         registerDao(Tree.class, treeDao);
+
     }
 
     public void clear() {

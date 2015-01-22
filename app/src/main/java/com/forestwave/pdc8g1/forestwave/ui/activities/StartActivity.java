@@ -1,14 +1,4 @@
 package com.forestwave.pdc8g1.forestwave.ui.activities;
-/**
- *
- * @author Peter Brinkmann (peter.brinkmann@gmail.com)
- *
- * For information on usage and redistribution, and for a DISCLAIMER OF ALL
- * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
- *
- * simple test case for {@link PdService}
- *
- */
 
 import java.io.File;
 import java.io.IOException;
@@ -63,7 +53,7 @@ import de.greenrobot.dao.query.Query;
 
 public class StartActivity extends Activity implements OnClickListener, OnEditorActionListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final String TAG = "Pd Test";
+    private static final String TAG = "StartActivity";
 
     private Button play;
     private CheckBox ckBass, ckSnare, ckMelody, ckKick, ckHighHat;
@@ -282,6 +272,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         tvChooseStyle.setText(getResources().getText(R.string.style) +" "+ String.valueOf(seekBarStyle.getProgress()));
     }
 
+    // Initialize pd ressources : wav samples required and pd patches
     private void initPd() {
         Resources res = getResources();
         File patchFile = null;

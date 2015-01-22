@@ -8,7 +8,7 @@
 #X obj 1008 898 outlet;
 #X obj 837 643 moses 0.1;
 #X obj 105 245 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 14883 1;
+-258699 -1 16867 1;
 #X obj 664 105 hradio 8 1 1 2 sqp3 sqp3r half -30 6 0 8 -262144 -1
 -1 0;
 #X obj 896 682 int;
@@ -1387,7 +1387,7 @@
 #N canvas 0 193 1167 779 dsq1 0;
 #X obj 616 758 outlet;
 #X obj 109 160 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 14883 1;
+-258699 -1 16867 1;
 #X obj 667 105 hradio 8 1 1 2 sqp8 sqp8r empty 0 -6 0 8 -262144 -1
 -1 0;
 #X obj 341 104 bng 12 250 50 0 empty empty clear -25 6 0 8 -262144
@@ -2414,7 +2414,7 @@
 #X obj 25 833 outlet~;
 #X msg 36 487 0;
 #X obj 66 365 pack f f;
-#X msg -145 457 0 1;
+#X msg -145 457 1 1;
 #X msg 65 393 set \$1 \$2;
 #X msg 66 325 bang;
 #X obj 6 536 line 0 5;
@@ -2531,7 +2531,7 @@
 #N canvas 20 180 1167 779 dsq3 0;
 #X obj 616 734 outlet;
 #X obj 109 159 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 14883 1;
+-258699 -1 992 1;
 #X obj 667 106 hradio 8 1 1 2 sqp10 sqp10r empty 0 -6 0 8 -262144 -1
 -1 0;
 #X obj 343 104 bng 12 250 50 0 empty empty clear -25 6 0 8 -262144
@@ -3760,7 +3760,7 @@
 #X text 374 188 <-trigger/level in;
 #X obj 46 408 noise~;
 #X obj 334 433 line~;
-#X msg 271 394 0 144.87;
+#X msg 271 394 0 11.8454;
 #X obj 311 464 *~;
 #X obj 312 506 lop~ 200;
 #X msg 359 399 1;
@@ -3904,7 +3904,7 @@
 #N canvas 20 180 1167 779 dsq2 0;
 #X obj 660 753 outlet;
 #X obj 109 159 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 14883 1;
+-258699 -1 16867 1;
 #X obj 669 106 hradio 8 1 1 2 sqp9 sqp9r empty 0 -6 0 8 -262144 -1
 -1 0;
 #X obj 344 105 bng 12 250 50 0 empty empty clear -25 6 0 8 -262144
@@ -5012,7 +5012,7 @@
 #X obj 25 833 outlet~;
 #X msg 36 487 0;
 #X obj 66 365 pack f f;
-#X msg -145 457 0 1;
+#X msg -145 457 1 1;
 #X msg 65 393 set \$1 \$2;
 #X msg 66 325 bang;
 #X obj 6 536 line 0 5;
@@ -5125,7 +5125,7 @@
 #X obj 1050 798 outlet;
 #X obj 1004 517 moses 0.1;
 #X obj 108 245 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 14883 1;
+-258699 -1 16867 1;
 #X obj 665 105 hradio 8 1 1 2 sqp6 sqp6r half -30 6 0 8 -262144 -1
 -1 0;
 #X obj 1037 566 int;
@@ -6743,7 +6743,7 @@ and predelay.;
 #N canvas 90 117 1167 796 motion1 0;
 #X obj 607 693 outlet;
 #X obj 106 170 hsl 636 8 1 65 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 5953 1;
+-258699 -1 6945 1;
 #X obj 656 105 hradio 8 1 1 2 sqp7 sqp7r empty 0 -6 0 8 -262144 -1
 -1 1;
 #X obj 128 212 change;
@@ -15122,12 +15122,12 @@ and predelay.;
 -1 11;
 #X obj 67 859 +;
 #X obj 100 861 +;
-#X obj 420 672 tgl 15 1 empty empty m 6 22 0 10 -262144 -1 -1 0 1;
-#X obj 440 672 tgl 15 1 empty empty b 6 22 0 10 -262144 -1 -1 0 1;
-#X obj 464 672 tgl 15 1 empty empty k 6 22 0 10 -262144 -1 -1 0 1;
-#X obj 484 672 tgl 15 1 empty empty sd 3 22 0 10 -262144 -1 -1 0 1
+#X obj 420 672 tgl 15 1 empty empty m 6 22 0 10 -262144 -1 -1 1 1;
+#X obj 440 672 tgl 15 1 empty empty b 6 22 0 10 -262144 -1 -1 1 1;
+#X obj 464 672 tgl 15 1 empty empty k 6 22 0 10 -262144 -1 -1 1 1;
+#X obj 484 672 tgl 15 1 empty empty sd 3 22 0 10 -262144 -1 -1 1 1
 ;
-#X obj 504 672 tgl 15 1 empty empty hh 3 22 0 10 -262144 -1 -1 0 1
+#X obj 504 672 tgl 15 1 empty empty hh 3 22 0 10 -262144 -1 -1 1 1
 ;
 #X msg 1053 126 set \$1;
 #X text 185 685 0;
@@ -15186,16 +15186,16 @@ and predelay.;
 #X text 166 -45 'refurbished' version of my 1st groovebox (now with
 midi record \, transpose \, etc.);
 #X obj 3 652 hradio 15 1 1 25 empty empty empty 0 -8 0 10 -228856 -1
--1 7;
-#X obj 420 652 tgl 15 1 empty empty empty 6 22 0 10 -228856 -1 -1 0
+-1 14;
+#X obj 420 652 tgl 15 1 empty empty empty 6 22 0 10 -228856 -1 -1 1
 1;
-#X obj 440 652 tgl 15 1 empty empty empty 6 22 0 10 -228856 -1 -1 0
+#X obj 440 652 tgl 15 1 empty empty empty 6 22 0 10 -228856 -1 -1 1
 1;
-#X obj 464 652 tgl 15 1 empty empty empty 6 22 0 10 -228856 -1 -1 0
+#X obj 464 652 tgl 15 1 empty empty empty 6 22 0 10 -228856 -1 -1 1
 1;
-#X obj 484 652 tgl 15 1 empty empty empty 3 22 0 10 -228856 -1 -1 0
+#X obj 484 652 tgl 15 1 empty empty empty 3 22 0 10 -228856 -1 -1 1
 1;
-#X obj 504 652 tgl 15 1 empty empty empty 3 22 0 10 -228856 -1 -1 0
+#X obj 504 652 tgl 15 1 empty empty empty 3 22 0 10 -228856 -1 -1 1
 1;
 #X obj 302 745 int;
 #X obj 335 746 int;
