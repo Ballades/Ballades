@@ -59,6 +59,11 @@ import com.forestwave.pdc8g1.forestwave.model.Tree;
 import com.forestwave.pdc8g1.forestwave.model.TreeDao;
 import com.forestwave.pdc8g1.forestwave.R;
 
+import de.greenrobot.daogenerator.DaoGenerator;
+import de.greenrobot.daogenerator.Entity;
+import de.greenrobot.daogenerator.Property;
+import de.greenrobot.daogenerator.Schema;
+
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.ConnectionResult;
 
@@ -171,6 +176,22 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         DaoMaster daoMaster = new DaoMaster(db);
         DaoSession daoSession = daoMaster.newSession();
         TreeDao treeDao = daoSession.getTreeDao();
+
+        Schema schema = new Schema(1, "de.greenrobot.daoexample");
+        Entity species= schema.addEntity("Species");
+        Entity tree= schema.getEntities().get(0);
+        Log.d("COUCOU", tree.getClass().toString());
+        species.addIdProperty();
+        species.addIntProperty("count");
+        species.addIntProperty("track");
+        Property treesProperty = species.addLongProperty("trees").getProperty();
+        species.addToMany(tree, treesProperty);
+
+        try {
+            new DaoGenerator().generateAll(schema, "../../model");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()) == ConnectionResult.SUCCESS) {
             Log.v("LocationTest", "Play Services available");
