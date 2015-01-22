@@ -1,13 +1,18 @@
 package com.forestwave.pdc8g1.forestwave.model;
 
+import android.location.Location;
+import android.util.Log;
+
+import java.lang.reflect.Array;
+
 /**
  * Created by leo on 12/01/15.
  */
 public class Tree {
 
     private Long id;
-    private Species species;
-    private java.lang.Integer height;
+    private String species;
+    private Integer height;
     private Double latitude;
     private Double longitude;
 
@@ -18,7 +23,7 @@ public class Tree {
         this.id = id;
     }
 
-    public Tree(Long id, Species species, java.lang.Integer height, double latitude, double longitude) {
+    public Tree(Long id, String species, Integer height, double latitude, double longitude) {
         this.id = id;
         this.species = species;
         this.height = height;
@@ -34,19 +39,19 @@ public class Tree {
         this.id = id;
     }
 
-    public Species getSpecies() {
+    public String getSpecies() {
         return species;
     }
 
-    public void setSpecies(Species species) {
+    public void setSpecies(String species) {
         this.species = species;
     }
 
-    public java.lang.Integer getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
-    public void setHeight(java.lang.Integer height) {
+    public void setHeight(Integer height) {
         this.height = height;
     }
 
@@ -66,7 +71,10 @@ public class Tree {
         this.longitude = longitude;
     }
 
-    public Double[] getLocation() {
-        return new Double[]{latitude, longitude};
+    public float computeUserRange(Double latitude, Double longitude) {
+
+        float[] results = new float[3];
+        Location.distanceBetween(latitude, longitude, this.latitude, this.longitude, results);
+        return results[0];
     }
 }

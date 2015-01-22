@@ -27,11 +27,14 @@ import org.puredata.core.utils.IoUtils;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.hardware.SensorManager;
+import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -56,7 +59,11 @@ import com.forestwave.pdc8g1.forestwave.model.Tree;
 import com.forestwave.pdc8g1.forestwave.model.TreeDao;
 import com.forestwave.pdc8g1.forestwave.R;
 
-import com.forestwave.pdc8g1.forestwave.services.CompositionEngineService;
+import de.greenrobot.daogenerator.DaoGenerator;
+import de.greenrobot.daogenerator.Entity;
+import de.greenrobot.daogenerator.Property;
+import de.greenrobot.daogenerator.Schema;
+
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.ConnectionResult;
 
@@ -170,11 +177,26 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         DaoSession daoSession = daoMaster.newSession();
         TreeDao treeDao = daoSession.getTreeDao();
 
+        Schema schema = new Schema(1, "de.greenrobot.daoexample");
+        Entity species= schema.addEntity("Species");
+        Entity tree= schema.getEntities().get(0);
+        Log.d("COUCOU", tree.getClass().toString());
+        species.addIdProperty();
+        species.addIntProperty("count");
+        species.addIntProperty("track");
+        Property treesProperty = species.addLongProperty("trees").getProperty();
+        species.addToMany(tree, treesProperty);
+
+        try {
+            new DaoGenerator().generateAll(schema, "../../model");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()) == ConnectionResult.SUCCESS) {
             Log.v("LocationTest", "Play Services available");
-            provider = new LocationProvider(this);
+            provider = new LocationProvider(this, (SensorManager) getSystemService(Context.SENSOR_SERVICE));
             handler = new Handler();
-            final CompositionEngineService compositionEngineService = new CompositionEngineService();
             final Runnable runnable = new Runnable() {
 
                 @Override
@@ -190,14 +212,10 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                         Double latitude = provider.getLocation().getLatitude();
                         Double longitude = provider.getLocation().getLongitude();
 
-                        Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111, latitude + 0.01/111), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
+                        Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111.0, latitude + 0.01/111.0), TreeDao.Properties.Longitude.between(longitude - 0.01/76.0, longitude + 0.01/76.0)).build();
                         List<Tree> trees = query.list();
-                        Log.d("NB TREE", Integer.toString(trees.size()));
-                        double userOrientation = 0;
-
-                        compositionEngineService.play(trees, provider);
                     }
-                    handler.postDelayed(this, 5);
+                    handler.postDelayed(this, 1000);
                 }
             };
             handler.post(runnable);
@@ -279,7 +297,6 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 PdBase.sendBang("applystyle");
-
             }
         });
 
