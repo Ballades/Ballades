@@ -9,14 +9,13 @@ import de.greenrobot.dao.AbstractDaoSession;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 import de.greenrobot.dao.internal.DaoConfig;
 
-/**
- * Created by leo on 12/01/15.
- */
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig treeDaoConfig;
+    private final DaoConfig speciesDaoConfig;
 
     private final TreeDao treeDao;
+    private final SpeciesDao speciesDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
@@ -28,13 +27,25 @@ public class DaoSession extends AbstractDaoSession {
         treeDao = new TreeDao(treeDaoConfig, this);
 
         registerDao(Tree.class, treeDao);
+
+        speciesDaoConfig = daoConfigMap.get(SpeciesDao.class).clone();
+        speciesDaoConfig.initIdentityScope(type);
+
+        speciesDao = new SpeciesDao(speciesDaoConfig, this);
+
+        registerDao(Tree.class, treeDao);
     }
 
     public void clear() {
         treeDaoConfig.getIdentityScope().clear();
+        speciesDaoConfig.getIdentityScope().clear();
     }
 
     public TreeDao getTreeDao() {
         return treeDao;
+    }
+
+    public SpeciesDao getSpeciesDao() {
+        return speciesDao;
     }
 }

@@ -13,10 +13,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
-import com.forestwave.pdc8g1.forestwave.model.DaoSession;
+//import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
+//import com.forestwave.pdc8g1.forestwave.model.DaoSession;
+import com.forestwave.pdc8g1.forestwave.model.Species;
 import com.forestwave.pdc8g1.forestwave.model.Tree;
-import com.forestwave.pdc8g1.forestwave.model.TreeDao;
+//import com.forestwave.pdc8g1.forestwave.model.TreeDao;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +53,7 @@ public class App extends Application {
         for(int i = 1 ; i <= NB_PAGES_API ; i++) {
 
             url = "http://rencontres-arbres.herokuapp.com/api/trees/?page="+Integer.toString(i);
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,new Response.Listener() {
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener() {
 
                 @Override
                 public void onResponse(Object response) {
@@ -62,7 +63,7 @@ public class App extends Application {
                         jTrees = new JSONObject(response.toString());
 
                         for(int cpt = 0 ; cpt < jTrees.getJSONArray("results").length() ; cpt++) {
-
+/*
                             DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mContext, "forestWaves-db", null);
                             SQLiteDatabase db = helper.getWritableDatabase();
                             DaoMaster daoMaster = new DaoMaster(db);
@@ -70,7 +71,7 @@ public class App extends Application {
                             TreeDao treeDao = daoSession.getTreeDao();
 
                             JSONObject jTree = new JSONObject(jTrees.getJSONArray("results").get(cpt).toString());
-                            String species = jTree.getString("name");
+                            Species species = jTree.getString("name");
                             Integer height = jTree.getInt("height");
                             if(!jTree.isNull("latitude") && !jTree.isNull("longitude")) {
 
@@ -81,7 +82,7 @@ public class App extends Application {
                                 treeDao.insert(tree);
                                 Log.d("FORESTWAVES", "insert " + Integer.toString(cpt) + " ème tree with species : " + tree.getSpecies());
                             }
-                            db.close();
+                            db.close();*/
                         }
                     } catch (JSONException e) {
                         Log.d("JSONException", e.getMessage());

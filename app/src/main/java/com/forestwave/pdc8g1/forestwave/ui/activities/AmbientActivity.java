@@ -27,11 +27,13 @@ import org.puredata.core.utils.IoUtils;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -169,7 +171,7 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
 
         if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()) == ConnectionResult.SUCCESS) {
             Log.v("LocationTest", "Play Services available");
-            provider = new LocationProvider(this);
+            provider = new LocationProvider(this, (SensorManager) getSystemService(Context.SENSOR_SERVICE));
             handler = new Handler();
             final CompositionEngineService compositionEngineService = new CompositionEngineService();
             final Runnable runnable = new Runnable() {

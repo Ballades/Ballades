@@ -21,7 +21,7 @@ public class TreeDao extends AbstractDao<Tree, Long>{
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Species = new Property(1, String.class, "species", false, "SPECIES");
+        public final static Property SpeciesId = new Property(1, long.class, "speciesid", false, "SPECIES_ID");
         public final static Property Height = new Property(2, Integer.class, "height", false, "HEIGHT");
         public final static Property Latitude = new Property(3, Double.class, "latitude", false, "LATITUDE");
         public final static Property Longitude = new Property(4, Double.class, "longitude", false, "LONGITUDE");
@@ -40,7 +40,7 @@ public class TreeDao extends AbstractDao<Tree, Long>{
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'TREE' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'SPECIES' TEXT NOT NULL ," + // 1: species
+                "'SPECIES_ID' INTEGER NOT NULL ," + // 1: species
                 "'HEIGHT' INTEGER," + // 2: height
                 "'LATITUDE' REAL," + // 3: latitude
                 "'LONGITUDE' REAL);"); // 4: longitude
@@ -62,9 +62,9 @@ public class TreeDao extends AbstractDao<Tree, Long>{
             stmt.bindLong(1, id);
         }
 
-        String species = entity.getSpecies();
-        if (species != null) {
-            stmt.bindString(2, species);
+        Long speciesId = entity.getSpeciesId();
+        if (speciesId != null) {
+            stmt.bindLong(2, speciesId);
         }
 
         Integer height = entity.getHeight();
@@ -94,7 +94,7 @@ public class TreeDao extends AbstractDao<Tree, Long>{
     public Tree readEntity(Cursor cursor, int offset) {
         Tree entity = new Tree(
                 cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-                cursor.getString(offset + 1), // species
+                cursor.getLong(offset + 1), // species
                 cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2),
                 cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3),
                 cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4)
@@ -106,7 +106,7 @@ public class TreeDao extends AbstractDao<Tree, Long>{
     @Override
     public void readEntity(Cursor cursor, Tree entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setSpecies(cursor.getString(offset + 1));
+        entity.setSpeciesId(cursor.getLong(offset + 1));
         entity.setHeight(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setLatitude(cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3));
         entity.setLongitude(cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4));
