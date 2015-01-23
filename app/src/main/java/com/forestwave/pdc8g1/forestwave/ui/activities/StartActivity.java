@@ -180,10 +180,10 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                     if(provider.getLocation() != null) {
                         Double latitude = provider.getLocation().getLatitude();
                         Double longitude = provider.getLocation().getLongitude();
-
+                        Log.d(TAG, "Latitude : " + latitude + ", Longitude : " + longitude);
                         Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111, latitude + 0.01/111), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
                         List<Tree> trees = query.list();
-                        Log.d("NB TREE : ", Integer.toString(trees.size()));
+                        Log.d(TAG, "Nombre d'arbres pris en compte : " + Integer.toString(trees.size()));
                         Map<Integer, InfosTrees> desiredState = compositionEngineService.calculateDesiredState(trees, provider);
                         this.applyState(desiredState);
                     }

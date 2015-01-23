@@ -38,6 +38,12 @@ public class Tree {
         return id;
     }
 
+    /** called by internal mechanisms, do not call yourself. */
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getTreeDao() : null;
+    }
+
     public Species getSpecies() {
         long __key = this.speciesId;
         if (species__resolvedKey == null || !species__resolvedKey.equals(__key)) {

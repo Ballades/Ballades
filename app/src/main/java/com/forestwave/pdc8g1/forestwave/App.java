@@ -80,14 +80,17 @@ public class App extends Application {
                             Double longitude = jTree.getDouble("longitude");
                             if(latitude != null && longitude != null) {
                                 // Ajouter l'espèce si elle n'est pas présente
+                                Log.d(TAG, "inserting species : " + speciesName);
                                 Integer track = 1;
                                 Integer count = 100;
                                 Species species = new Species(null, speciesName, track, count);
-                                speciesDao.insert(species);
+                                Long speciesId = speciesDao.insert(species);
+                                Log.d(TAG, "species Id : " + speciesId);
 
-                                Tree tree = new Tree(null, species.getId(), height, latitude, longitude);
+                                Tree tree = new Tree(null, speciesId, height, latitude, longitude);
+
                                 treeDao.insert(tree);
-                                Log.d("FORESTWAVES", "insert " + Integer.toString(cpt) + " ème tree with species : " + tree.getSpecies());
+                                Log.d(TAG, "Tree inserted.");
                             }
                             db.close();
                         }

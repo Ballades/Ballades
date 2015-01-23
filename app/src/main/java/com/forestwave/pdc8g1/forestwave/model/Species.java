@@ -1,11 +1,17 @@
 package com.forestwave.pdc8g1.forestwave.model;
 
+
+
 public class Species {
 
     private Long id;
     private String name;
     private Integer track;
     private Integer count;
+
+    private transient DaoSession daoSession;
+
+    private transient SpeciesDao myDao;
 
     public Species() {
     }
@@ -20,6 +26,13 @@ public class Species {
         this.track = track;
         this.count = count;
     }
+
+    /** called by internal mechanisms, do not call yourself. */
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getSpeciesDao() : null;
+    }
+
 
     public Long getId() {
         return id;
