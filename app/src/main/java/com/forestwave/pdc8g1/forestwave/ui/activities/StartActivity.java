@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.puredata.android.io.AudioParameters;
@@ -42,10 +43,12 @@ import com.forestwave.pdc8g1.forestwave.App;
 import com.forestwave.pdc8g1.forestwave.location.LocationProvider;
 import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
 import com.forestwave.pdc8g1.forestwave.model.DaoSession;
+import com.forestwave.pdc8g1.forestwave.model.InfosTrees;
 import com.forestwave.pdc8g1.forestwave.model.Tree;
 import com.forestwave.pdc8g1.forestwave.model.TreeDao;
 import com.forestwave.pdc8g1.forestwave.R;
 
+import com.forestwave.pdc8g1.forestwave.services.CompositionEngineService;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.ConnectionResult;
 
@@ -158,6 +161,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         DaoMaster daoMaster = new DaoMaster(db);
         DaoSession daoSession = daoMaster.newSession();
         TreeDao treeDao = daoSession.getTreeDao();
+        final CompositionEngineService compositionEngineService = new CompositionEngineService();
 
         if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()) == ConnectionResult.SUCCESS) {
             Log.v("LocationTest", "Play Services available");
@@ -174,15 +178,28 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                     TreeDao treeDao = daoSession.getTreeDao();
 
                     if(provider.getLocation() != null) {
-
                         Double latitude = provider.getLocation().getLatitude();
                         Double longitude = provider.getLocation().getLongitude();
 
                         Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111, latitude + 0.01/111), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
                         List<Tree> trees = query.list();
-                        Log.d("NB TREE", Integer.toString(trees.size()));
+                        Log.d("NB TREE : ", Integer.toString(trees.size()));
+                        Map<Integer, InfosTrees> desiredState = compositionEngineService.calculateDesiredState(trees, provider);
+                        this.applyState(desiredState);
                     }
                     handler.postDelayed(this, 1000);
+                }
+
+                /**
+                 * Applique l'état désiré sur la sortie sonore (mode ambient)
+                 */
+                private void applyState(Map<Integer, InfosTrees> desiredState) {
+                    for (Map.Entry<Integer, InfosTrees> entry : desiredState.entrySet())
+                    {
+                        int track = entry.getKey();
+                        InfosTrees infos = entry.getValue();
+                        Log.v(TAG, "track : " + track + ", volume : " + infos.getVolume());
+                    }
                 }
             };
             handler.post(runnable);
@@ -402,4 +419,5 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
             }
         }
     }
+
 }
