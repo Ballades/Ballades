@@ -237,7 +237,24 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.play_button:
+                if (pdService.isRunning()) {
+                    stopAudio();
+                } else {
+                    startAudio();
+                }
+            default:
+                break;
+        }
+    }
+
     private void initGui() {
+        setContentView(R.layout.activity_ambient);
+        play = (Button) findViewById(R.id.play_button);
+        play.setOnClickListener(this);
     }
 
     /**
@@ -268,7 +285,6 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
         } finally {
             if (patchFile != null) patchFile.delete();
         }
-        startAudio();
     }
 
     private void startAudio() {
@@ -276,6 +292,7 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
         try {
             pdService.initAudio(-1, -1, -1, -1);   // negative values will be replaced with defaults/preferences
             pdService.startAudio(new Intent(this, AmbientActivity.class), R.drawable.icon, name, "Return to " + name + ".");
+            Log.d(TAG, "4");
         } catch (IOException e) {
             toast(e.toString());
         }
@@ -291,20 +308,6 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
         } catch (IllegalArgumentException e) {
             // already unbound
             pdService = null;
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.play_button:
-                if (pdService.isRunning()) {
-                    stopAudio();
-                } else {
-                    startAudio();
-                }
-            default:
-                break;
         }
     }
 
