@@ -237,12 +237,6 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        startAudio();
-    }
-
     private void initGui() {
     }
 
@@ -274,6 +268,7 @@ public class AmbientActivity extends Activity implements OnClickListener, OnEdit
         } finally {
             if (patchFile != null) patchFile.delete();
         }
+        startAudio();
     }
 
     private void startAudio() {
