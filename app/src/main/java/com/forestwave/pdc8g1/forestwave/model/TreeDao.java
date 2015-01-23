@@ -4,9 +4,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
 import de.greenrobot.dao.internal.DaoConfig;
+import de.greenrobot.dao.internal.SqlUtils;
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.QueryBuilder;
 
 /**
  * Created by leo on 12/01/15.
@@ -14,12 +20,13 @@ import de.greenrobot.dao.internal.DaoConfig;
 public class TreeDao extends AbstractDao<Tree, Long>{
 
     public static final String TABLENAME = "Tree";
-
+    private Query<Tree> species_TreesQuery;
     /**
      * Properties of entity Tree.<br/>
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
+
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property SpeciesId = new Property(1, long.class, "speciesid", false, "SPECIES_ID");
         public final static Property Height = new Property(2, Integer.class, "height", false, "HEIGHT");
@@ -27,12 +34,15 @@ public class TreeDao extends AbstractDao<Tree, Long>{
         public final static Property Longitude = new Property(4, Double.class, "longitude", false, "LONGITUDE");
     };
 
+    private DaoSession daoSession;
+
     public TreeDao(DaoConfig config) {
         super(config);
     }
 
     public TreeDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -62,10 +72,7 @@ public class TreeDao extends AbstractDao<Tree, Long>{
             stmt.bindLong(1, id);
         }
 
-        Long speciesId = entity.getSpeciesId();
-        if (speciesId != null) {
-            stmt.bindLong(2, speciesId);
-        }
+        stmt.bindLong(2, entity.getSpeciesId());
 
         Integer height = entity.getHeight();
         if (height != null) {
@@ -81,6 +88,12 @@ public class TreeDao extends AbstractDao<Tree, Long>{
         if (longitude != null) {
             stmt.bindDouble(5, longitude);
         }
+    }
+
+    @Override
+    protected void attachEntity(Tree entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     /** @inheritdoc */
@@ -133,5 +146,99 @@ public class TreeDao extends AbstractDao<Tree, Long>{
     @Override
     protected boolean isEntityUpdateable() {
         return true;
+    }
+
+    /** Internal query to resolve the "trees" to-many relationship of Species. */
+    public List<Tree> _querySpecies_Trees(long speciesId) {
+        synchronized (this) {
+            if (species_TreesQuery == null) {
+                QueryBuilder<Tree> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.SpeciesId.eq(null));
+                queryBuilder.orderRaw("DATE ASC");
+                species_TreesQuery = queryBuilder.build();
+            }
+        }
+        Query<Tree> query = species_TreesQuery.forCurrentThread();
+        query.setParameter(0, speciesId);
+        return query.list();
+    }
+    private String selectDeep;
+    protected String getSelectDeep() {
+        if (selectDeep == null) {
+            StringBuilder builder = new StringBuilder("SELECT ");
+            SqlUtils.appendColumns(builder, "T", getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T0", daoSession.getSpeciesDao().getAllColumns());
+            builder.append(" FROM TREE T");
+            builder.append(" LEFT JOIN SPECIES T0 ON T.'SPECIES_ID'=T0.'_id'");
+            builder.append(' ');
+            selectDeep = builder.toString();
+        }
+        return selectDeep;
+    }
+    protected Tree loadCurrentDeep(Cursor cursor, boolean lock) {
+        Tree entity = loadCurrent(cursor, 0, lock);
+        int offset = getAllColumns().length;
+        Species species = loadCurrentOther(daoSession.getSpeciesDao(), cursor, offset);
+        if(species != null) {
+            entity.setSpecies(species);
+        }
+        return entity;
+    }
+    public Tree loadDeep(Long key) {
+        assertSinglePk();
+        if (key == null) {
+            return null;
+        }
+        StringBuilder builder = new StringBuilder(getSelectDeep());
+        builder.append("WHERE ");
+        SqlUtils.appendColumnsEqValue(builder, "T", getPkColumns());
+        String sql = builder.toString();
+        String[] keyArray = new String[] { key.toString() };
+        Cursor cursor = db.rawQuery(sql, keyArray);
+        try {
+            boolean available = cursor.moveToFirst();
+            if (!available) {
+                return null;
+            } else if (!cursor.isLast()) {
+                throw new IllegalStateException("Expected unique result, but count was " + cursor.getCount());
+            }
+            return loadCurrentDeep(cursor, true);
+        } finally {
+            cursor.close();
+        }
+    }
+    /** Reads all available rows from the given cursor and returns a list of new ImageTO objects. */
+    public List<Tree> loadAllDeepFromCursor(Cursor cursor) {
+        int count = cursor.getCount();
+        List<Tree> list = new ArrayList<Tree>(count);
+        if (cursor.moveToFirst()) {
+            if (identityScope != null) {
+                identityScope.lock();
+                identityScope.reserveRoom(count);
+            }
+            try {
+                do {
+                    list.add(loadCurrentDeep(cursor, false));
+                } while (cursor.moveToNext());
+            } finally {
+                if (identityScope != null) {
+                    identityScope.unlock();
+                }
+            }
+        }
+        return list;
+    }
+    protected List<Tree> loadDeepAllAndCloseCursor(Cursor cursor) {
+        try {
+            return loadAllDeepFromCursor(cursor);
+        } finally {
+            cursor.close();
+        }
+    }
+    /** A raw-style query where you can pass any WHERE clause and arguments. */
+    public List<Tree> queryDeep(String where, String... selectionArg) {
+        Cursor cursor = db.rawQuery(getSelectDeep() + where, selectionArg);
+        return loadDeepAllAndCloseCursor(cursor);
     }
 }

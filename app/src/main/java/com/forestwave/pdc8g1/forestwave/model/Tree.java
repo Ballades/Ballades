@@ -34,6 +34,14 @@ public class Tree {
         this.longitude = longitude;
     }
 
+    public Tree(Long id, Species species, Integer height, double latitude, double longitude) {
+        this.id = id;
+        this.setSpecies(species);
+        this.height = height;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public Long getId() {
         return id;
     }

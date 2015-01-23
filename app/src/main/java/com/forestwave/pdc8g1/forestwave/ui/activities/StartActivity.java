@@ -44,6 +44,7 @@ import com.forestwave.pdc8g1.forestwave.location.LocationProvider;
 import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
 import com.forestwave.pdc8g1.forestwave.model.DaoSession;
 import com.forestwave.pdc8g1.forestwave.model.InfosTrees;
+import com.forestwave.pdc8g1.forestwave.model.Species;
 import com.forestwave.pdc8g1.forestwave.model.Tree;
 import com.forestwave.pdc8g1.forestwave.model.TreeDao;
 import com.forestwave.pdc8g1.forestwave.R;
@@ -182,23 +183,36 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                         Double longitude = provider.getLocation().getLongitude();
                         Log.d(TAG, "Latitude : " + latitude + ", Longitude : " + longitude);
                         Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111, latitude + 0.01/111), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
-                        List<Tree> trees = query.list();
+                        //List<Tree> trees = query.list();
+                        List<Tree> trees = getTestTrees(); //TEMP
+
                         Log.d(TAG, "Nombre d'arbres pris en compte : " + Integer.toString(trees.size()));
                         Map<Integer, InfosTrees> desiredState = compositionEngineService.calculateDesiredState(trees, provider);
                         this.applyState(desiredState);
                     }
-                    handler.postDelayed(this, 1000);
+                    handler.postDelayed(this, 5000);
+                }
+
+                private List<Tree> getTestTrees() { //TEMP
+                    ArrayList<Tree> testTrees = new ArrayList<>();
+                    Species theSpecies = new Species((long)1212121, "sequoya de ouf", 1, 100);
+
+                    Tree theTree = new Tree((long)4224242, theSpecies, 1, (double)46, (double)5);
+                    testTrees.add(theTree);
+
+                    return testTrees;
                 }
 
                 /**
                  * Applique l'état désiré sur la sortie sonore (mode ambient)
                  */
                 private void applyState(Map<Integer, InfosTrees> desiredState) {
+                    Log.d(TAG, "IN applyState ");
                     for (Map.Entry<Integer, InfosTrees> entry : desiredState.entrySet())
                     {
                         int track = entry.getKey();
                         InfosTrees infos = entry.getValue();
-                        Log.v(TAG, "track : " + track + ", volume : " + infos.getVolume());
+                        Log.d(TAG, "track : " + track + ", volume : " + infos.getVolume());
                     }
                 }
             };

@@ -18,7 +18,7 @@ public class CompositionEngineService extends Service {
 
     private static final String TAG = "CompositionEngineService";
     public static final int SPECIES_EQUALITY_FACTOR = 1;
-    public static final int SCORE_FACILITY = 1;
+    public static final int SCORE_FACILITY = 1000;
     public static final int SOUND_DISTANCE_DEACREASE_SLOWNESS = 1;
     private LocationProvider locationProvider;
 
@@ -48,7 +48,8 @@ public class CompositionEngineService extends Service {
         // Remplir les infos
         for (Tree tree : trees) {
             Species species = tree.getSpecies();
-            InfosTrees infosSpecies = infosBySpecies.get(species);
+
+            InfosTrees infosSpecies = (infosBySpecies.containsKey(species)) ? infosBySpecies.get(species) : new InfosTrees();
 
             // Remplir les scores
             Double treeScore = this.getScore(tree);
@@ -62,6 +63,7 @@ public class CompositionEngineService extends Service {
             infosSpecies.setCount(infosSpecies.getCount()+1);
 
             infosBySpecies.put(species, infosSpecies);
+            Log.v(TAG, "ARBRE : species : " + species.getName() + ", getCount : " + infosSpecies.getCount() + ", getScore : " + infosSpecies.getScore());
         }
 
         // Pondérer les scores selon les espèces
@@ -73,12 +75,11 @@ public class CompositionEngineService extends Service {
 
             infos.setScore(infos.getScore()*speciesVolumeScoreMultiplier);
             infosBySpecies.put(species, infos);
+            Log.v(TAG, "ESPECE : species : " + species.getName() + ", getCount : " + infos.getCount() + ", getScore : " + infos.getScore());
         }
 
-        // Calculer l'état désiré
-        Map<Integer, InfosTrees> desiredState = this.scoresToVolumes(infosBySpecies);
-
-        return desiredState;
+        // retourner l'état désiré
+        return this.scoresToVolumes(infosBySpecies);
     }
 
     /**
@@ -97,12 +98,12 @@ public class CompositionEngineService extends Service {
      * Renvoie le nouveau barycentre de deux locations avec leurs poids respectifs
      */
     private Double[] getNewCenterPosition(Double[] position1, Integer weight1, Double[] position2, Integer weight2) {
-        Double[] centerPosition = new Double[]{};
+        Double[] centerPosition = new Double[]{0.0, 0.0};
 
         double newLat = (position1[0]*weight1 + position2[0]*weight2)/(weight1+weight2);
         centerPosition[0] = newLat;
         double newLong = (position1[1]*weight1 + position2[1]*weight2)/(weight1+weight2);
-        centerPosition[1] = newLong;
+        centerPosition[0] = newLong;
 
         return centerPosition;
     }
@@ -112,15 +113,14 @@ public class CompositionEngineService extends Service {
      */
     private Map<Integer, InfosTrees> scoresToVolumes(Map<Species, InfosTrees> infosBySpecies) {
         Map<Integer, InfosTrees> infosByTrack = new HashMap<>();
-
+        Log.v(TAG, "IN scoresToVolumes");
         // Regrouper les scores par track
         for (Map.Entry<Species, InfosTrees> entry : infosBySpecies.entrySet())
         {
             Species species = entry.getKey();
             InfosTrees infos = entry.getValue();
-            //int trackId = species.getTrack(); // TODO : connecter avec DAO
-            Integer trackId = 1; //TEMP
-            InfosTrees infoTrack = infosByTrack.get(trackId);
+            int trackId = species.getTrack();
+            InfosTrees infoTrack = (infosByTrack.containsKey(trackId)) ? infosByTrack.get(trackId) : new InfosTrees();
 
             // Grouper les scores
             infoTrack.setScore(infoTrack.getScore() + infos.getScore());
@@ -131,6 +131,9 @@ public class CompositionEngineService extends Service {
 
             // Mettre à jour les counts
             infoTrack.setCount(infoTrack.getCount() + infos.getCount());
+
+            infosByTrack.put(trackId, infoTrack);
+            Log.v(TAG, "trackId : " + trackId + ", getCount : " + infoTrack.getCount() + ", getScore : " + infoTrack.getScore());
         }
 
         // Calculer les volumes par track
@@ -150,9 +153,9 @@ public class CompositionEngineService extends Service {
      */
     private double getSpeciesVolumeScoreMultiplier(Species species) {
         //int speciesCount = species.getCount(); //TODO : Brancher avec la DAO
-        int speciesCount = 100; //TEMP
-        double multiplier = SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR);
-        return multiplier;
+        double speciesCount = 100; //TEMP
+        Log.d(TAG, "FFF"+(SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR)));
+        return SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR);
     }
 
 }

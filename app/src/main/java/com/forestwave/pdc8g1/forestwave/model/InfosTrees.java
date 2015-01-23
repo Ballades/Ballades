@@ -14,6 +14,14 @@ public class InfosTrees {
     private Double[] location;
     private Double volume;
 
+    public InfosTrees() {
+        this.count = 0;
+        this.score = 0.0;
+        this.location = new Double[]{0.0, 0.0};
+        this.volume = 0.0;
+    }
+
+
     public InfosTrees(Integer count, Double score, Double[] location, Double volume) {
         this.count = count;
         this.score = score;
@@ -33,9 +41,6 @@ public class InfosTrees {
     }
 
     public Double getScore() {
-        if (score == null) {
-            score = 0.0;
-        }
         return score;
     }
 
@@ -44,9 +49,6 @@ public class InfosTrees {
     }
 
     public Double[] getLocation() {
-        if (location == null) {
-            location = new Double[]{0.0, 0.0};
-        }
         return location;
     }
 
@@ -55,9 +57,6 @@ public class InfosTrees {
     }
 
     public Double getVolume() {
-        if (volume == null) {
-            volume = 0.0;
-        }
         return volume;
     }
 

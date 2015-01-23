@@ -23,12 +23,15 @@ public class SpeciesDao extends AbstractDao<Species, Long> {
         public final static Property Count = new Property(3, Integer.class, "count", false, "COUNT");
     };
 
+    private DaoSession daoSession;
+
     public SpeciesDao(DaoConfig config) {
         super(config);
     }
 
     public SpeciesDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -71,6 +74,12 @@ public class SpeciesDao extends AbstractDao<Species, Long> {
         if (count != null) {
             stmt.bindLong(4, count);
         }
+    }
+
+    @Override
+    protected void attachEntity(Species entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     /** @inheritdoc */

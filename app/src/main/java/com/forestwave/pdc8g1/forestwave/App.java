@@ -85,9 +85,10 @@ public class App extends Application {
                                 Integer count = 100;
                                 Species species = new Species(null, speciesName, track, count);
                                 Long speciesId = speciesDao.insert(species);
+                                species.setId(speciesId);
                                 Log.d(TAG, "species Id : " + speciesId);
 
-                                Tree tree = new Tree(null, speciesId, height, latitude, longitude);
+                                Tree tree = new Tree(null, species, height, latitude, longitude);
 
                                 treeDao.insert(tree);
                                 Log.d(TAG, "Tree inserted.");
