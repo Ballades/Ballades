@@ -190,7 +190,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                         Map<Integer, InfosTrees> desiredState = compositionEngineService.calculateDesiredState(trees, provider);
                         this.applyState(desiredState);
                     }
-                    handler.postDelayed(this, 5000);
+                    handler.postDelayed(this, 15000);
                 }
 
                 private List<Tree> getTestTrees() { //TEMP
@@ -213,6 +213,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                         int track = entry.getKey();
                         InfosTrees infos = entry.getValue();
                         Log.d(TAG, "track : " + track + ", volume : " + infos.getVolume());
+                        PdBase.sendBang("ambient_1");
                     }
                 }
             };
@@ -310,8 +311,8 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         try {
             PdBase.setReceiver(receiver);
             PdBase.subscribe("android");
-            InputStream in2 = res.openRawResource(R.raw.woods);
-            patchFile = IoUtils.extractResource(in2, "woods.wav", getCacheDir());
+            InputStream in2 = res.openRawResource(R.raw.acoustic_guitar);
+            patchFile = IoUtils.extractResource(in2, "acoustic_guitar.wav", getCacheDir());
             InputStream in = res.openRawResource(R.raw.groovebox1r3);
             patchFile = IoUtils.extractResource(in, "groovebox1r3.pd", getCacheDir());
             PdBase.openPatch(patchFile);
