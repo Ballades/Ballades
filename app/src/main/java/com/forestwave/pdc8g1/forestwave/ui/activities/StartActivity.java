@@ -23,6 +23,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -67,6 +68,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     private SeekBar seekBarTempo;
     private SeekBar seekBarStyle;
     private TextView tvChooseStyle;
+    private static ArrayList<Integer> playingTracks = new ArrayList<>();
 
     private PdService pdService = null;
 
@@ -195,9 +197,9 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
 
                 private List<Tree> getTestTrees() { //TEMP
                     ArrayList<Tree> testTrees = new ArrayList<>();
-                    Species theSpecies = new Species((long)1212121, "sequoya de ouf", 1, 100);
+                    Species theSpecies = new Species((long)1212121, "sequoya de l'ile", 1, 100);
 
-                    Tree theTree = new Tree((long)4224242, theSpecies, 1, (double)46, (double)5);
+                    Tree theTree = new Tree((long)4224242, theSpecies, 1, 45.77919698, 4.85136509);
                     testTrees.add(theTree);
 
                     return testTrees;
@@ -213,8 +215,46 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                         int track = entry.getKey();
                         InfosTrees infos = entry.getValue();
                         Log.d(TAG, "track : " + track + ", volume : " + infos.getVolume());
-                        PdBase.sendBang("ambient_1");
+                        Log.d(TAG, "latitude : " + infos.getLocation()[0] + ", longitude : " + infos.getLocation()[1]);
+
+                        // Jouer la piste si non démarrée
+                        //if (!Arrays.asList(playingTracks).contains(track)) {
+                            PdBase.sendBang("play_" + track);
+                            playingTracks.add(track);
+                            Log.d(TAG, "NOW PLAYING : "+ track);
+                        //}
+
+                        // Calculer les valeurs des canaux
+                        double[] inputsValue = this.getInputsValue(provider, infos.getLocation());
+
+                        // Appliquer les valeurs
+                        PdBase.sendFloat("volume_left_" + track, (float)(inputsValue[0]*infos.getVolume()));
+                        PdBase.sendFloat("volume_right_" + track, (float)(inputsValue[1]*infos.getVolume()));
                     }
+                }
+
+                /**
+                 * Calcule les valeurs à mettre dans les sorties droites et gauche pour simuler l'angle voulu,
+                 * à partir d'une position
+                 */
+                private double[] getInputsValue(LocationProvider provider, Double[] locationSound) {
+                    double[] inputsValue = {0.0, 0.0};
+                    double deltaX = locationSound[1] - provider.getLocation().getLongitude();
+                    double deltaY = locationSound[0] - provider.getLocation().getLatitude();
+                    Log.d(TAG, "deltaX : " + deltaX);
+                    Log.d(TAG, "deltaY : " + deltaY);
+
+                    double angle = - Math.atan(deltaX/deltaY) + Math.toRadians(provider.getLocation().getBearing());
+                    Log.d(TAG, "NtoSound : " + Math.toDegrees(Math.atan(deltaX/deltaY)));
+                    Log.d(TAG, "bearing : " + provider.getLocation().getBearing());
+                    Log.d(TAG, "angle : " + Math.toDegrees(angle));
+
+                    inputsValue[0] = Math.sin(angle)/2+0.5;
+                    inputsValue[1] = 1-inputsValue[0];
+                    Log.d(TAG, "Left : " + inputsValue[0]);
+                    Log.d(TAG, "Right : " + inputsValue[1]);
+
+                    return inputsValue;
                 }
             };
             handler.post(runnable);

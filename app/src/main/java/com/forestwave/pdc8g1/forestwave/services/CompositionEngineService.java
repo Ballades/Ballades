@@ -58,6 +58,8 @@ public class CompositionEngineService extends Service {
             // Remplir la location
             Double[] newPosition = this.getNewCenterPosition(tree.getLocation(), 1, infosSpecies.getLocation(), infosSpecies.getCount());
             infosSpecies.setLocation(newPosition);
+            Log.d(TAG, "AAlatitude : " + newPosition[0] + ", AAlongitude : " + newPosition[1]);
+
 
             // Remplir les counts
             infosSpecies.setCount(infosSpecies.getCount()+1);
@@ -103,7 +105,7 @@ public class CompositionEngineService extends Service {
         double newLat = (position1[0]*weight1 + position2[0]*weight2)/(weight1+weight2);
         centerPosition[0] = newLat;
         double newLong = (position1[1]*weight1 + position2[1]*weight2)/(weight1+weight2);
-        centerPosition[0] = newLong;
+        centerPosition[1] = newLong;
 
         return centerPosition;
     }
