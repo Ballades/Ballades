@@ -147,6 +147,8 @@ public class CompositionEngineService extends Service {
             infos.setVolume(Math.tanh(infos.getScore()));
         }
 
+        // TODO : Limiter le nombre de tracks en fonction du volume
+
         return infosByTrack;
     }
 

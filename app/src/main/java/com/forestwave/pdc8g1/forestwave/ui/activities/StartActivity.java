@@ -213,6 +213,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                  */
                 private void applyState(Map<Integer, InfosTrees> desiredState) {
                     Log.d(TAG, "IN applyState ");
+                    // Jouer les tracks désirées
                     for (Map.Entry<Integer, InfosTrees> entry : desiredState.entrySet())
                     {
                         int track = entry.getKey();
@@ -234,6 +235,15 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                         PdBase.sendFloat("volume_left_" + track, (float)(inputsValue[0]*infos.getVolume()));
                         PdBase.sendFloat("volume_right_" + track, (float)(inputsValue[1]*infos.getVolume()));
                     }
+
+                    // Retirer les tracks non-présentes
+                    for (Integer playingTrack : playingTracks) {
+                        if (!desiredState.containsKey(playingTrack)) {
+                            //TODO : Appeler le stop chez PD
+
+                            playingTracks.remove(playingTrack);
+                        }
+                    }
                 }
 
                 /**
@@ -244,16 +254,18 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                     double[] inputsValue = {0.0, 0.0};
                     double deltaX = locationSound[1] - provider.getLocation().getLongitude();
                     double deltaY = locationSound[0] - provider.getLocation().getLatitude();
-                    Log.d(TAG, "deltaX : " + deltaX);
-                    Log.d(TAG, "deltaY : " + deltaY);
+                    Log.d(TAG, "deltaX : " + deltaX*10000);
+                    Log.d(TAG, "deltaY : " + deltaY*10000);
+                    double a = Math.atan(deltaX/deltaY);
+                    double soundToNorthAngle = ((Math.signum(deltaX) == Math.signum(deltaX)) ? a : -a) + ((deltaY < 0) ? Math.toRadians(180) : 0);
 
-                    double angle = - Math.atan(deltaX/deltaY) + Math.toRadians(provider.getLocation().getBearing());
+                    double angle = soundToNorthAngle - Math.toRadians(provider.getLocation().getBearing());
                     Log.d(TAG, "NtoSound : " + Math.toDegrees(Math.atan(deltaX/deltaY)));
                     Log.d(TAG, "bearing : " + provider.getLocation().getBearing());
                     Log.d(TAG, "angle : " + Math.toDegrees(angle));
 
-                    inputsValue[0] = Math.sin(angle)/2+0.5;
-                    inputsValue[1] = 1-inputsValue[0];
+                    inputsValue[1] = Math.sin(angle)/2+0.5;
+                    inputsValue[0] = 1-inputsValue[1];
                     Log.d(TAG, "Left : " + inputsValue[0]);
                     Log.d(TAG, "Right : " + inputsValue[1]);
 
