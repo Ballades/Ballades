@@ -68,7 +68,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     private SeekBar seekBarTempo;
     private SeekBar seekBarStyle;
     private TextView tvChooseStyle;
-    private static ArrayList<Integer> playingTracks = new ArrayList<>();
+    private ArrayList<Integer> playingTracks = new ArrayList<>();
 
     private PdService pdService = null;
 
@@ -180,7 +180,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                     DaoSession daoSession = daoMaster.newSession();
                     TreeDao treeDao = daoSession.getTreeDao();
 
-                    if(provider.getLocation() != null) {
+                    if(provider.getLocation() != null && pdService.isRunning()) {
                         Double latitude = provider.getLocation().getLatitude();
                         Double longitude = provider.getLocation().getLongitude();
                         Log.d(TAG, "Latitude : " + latitude + ", Longitude : " + longitude);
@@ -192,15 +192,18 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                         Map<Integer, InfosTrees> desiredState = compositionEngineService.calculateDesiredState(trees, provider);
                         this.applyState(desiredState);
                     }
-                    handler.postDelayed(this, 15000);
+                    handler.postDelayed(this, 1000);
                 }
 
                 private List<Tree> getTestTrees() { //TEMP
                     ArrayList<Tree> testTrees = new ArrayList<>();
-                    Species theSpecies = new Species((long)1212121, "sequoya de l'ile", 1, 100);
+                    Species species1 = new Species((long)1212121, "sequoya de la petite ile", 1, 100);
+                    Species species2 = new Species((long)1212122, "sequoya de la grande ile", 2, 100);
 
-                    Tree theTree = new Tree((long)4224242, theSpecies, 1, 45.77919698, 4.85136509);
-                    testTrees.add(theTree);
+                    Tree tree1 = new Tree((long)4224242, species1, 1, 45.77924188, 4.85142946);
+                    Tree tree2 = new Tree((long)4224243, species2, 1, 45.78042411, 4.85162258);
+                    testTrees.add(tree1);
+                    testTrees.add(tree2);
 
                     return testTrees;
                 }
@@ -218,11 +221,11 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
                         Log.d(TAG, "latitude : " + infos.getLocation()[0] + ", longitude : " + infos.getLocation()[1]);
 
                         // Jouer la piste si non démarrée
-                        //if (!Arrays.asList(playingTracks).contains(track)) {
+                        if (!playingTracks.contains(track)) {
                             PdBase.sendBang("play_" + track);
                             playingTracks.add(track);
                             Log.d(TAG, "NOW PLAYING : "+ track);
-                        //}
+                        }
 
                         // Calculer les valeurs des canaux
                         double[] inputsValue = this.getInputsValue(provider, infos.getLocation());
@@ -351,8 +354,11 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         try {
             PdBase.setReceiver(receiver);
             PdBase.subscribe("android");
-            InputStream in2 = res.openRawResource(R.raw.acoustic_guitar);
-            patchFile = IoUtils.extractResource(in2, "acoustic_guitar.wav", getCacheDir());
+            InputStream in1 = res.openRawResource(R.raw.acoustic_guitar);
+            patchFile = IoUtils.extractResource(in1, "acoustic_guitar.wav", getCacheDir());
+            InputStream in2 = res.openRawResource(R.raw.rhodes);
+            patchFile = IoUtils.extractResource(in2, "rhodes.wav", getCacheDir());
+
             InputStream in = res.openRawResource(R.raw.groovebox1r3);
             patchFile = IoUtils.extractResource(in, "groovebox1r3.pd", getCacheDir());
             PdBase.openPatch(patchFile);
