@@ -19,6 +19,7 @@ import com.forestwave.pdc8g1.forestwave.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.InputStream;
+import java.util.HashMap;
 
 import de.greenrobot.dao.AbstractDaoMaster;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
@@ -28,7 +29,9 @@ public class DaoMaster extends AbstractDaoMaster {
     public static final int SCHEMA_VERSION = 1000;
     private static final String TAG = "DaoMaster";
     public static final int NB_PAGES_API = 17;
+    public static HashMap<Long, Species> speciesKeys = new HashMap<>();
     public Context mContext= null;
+
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
         TreeDao.createTable(db, ifNotExists);
@@ -72,6 +75,7 @@ public class DaoMaster extends AbstractDaoMaster {
 
                 Species species = new Species(id, name, track, count);
                 speciesDao.insert(species);
+                speciesKeys.put(id, species);
                 Log.d(TAG, "Insterting species " + id + " : " + name);
             }
         } catch (Exception e) {
@@ -98,13 +102,17 @@ public class DaoMaster extends AbstractDaoMaster {
                             JSONObject jTree = new JSONObject(jTrees.getJSONArray("results").get((int)cpt).toString());
                             String speciesURL = jTree.getString("genre").substring(0, jTree.getString("genre").length()-1);
                             long speciesId = Long.parseLong(speciesURL.substring(speciesURL.lastIndexOf("/")+1, speciesURL.length()));
+                            Species species = speciesKeys.get(speciesId);
                             Integer height = jTree.getInt("height");
                             Double latitude = jTree.getDouble("latitude");
                             Double longitude = jTree.getDouble("longitude");
-                            if(latitude != null && longitude != null) {
-                                Tree tree = new Tree(null, speciesId, height, latitude, longitude);
+                            if(species != null && latitude != null && longitude != null) {
+                                Tree tree = new Tree(null, species, height, latitude, longitude);
                                 treeDao.insert(tree);
-                                Log.d(TAG, "Tree inserted : " + cpt);
+                                Log.d(TAG, "Tree inserted : speciesId : " + speciesId + ", " + species.getName());
+                            }
+                            if(species == null) {
+                                Log.d(TAG, "null speciesId : " + speciesId);
                             }
                         }
                     } catch (JSONException e) {

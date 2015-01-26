@@ -258,7 +258,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
             PdBase.subscribe("android");
             InputStream in1 = res.openRawResource(R.raw.acoustic_guitar);
             patchFile = IoUtils.extractResource(in1, "acoustic_guitar.wav", getCacheDir());
-            /*InputStream in2 = res.openRawResource(R.raw.ballons);
+            InputStream in2 = res.openRawResource(R.raw.ballons);
             patchFile = IoUtils.extractResource(in2, "ballons.wav", getCacheDir());
             InputStream in3 = res.openRawResource(R.raw.banjo);
             patchFile = IoUtils.extractResource(in3, "banjo.wav", getCacheDir());
@@ -289,13 +289,13 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
             InputStream in16 = res.openRawResource(R.raw.pad_synth);
             patchFile = IoUtils.extractResource(in16, "pad_synth.wav", getCacheDir());
             InputStream in17 = res.openRawResource(R.raw.piano_tender);
-            patchFile = IoUtils.extractResource(in17, "piano_tender.wav", getCacheDir());*/
+            patchFile = IoUtils.extractResource(in17, "piano_tender.wav", getCacheDir());
             InputStream in18 = res.openRawResource(R.raw.rhodes);
             patchFile = IoUtils.extractResource(in18, "rhodes.wav", getCacheDir());
-            /*InputStream in19 = res.openRawResource(R.raw.strings);
+            InputStream in19 = res.openRawResource(R.raw.strings);
             patchFile = IoUtils.extractResource(in19, "strings.wav", getCacheDir());
             InputStream in20 = res.openRawResource(R.raw.vocals);
-            patchFile = IoUtils.extractResource(in20, "vocals.wav", getCacheDir());*/
+            patchFile = IoUtils.extractResource(in20, "vocals.wav", getCacheDir());
 
 
             InputStream in = res.openRawResource(R.raw.groovebox1r3);

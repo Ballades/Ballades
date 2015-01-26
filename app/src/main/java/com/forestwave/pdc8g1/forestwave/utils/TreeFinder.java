@@ -52,9 +52,9 @@ public class TreeFinder implements Runnable {
             Double latitude = serviceWeakReference.get().provider.getLocation().getLatitude();
             Double longitude = serviceWeakReference.get().provider.getLocation().getLongitude();
             Log.d(TAG, "Latitude : " + latitude + ", Longitude : " + longitude);
-            Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111, latitude + 0.01/111), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
-            //List<Tree> trees = query.list();
-            List<Tree> trees = getTestTrees(); //TEMP
+            Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.05, latitude + 0.05), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
+            List<Tree> trees = query.list();
+            //List<Tree> trees = getTestTrees(); //TEMP
 
             Log.d(TAG, "Nombre d'arbres pris en compte : " + Integer.toString(trees.size()));
             Map<Integer, InfosTrees> desiredState = calculateDesiredState(trees, serviceWeakReference.get().provider);
