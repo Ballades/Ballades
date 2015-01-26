@@ -16,10 +16,12 @@ import org.puredata.core.utils.IoUtils;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -29,16 +31,20 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import com.forestwave.pdc8g1.forestwave.R;
+import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
+import com.forestwave.pdc8g1.forestwave.model.DaoSession;
 import com.forestwave.pdc8g1.forestwave.service.SoundService;
 
 
 
-public class StartActivity extends Activity implements OnClickListener, OnEditorActionListener {
+public class StartActivity extends Activity implements OnClickListener, OnEditorActionListener,SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "StartActivity";
 
@@ -50,7 +56,9 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     private SeekBar seekBarTempo;
     private SeekBar seekBarStyle;
     private TextView tvChooseStyle;
-
+    private TextView tvLoading;
+    private GridLayout gridLayout;
+    private ProgressBar pbLoading;
     public SoundService pdService = null;
 
     private Toast toast = null;
@@ -133,11 +141,8 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     @Override
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initGui();
 
-        Intent serviceIntent = new Intent(this, SoundService.class);
-        bindService(serviceIntent, pdConnection, BIND_AUTO_CREATE);
 
 
 
@@ -212,9 +217,36 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
 
             }
         });
+        SharedPreferences sharedPref = this.getSharedPreferences(this.getString(R.string.sp_loading), Context.MODE_PRIVATE);
+        sharedPref.registerOnSharedPreferenceChangeListener(this);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        int value = sharedPref.getInt(this.getString(R.string.sp_loading_done), 0);
+        tvChooseStyle = (TextView) findViewById(R.id.textViewStyle);
+        tvChooseStyle.setText(getResources().getText(R.string.style) + " " + String.valueOf(seekBarStyle.getProgress()));
+        tvLoading = (TextView) findViewById(R.id.tv_loading);
+        pbLoading = (ProgressBar) findViewById(R.id.pb_loading);
+        if(value!=DaoMaster.NB_PAGES_API) {
+            pbLoading.setProgress(value);
+            DaoMaster.initDatabase(this);
+        }else {
+            disableLoadingView();
 
-        tvChooseStyle= (TextView) findViewById(R.id.textViewStyle);
-        tvChooseStyle.setText(getResources().getText(R.string.style) +" "+ String.valueOf(seekBarStyle.getProgress()));
+        }
+    }
+    public void disableLoadingView(){
+        play.setVisibility(View.VISIBLE);
+        msg.setVisibility(View.VISIBLE);
+        prefs.setVisibility(View.VISIBLE);
+        logs.setVisibility(View.VISIBLE);
+        seekBarTempo.setVisibility(View.VISIBLE);
+        seekBarStyle.setVisibility(View.VISIBLE);
+        tvChooseStyle.setVisibility(View.VISIBLE);
+        tvLoading.setVisibility(View.GONE);
+        gridLayout = (GridLayout) findViewById(R.id.glayout);
+        gridLayout.setVisibility(View.VISIBLE);
+        pbLoading.setVisibility(View.GONE);
+        Intent serviceIntent = new Intent(this, SoundService.class);
+        bindService(serviceIntent, pdConnection, BIND_AUTO_CREATE);
     }
 
     // Initialize pd ressources : wav samples required and pd patches
@@ -351,4 +383,15 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         }
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(this.getString(R.string.sp_loading_done)) && pbLoading!= null && pbLoading.getVisibility()==View.VISIBLE){
+            int value = sharedPreferences.getInt(this.getString(R.string.sp_loading_done), 0);
+            if(value < 17){
+                pbLoading.setProgress(value);
+            }else{
+                disableLoadingView();
+            }
+        }
+    }
 }
