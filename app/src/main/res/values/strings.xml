@@ -26,5 +26,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tempo">Choose tempo</string>
     <string name="style">Choose musical style</string>
+    <string name="sp_loading">"com.forestwave.pdc8g1.forestwave.sp_loading"</string>
+    <string name="sp_loading_done">"com.forestwave.pdc8g1.forestwave.sp_loading_done"</string>
+    <string name="loading_message">Loading Content</string>
 
 </resources>

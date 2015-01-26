@@ -2,15 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/pb_loading"
+        style="@android:style/Widget.Material.ProgressBar.Horizontal"
+        android:max="16"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_loading"
+        android:text="@string/loading_message"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:textSize="40dp"/>
 
     <Button android:id="@+id/play_button" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:text="@string/play_button_text" />
+        android:layout_height="wrap_content" android:text="@string/play_button_text"
+        android:visibility="gone"/>
     <GridLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:columnCount="2"
         android:rowCount="3"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:id="@+id/glayout">
     <CheckBox android:id="@+id/bass_box" android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:checked="true"
         android:text="@string/bass_label"
@@ -48,36 +66,43 @@
     </GridLayout>
     <EditText android:id="@+id/msg_box" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:lines="1"
-        android:inputType="text" android:text="@string/default_msg" />
+        android:inputType="text" android:text="@string/default_msg"
+        android:visibility="gone"/>
     <Button android:id="@+id/pref_button" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:text="@string/pref_button_text" />
+        android:layout_height="wrap_content" android:text="@string/pref_button_text"
+        android:visibility="gone"/>
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/seekBarTempo"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/tempo"
         android:id="@+id/textViewTempo"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
 
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/seekBarStyle"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/style"
         android:id="@+id/textViewStyle"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
 
     <TextView android:id="@+id/log_box" android:layout_width="fill_parent"
         android:layout_height="fill_parent" android:gravity="bottom"
-        android:scrollbars="vertical" android:text="" />
+        android:scrollbars="vertical" android:text=""
+        android:visibility="gone"/>
 </LinearLayout>

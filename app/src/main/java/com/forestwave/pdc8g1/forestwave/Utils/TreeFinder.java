@@ -31,6 +31,7 @@ public class TreeFinder implements Runnable {
     public static final int SPECIES_EQUALITY_FACTOR = 1;
     public static final int SCORE_FACILITY = 1000;
     public static final int SOUND_DISTANCE_DEACREASE_SLOWNESS = 1;
+
     private TreeDao treeDao =  null;
     private WeakReference<SoundService> serviceWeakReference;
 
