@@ -4,7 +4,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.util.Log;
 
-import com.forestwave.pdc8g1.forestwave.App;
 import com.forestwave.pdc8g1.forestwave.location.LocationProvider;
 import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
 import com.forestwave.pdc8g1.forestwave.model.DaoSession;
@@ -12,7 +11,8 @@ import com.forestwave.pdc8g1.forestwave.model.InfosTrees;
 import com.forestwave.pdc8g1.forestwave.model.Species;
 import com.forestwave.pdc8g1.forestwave.model.Tree;
 import com.forestwave.pdc8g1.forestwave.model.TreeDao;
-import com.forestwave.pdc8g1.forestwave.ui.activities.StartActivity;
+import com.forestwave.pdc8g1.forestwave.service.SoundService;
+
 import org.puredata.core.PdBase;
 
 import java.lang.ref.WeakReference;
@@ -32,11 +32,11 @@ public class TreeFinder implements Runnable {
     public static final int SCORE_FACILITY = 1000;
     public static final int SOUND_DISTANCE_DEACREASE_SLOWNESS = 1;
     private TreeDao treeDao =  null;
-    private WeakReference<StartActivity> startActivityWeakReference;
+    private WeakReference<SoundService> serviceWeakReference;
 
-    public TreeFinder(StartActivity activity) {
-        startActivityWeakReference=new WeakReference<StartActivity>(activity);
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(App.getContext(), "forestWaves-db", null);
+    public TreeFinder(SoundService service) {
+        serviceWeakReference =new WeakReference<>(service);
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(service.getApplicationContext(), "forestWaves-db", null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
         DaoSession daoSession = daoMaster.newSession();
@@ -47,19 +47,19 @@ public class TreeFinder implements Runnable {
     @Override
     public void run() {
 
-        if(startActivityWeakReference.get().provider.getLocation() != null && startActivityWeakReference.get().pdService.isRunning()) {
-            Double latitude = startActivityWeakReference.get().provider.getLocation().getLatitude();
-            Double longitude = startActivityWeakReference.get().provider.getLocation().getLongitude();
+        if(serviceWeakReference.get().provider.getLocation() != null && serviceWeakReference.get().isRunning()) {
+            Double latitude = serviceWeakReference.get().provider.getLocation().getLatitude();
+            Double longitude = serviceWeakReference.get().provider.getLocation().getLongitude();
             Log.d(TAG, "Latitude : " + latitude + ", Longitude : " + longitude);
             Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.01/111, latitude + 0.01/111), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
             //List<Tree> trees = query.list();
             List<Tree> trees = getTestTrees(); //TEMP
 
             Log.d(TAG, "Nombre d'arbres pris en compte : " + Integer.toString(trees.size()));
-            Map<Integer, InfosTrees> desiredState = calculateDesiredState(trees, startActivityWeakReference.get().provider);
+            Map<Integer, InfosTrees> desiredState = calculateDesiredState(trees, serviceWeakReference.get().provider);
             this.applyState(desiredState);
         }
-        startActivityWeakReference.get().handler.postDelayed(this, 1000);
+        serviceWeakReference.get().handler.postDelayed(this, 1000);
     }
 
     private List<Tree> getTestTrees() { //TEMP
@@ -89,14 +89,14 @@ public class TreeFinder implements Runnable {
             Log.d(TAG, "latitude : " + infos.getLocation()[0] + ", longitude : " + infos.getLocation()[1]);
 
             // Jouer la piste si non démarrée
-            if (!startActivityWeakReference.get().playingTracks.contains(track)) {
+            if (!serviceWeakReference.get().playingTracks.contains(track)) {
                 PdBase.sendBang("play_" + track);
-                startActivityWeakReference.get().playingTracks.add(track);
+                serviceWeakReference.get().playingTracks.add(track);
                 Log.d(TAG, "NOW PLAYING : "+ track);
             }
 
             // Calculer les valeurs des canaux
-            double[] inputsValue = this.getInputsValue(startActivityWeakReference.get().provider, infos.getLocation());
+            double[] inputsValue = this.getInputsValue(serviceWeakReference.get().provider, infos.getLocation());
 
             // Appliquer les valeurs
             PdBase.sendFloat("volume_left_" + track, (float)(inputsValue[0]*infos.getVolume()));
@@ -104,11 +104,11 @@ public class TreeFinder implements Runnable {
         }
 
         // Retirer les tracks non-présentes
-        for (Integer playingTrack : startActivityWeakReference.get().playingTracks) {
+        for (Integer playingTrack : serviceWeakReference.get().playingTracks) {
             if (!desiredState.containsKey(playingTrack)) {
                 //TODO : Appeler le stop chez PD
 
-                startActivityWeakReference.get().playingTracks.remove(playingTrack);
+                serviceWeakReference.get().playingTracks.remove(playingTrack);
             }
         }
     }
@@ -188,7 +188,7 @@ public class TreeFinder implements Runnable {
      * Renvoie le score d'un arbre
      */
     private Double getScore(Tree tree) {
-        Location userLocation = startActivityWeakReference.get().provider.getLocation();
+        Location userLocation = serviceWeakReference.get().provider.getLocation();
         //double distance = tree.getDistance(userLocation); //TODO : Attendre Léo
         double distance = 10; //TEMP
         double score = SOUND_DISTANCE_DEACREASE_SLOWNESS*SCORE_FACILITY/(distance+SOUND_DISTANCE_DEACREASE_SLOWNESS);

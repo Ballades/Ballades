@@ -6,10 +6,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
-import org.puredata.android.io.AudioParameters;
 import org.puredata.android.service.PdPreferences;
 import org.puredata.android.service.PdService;
 import org.puredata.core.PdBase;
@@ -22,11 +20,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
-import android.os.Handler;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -39,14 +33,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
-import com.forestwave.pdc8g1.forestwave.location.LocationProvider;
 import com.forestwave.pdc8g1.forestwave.R;
-import com.forestwave.pdc8g1.forestwave.utils.TreeFinder;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.ConnectionResult;
+import com.forestwave.pdc8g1.forestwave.service.SoundService;
 
 
-public class StartActivity extends Activity implements OnClickListener, OnEditorActionListener, SharedPreferences.OnSharedPreferenceChangeListener {
+
+public class StartActivity extends Activity implements OnClickListener, OnEditorActionListener {
 
     private static final String TAG = "StartActivity";
 
@@ -58,14 +50,11 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     private SeekBar seekBarTempo;
     private SeekBar seekBarStyle;
     private TextView tvChooseStyle;
-    public ArrayList<Integer> playingTracks = new ArrayList<>();
 
-    public PdService pdService = null;
+    public SoundService pdService = null;
 
     private Toast toast = null;
 
-    public LocationProvider provider;
-    public Handler handler;
 
     private void toast(final String msg) {
         runOnUiThread(new Runnable() {
@@ -129,8 +118,10 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     private final ServiceConnection pdConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            pdService = ((PdService.PdBinder)service).getService();
-            initPd();
+            pdService = (SoundService) ((PdService.PdBinder)service).getService();
+            if(!pdService.isRunning()){
+                initPd();
+            }
         }
 
         @Override
@@ -142,25 +133,14 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     @Override
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AudioParameters.init(this);
-        PdPreferences.initPreferences(getApplicationContext());
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
+
         initGui();
 
-        Intent serviceIntent = new Intent(this, PdService.class);
+        Intent serviceIntent = new Intent(this, SoundService.class);
         bindService(serviceIntent, pdConnection, BIND_AUTO_CREATE);
 
 
-        if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()) == ConnectionResult.SUCCESS) {
-            Log.v("LocationTest", "Play Services available");
-            provider = new LocationProvider(this);
-            handler = new Handler();
-            final TreeFinder runnable =new TreeFinder(this);
-            handler.post(runnable);
-        }
-        else{
-            Log.v("LocationTest", "Play Services unavailable, " +GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()));
-        }
+
     };
 
     @Override
@@ -169,12 +149,6 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         cleanup();
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (pdService.isRunning()) {
-            startAudio();
-        }
-    }
 
     private void initGui() {
         setContentView(R.layout.activity_start);
