@@ -15,6 +15,8 @@ import com.android.volley.toolbox.Volley;
 
 import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
 import com.forestwave.pdc8g1.forestwave.model.DaoSession;
+import com.forestwave.pdc8g1.forestwave.model.Species;
+import com.forestwave.pdc8g1.forestwave.model.SpeciesDao;
 import com.forestwave.pdc8g1.forestwave.model.Tree;
 import com.forestwave.pdc8g1.forestwave.model.TreeDao;
 
@@ -26,6 +28,7 @@ import org.json.JSONObject;
  */
 public class App extends Application {
 
+    private static final String TAG = "App";
     public static final int NB_PAGES_API = 17;
     private static Context mContext;
 
@@ -68,17 +71,27 @@ public class App extends Application {
                             DaoMaster daoMaster = new DaoMaster(db);
                             DaoSession daoSession = daoMaster.newSession();
                             TreeDao treeDao = daoSession.getTreeDao();
+                            SpeciesDao speciesDao = daoSession.getSpeciesDao();
 
                             JSONObject jTree = new JSONObject(jTrees.getJSONArray("results").get(cpt).toString());
-                            String species = jTree.getString("name");
+                            String speciesName = jTree.getString("name");
                             Integer height = jTree.getInt("height");
                             Double latitude = jTree.getDouble("latitude");
                             Double longitude = jTree.getDouble("longitude");
                             if(latitude != null && longitude != null) {
+                                // Ajouter l'espèce si elle n'est pas présente
+                                Log.d(TAG, "inserting species : " + speciesName);
+                                Integer track = 1;
+                                Integer count = 100;
+                                Species species = new Species(null, speciesName, track, count);
+                                Long speciesId = speciesDao.insert(species);
+                                species.setId(speciesId);
+                                Log.d(TAG, "species Id : " + speciesId);
 
                                 Tree tree = new Tree(null, species, height, latitude, longitude);
+
                                 treeDao.insert(tree);
-                                Log.d("FORESTWAVES", "insert " + Integer.toString(cpt) + " ème tree with species : " + tree.getSpecies());
+                                Log.d(TAG, "Tree inserted.");
                             }
                             db.close();
                         }
