@@ -4,6 +4,7 @@ package com.forestwave.pdc8g1.forestwave.location;
  * Created by Quentin on 12/01/2015.
  */
 import android.app.Activity;
+import android.app.Service;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -26,13 +27,13 @@ public class LocationProvider implements
     private static final long REFRESH_TIME = ONE_MIN * 5;
     private static final float MINIMUM_ACCURACY = 50.0f;
 
-    Activity locationActivity;
+    private Service service;
     private LocationRequest locationRequest;
     private GoogleApiClient googleApiClient;
     private Location location;
     private FusedLocationProviderApi fusedLocationProviderApi = LocationServices.FusedLocationApi;
 
-    public LocationProvider(Activity locationActivity) {
+    public LocationProvider(Service service) {
 
         Log.v("Locationprovider", "call to constructor");
 
@@ -40,9 +41,9 @@ public class LocationProvider implements
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(INTERVAL);
         locationRequest.setFastestInterval(FASTEST_INTERVAL);
-        this.locationActivity = locationActivity;
+        this.service = service;
 
-        googleApiClient = new GoogleApiClient.Builder(locationActivity)
+        googleApiClient = new GoogleApiClient.Builder(service)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
