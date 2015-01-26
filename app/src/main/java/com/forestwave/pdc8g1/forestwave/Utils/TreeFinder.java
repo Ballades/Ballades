@@ -29,9 +29,7 @@ public class TreeFinder implements Runnable {
 
     @Override
     public void run() {
-
         LocationProvider provider = new LocationProvider(activity);
-
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(App.getContext(), "forestWaves-db", null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);

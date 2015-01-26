@@ -10,9 +10,6 @@ import com.forestwave.pdc8g1.forestwave.App;
 import de.greenrobot.dao.AbstractDaoMaster;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 
-/**
- * Created by leo on 12/01/15.
- */
 public class DaoMaster extends AbstractDaoMaster {
 
     public static final int SCHEMA_VERSION = 1000;
@@ -20,11 +17,13 @@ public class DaoMaster extends AbstractDaoMaster {
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
         TreeDao.createTable(db, ifNotExists);
+        SpeciesDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
         TreeDao.dropTable(db, ifExists);
+        SpeciesDao.dropTable(db, ifExists);
     }
 
     public static abstract class OpenHelper extends SQLiteOpenHelper {
@@ -58,6 +57,7 @@ public class DaoMaster extends AbstractDaoMaster {
     public DaoMaster(SQLiteDatabase db) {
         super(db, SCHEMA_VERSION);
         registerDaoClass(TreeDao.class);
+        registerDaoClass(SpeciesDao.class);
     }
 
     public DaoSession newSession() {
