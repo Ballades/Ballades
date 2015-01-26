@@ -2,6 +2,7 @@ package com.forestwave.pdc8g1.forestwave;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -23,9 +24,8 @@ import com.forestwave.pdc8g1.forestwave.model.TreeDao;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by leo on 12/01/15.
- */
+import java.io.InputStream;
+
 public class App extends Application {
 
     private static final String TAG = "App";
@@ -45,16 +45,48 @@ public class App extends Application {
         return mContext;
     }
 
-    public static void  initDatabase() {
+    static String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
+    }
 
-        Log.d("FORESTWAVES", "init Database");
+    public static void initDatabase() {
+        Log.d(TAG, "init Database");
 
         RequestQueue queue = Volley.newRequestQueue(mContext);
-        String url;
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mContext, "forestWaves-db", null);
+        final SQLiteDatabase db = helper.getWritableDatabase();
+        final DaoMaster daoMaster = new DaoMaster(db);
+        final DaoSession daoSession = daoMaster.newSession();
+        final TreeDao treeDao = daoSession.getTreeDao();
+        final SpeciesDao speciesDao = daoSession.getSpeciesDao();
 
-        for(int i = 1 ; i <= NB_PAGES_API ; i++) {
+        // Ajouter les species à la base de données
+        Resources res = getResources();
+        InputStream in1 = res.openRawResource(R.raw.species);
+        String jsonSpecies = this.convertStreamToString(in1);
+        try {
+            JSONObject json = new JSONObject(jsonSpecies);
+            for(int cpt = 0; cpt < json.getJSONArray("results").length(); cpt++) {
+                JSONObject jSpecies = new JSONObject(json.getJSONArray("results").get(cpt).toString());
 
-            url = "http://rencontres-arbres.herokuapp.com/api/trees/?page="+Integer.toString(i);
+                long id = jSpecies.getInt("count");
+                String name = jSpecies.getString("name");
+                Integer count = jSpecies.getInt("count");
+                Integer track = jSpecies.getInt("track");
+
+                Species species = new Species(id, name, track, count);
+                speciesDao.insert(species);
+                Log.d(TAG, "Insterting species " + id + " : " + name);
+            }
+        } catch (Exception e) {
+            Log.d("JSONException", e.getMessage());
+        }
+        db.close();
+
+
+        for(int i = 1; i <= NB_PAGES_API; i++) {
+            String url = "http://rencontres-arbres.herokuapp.com/api/trees/?page="+Integer.toString(i);
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,new Response.Listener() {
 
                 @Override
@@ -64,14 +96,7 @@ public class App extends Application {
                     try {
                         jTrees = new JSONObject(response.toString());
 
-                        for(int cpt = 0 ; cpt < jTrees.getJSONArray("results").length() ; cpt++) {
-
-                            DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mContext, "forestWaves-db", null);
-                            SQLiteDatabase db = helper.getWritableDatabase();
-                            DaoMaster daoMaster = new DaoMaster(db);
-                            DaoSession daoSession = daoMaster.newSession();
-                            TreeDao treeDao = daoSession.getTreeDao();
-                            SpeciesDao speciesDao = daoSession.getSpeciesDao();
+                        for(int cpt = 0; cpt < jTrees.getJSONArray("results").length(); cpt++) {
 
                             JSONObject jTree = new JSONObject(jTrees.getJSONArray("results").get(cpt).toString());
                             String speciesName = jTree.getString("name");
@@ -79,16 +104,8 @@ public class App extends Application {
                             Double latitude = jTree.getDouble("latitude");
                             Double longitude = jTree.getDouble("longitude");
                             if(latitude != null && longitude != null) {
-                                // Ajouter l'espèce si elle n'est pas présente
-                                Log.d(TAG, "inserting species : " + speciesName);
-                                Integer track = 1;
-                                Integer count = 100;
-                                Species species = new Species(null, speciesName, track, count);
-                                Long speciesId = speciesDao.insert(species);
-                                species.setId(speciesId);
-                                Log.d(TAG, "species Id : " + speciesId);
 
-                                Tree tree = new Tree(null, species, height, latitude, longitude);
+                                Tree tree = new Tree(null, 1, height, latitude, longitude);
 
                                 treeDao.insert(tree);
                                 Log.d(TAG, "Tree inserted.");
@@ -114,4 +131,5 @@ public class App extends Application {
             queue.add(stringRequest);
         }
     }
+
 }
