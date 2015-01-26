@@ -140,11 +140,11 @@ public class DaoMaster extends AbstractDaoMaster {
                                     treeDao.insert(tree);
                                     Log.d(TAG, "Tree inserted.");
                                 }
-                                db.close();
                             }
                         } catch (JSONException e) {
                             Log.d("JSONException", e.getMessage());
                         }
+                        db.close();
                     }
                 }, new Response.ErrorListener() {
                     @Override
