@@ -257,8 +257,7 @@ public class TreeFinder implements Runnable {
      * Renvoie le multiplicateur de score pour une espèce donnée
      */
     private double getSpeciesVolumeScoreMultiplier(Species species) {
-        //int speciesCount = species.getCount(); //TODO : Brancher avec la DAO
-        double speciesCount = 100; //TEMP
+        double speciesCount = species.getCount();
         Log.d(TAG, "FFF"+(SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR)));
         return SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR);
     }

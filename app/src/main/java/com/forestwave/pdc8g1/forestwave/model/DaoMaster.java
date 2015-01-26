@@ -65,7 +65,7 @@ public class DaoMaster extends AbstractDaoMaster {
             for(int cpt = 0; cpt < json.getJSONArray("results").length(); cpt++) {
                 JSONObject jSpecies = new JSONObject(json.getJSONArray("results").get(cpt).toString());
 
-                long id = jSpecies.getInt("count");
+                long id = jSpecies.getInt("id");
                 String name = jSpecies.getString("name");
                 Integer count = jSpecies.getInt("count");
                 Integer track = jSpecies.getInt("track");
@@ -93,19 +93,18 @@ public class DaoMaster extends AbstractDaoMaster {
                     try {
                         jTrees = new JSONObject(response.toString());
 
-                        for(int cpt = 0; cpt < jTrees.getJSONArray("results").length(); cpt++) {
+                        for(long cpt = 0; cpt < jTrees.getJSONArray("results").length(); cpt++) {
 
-                            JSONObject jTree = new JSONObject(jTrees.getJSONArray("results").get(cpt).toString());
-                            String speciesName = jTree.getString("name");
+                            JSONObject jTree = new JSONObject(jTrees.getJSONArray("results").get((int)cpt).toString());
+                            String speciesURL = jTree.getString("genre").substring(0, jTree.getString("genre").length()-1);
+                            long speciesId = Long.parseLong(speciesURL.substring(speciesURL.lastIndexOf("/")+1, speciesURL.length()));
                             Integer height = jTree.getInt("height");
                             Double latitude = jTree.getDouble("latitude");
                             Double longitude = jTree.getDouble("longitude");
                             if(latitude != null && longitude != null) {
-
-                                Tree tree = new Tree(null, 1, height, latitude, longitude);
-
+                                Tree tree = new Tree(null, speciesId, height, latitude, longitude);
                                 treeDao.insert(tree);
-                                Log.d(TAG, "Tree inserted.");
+                                Log.d(TAG, "Tree inserted : " + cpt);
                             }
                         }
                     } catch (JSONException e) {
