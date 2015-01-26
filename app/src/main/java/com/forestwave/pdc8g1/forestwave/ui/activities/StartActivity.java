@@ -244,8 +244,8 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     private void startAudio() {
         String name = getResources().getString(R.string.app_name);
         try {
-            pdService.initAudio(-1, -1, -1, -1);   // negative values will be replaced with defaults/preferences
-            pdService.startAudio(new Intent(this, StartActivity.class), R.drawable.icon, name, "Return to " + name + ".");
+            pdService.initAudio(44100, -1, -1, -1);   // negative values will be replaced with defaults/preferences
+            pdService.startAudio(new Intent(this, StartActivity.class), R.drawable.ic_launcher, name, "Return to " + name + ".");
         } catch (IOException e) {
             toast(e.toString());
         }
