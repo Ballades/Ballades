@@ -34,11 +34,20 @@
             android:label="Pure Data Preferences"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activities.RunActivity"
+            android:label="@string/run_activity_name"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activities.AmbianceActivity"
+            android:label="@string/ambiance_activity_name"
+            android:screenOrientation="portrait"/>
+
         <service
             android:name=".services.CompositionEngineService"
             android:enabled="true"
             android:exported="true" >
         </service>
     </application>
-
 </manifest>
