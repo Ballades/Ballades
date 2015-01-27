@@ -1,5 +1,5 @@
-#N canvas 65 54 1301 714 10;
-#N canvas 176 96 1261 685 groovebox 1;
+#N canvas 66 82 1301 714 10;
+#N canvas 65 54 1535 846 groovebox 1;
 #X obj 1053 753 dac~;
 #N canvas 0 50 1440 737 sequencer1 0;
 #X obj 1066 585 loadbang;
@@ -8,7 +8,7 @@
 #X obj 1008 898 outlet;
 #X obj 837 643 moses 0.1;
 #X obj 105 245 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 54570 1;
+-258699 -1 43656 1;
 #X obj 664 105 hradio 8 1 1 2 sqp3 sqp3r half -30 6 0 8 -262144 -1
 -1 0;
 #X obj 896 682 int;
@@ -1387,7 +1387,7 @@
 #N canvas 0 193 1167 779 dsq1 0;
 #X obj 616 758 outlet;
 #X obj 109 160 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 22820 1;
+-258699 -1 11906 1;
 #X obj 667 105 hradio 8 1 1 2 sqp8 sqp8r empty 0 -6 0 8 -262144 -1
 -1 0;
 #X obj 341 104 bng 12 250 50 0 empty empty clear -25 6 0 8 -262144
@@ -2531,7 +2531,7 @@
 #N canvas 20 180 1167 779 dsq3 0;
 #X obj 616 734 outlet;
 #X obj 109 159 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 6945 1;
+-258699 -1 11906 1;
 #X obj 667 106 hradio 8 1 1 2 sqp10 sqp10r empty 0 -6 0 8 -262144 -1
 -1 0;
 #X obj 343 104 bng 12 250 50 0 empty empty clear -25 6 0 8 -262144
@@ -3904,7 +3904,7 @@
 #N canvas 20 180 1167 779 dsq2 0;
 #X obj 660 753 outlet;
 #X obj 109 159 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 54570 1;
+-258699 -1 43656 1;
 #X obj 669 106 hradio 8 1 1 2 sqp9 sqp9r empty 0 -6 0 8 -262144 -1
 -1 0;
 #X obj 344 105 bng 12 250 50 0 empty empty clear -25 6 0 8 -262144
@@ -5125,7 +5125,7 @@
 #X obj 1050 798 outlet;
 #X obj 1004 517 moses 0.1;
 #X obj 108 245 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 54570 1;
+-258699 -1 43656 1;
 #X obj 665 105 hradio 8 1 1 2 sqp6 sqp6r half -30 6 0 8 -262144 -1
 -1 0;
 #X obj 1037 566 int;
@@ -6743,7 +6743,7 @@ and predelay.;
 #N canvas 90 117 1167 796 motion1 0;
 #X obj 607 693 outlet;
 #X obj 106 170 hsl 636 8 1 65 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 25797 1;
+-258699 -1 20836 1;
 #X obj 656 105 hradio 8 1 1 2 sqp7 sqp7r empty 0 -6 0 8 -262144 -1
 -1 1;
 #X obj 128 212 change;
