@@ -202,7 +202,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                tvEquality.setText(getResources().getText(R.string.choose_score) + " " + String.valueOf(progress));
+                tvEquality.setText(getResources().getText(R.string.choose_SDDS) + " " + String.valueOf(progress));
                 SoundService.SOUND_DISTANCE_DEACREASE_SLOWNESS = progresValue;
             }
 
