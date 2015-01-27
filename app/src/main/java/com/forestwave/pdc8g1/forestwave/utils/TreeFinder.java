@@ -80,7 +80,8 @@ public class TreeFinder implements Runnable {
      * Applique l'état désiré sur la sortie sonore (mode ambient)
      */
     private void applyState(Map<Integer, InfosTrees> desiredState) {
-        Log.d(TAG, "IN applyState ");
+        Log.d(TAG, "Nombre de tracks simultanées : " + desiredState.size());
+
         // Jouer les tracks désirées
         for (Map.Entry<Integer, InfosTrees> entry : desiredState.entrySet())
         {
@@ -122,15 +123,15 @@ public class TreeFinder implements Runnable {
         double[] inputsValue = {0.0, 0.0};
         double deltaX = locationSound[1] - provider.getLocation().getLongitude();
         double deltaY = locationSound[0] - provider.getLocation().getLatitude();
-        Log.d(TAG, "deltaX : " + deltaX*10000);
-        Log.d(TAG, "deltaY : " + deltaY*10000);
+        Log.v(TAG, "deltaX : " + deltaX*10000);
+        Log.v(TAG, "deltaY : " + deltaY*10000);
         double a = Math.atan(deltaX / deltaY);
         double soundToNorthAngle = ((Math.signum(deltaX) == Math.signum(deltaX)) ? a : -a) + ((deltaY < 0) ? Math.toRadians(180) : 0);
 
         double angle = soundToNorthAngle - Math.toRadians(provider.getLocation().getBearing());
-        Log.d(TAG, "NtoSound : " + Math.toDegrees(Math.atan(deltaX/deltaY)));
-        Log.d(TAG, "bearing : " + provider.getLocation().getBearing());
-        Log.d(TAG, "angle : " + Math.toDegrees(angle));
+        Log.v(TAG, "NtoSound : " + Math.toDegrees(Math.atan(deltaX/deltaY)));
+        Log.v(TAG, "bearing : " + provider.getLocation().getBearing());
+        Log.v(TAG, "angle : " + Math.toDegrees(angle));
 
         inputsValue[1] = Math.sin(angle)/2+0.5;
         inputsValue[0] = 1-inputsValue[1];
@@ -159,7 +160,7 @@ public class TreeFinder implements Runnable {
             // Remplir la location
             Double[] newPosition = this.getNewCenterPosition(tree.getLocation(), 1, infosSpecies.getLocation(), infosSpecies.getCount());
             infosSpecies.setLocation(newPosition);
-            Log.d(TAG, "AAlatitude : " + newPosition[0] + ", AAlongitude : " + newPosition[1]);
+            Log.v(TAG, "AAlatitude : " + newPosition[0] + ", AAlongitude : " + newPosition[1]);
 
 
             // Remplir les counts
@@ -258,7 +259,7 @@ public class TreeFinder implements Runnable {
      */
     private double getSpeciesVolumeScoreMultiplier(Species species) {
         double speciesCount = species.getCount();
-        Log.d(TAG, "FFF"+(SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR)));
+        Log.v(TAG, "FFF"+(SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR)));
         return SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR);
     }
 }
