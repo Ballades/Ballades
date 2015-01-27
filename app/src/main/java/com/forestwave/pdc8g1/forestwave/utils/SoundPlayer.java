@@ -96,7 +96,7 @@ public class SoundPlayer implements Runnable {
         Log.v(TAG, "bearing : " + provider.getLocation().getBearing());
         Log.v(TAG, "angle : " + Math.toDegrees(angle));
 
-        inputsValue[1] = Math.sin(angle)/2+0.5;
+        inputsValue[1] = Math.exp(Math.sin(angle)/2+0.5)/Math.exp(1);
         inputsValue[0] = 1-inputsValue[1];
         Log.d(TAG, "Left : " + inputsValue[0]);
         Log.d(TAG, "Right : " + inputsValue[1]);

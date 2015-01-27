@@ -56,7 +56,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     private ProgressBar pbLoading;
 
     private SeekBar seekBarEquality;
-    private SeekBar seekBarScore;
+    private SeekBar seekBarDistance;
     private TextView tvEquality;
     private TextView tvScore;
 
@@ -175,7 +175,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         logs = (TextView) findViewById(R.id.log_box);
         logs.setMovementMethod(new ScrollingMovementMethod());
         seekBarEquality = (SeekBar) findViewById(R.id.seekBarTempo);
-        seekBarEquality.setMax(50);
+        seekBarEquality.setMax(1200);
         seekBarEquality.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
@@ -194,9 +194,9 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        seekBarScore = (SeekBar) findViewById(R.id.seekBarStyle);
-        seekBarScore.setMax(50);
-        seekBarScore.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBarDistance = (SeekBar) findViewById(R.id.seekBarStyle);
+        seekBarDistance.setMax(200);
+        seekBarDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
             @Override
@@ -221,7 +221,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         SharedPreferences.Editor editor = sharedPref.edit();
         int value = sharedPref.getInt(this.getString(R.string.sp_loading_done), 0);
         tvEquality = (TextView) findViewById(R.id.textViewStyle);
-        tvEquality.setText(getResources().getText(R.string.style) + " " + String.valueOf(seekBarScore.getProgress()));
+        tvEquality.setText(getResources().getText(R.string.style) + " " + String.valueOf(seekBarDistance.getProgress()));
         tvScore = (TextView) findViewById(R.id.tv_loading);
         pbLoading = (ProgressBar) findViewById(R.id.pb_loading);
         if(value!=DaoMaster.NB_PAGES_API) {
@@ -238,7 +238,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         prefs.setVisibility(View.VISIBLE);
         logs.setVisibility(View.VISIBLE);
         seekBarEquality.setVisibility(View.VISIBLE);
-        seekBarScore.setVisibility(View.VISIBLE);
+        seekBarDistance.setVisibility(View.VISIBLE);
         tvEquality.setVisibility(View.VISIBLE);
         tvScore.setVisibility(View.GONE);
         gridLayout = (GridLayout) findViewById(R.id.glayout);
