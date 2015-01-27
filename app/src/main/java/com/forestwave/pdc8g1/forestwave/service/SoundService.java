@@ -25,7 +25,7 @@ public class SoundService extends PdService  {
     public Handler handler;
 
     public static int SPECIES_EQUALITY_FACTOR = 10;
-    public static int SCORE_FACILITY = 100;
+    public static int SCORE_FACILITY = 10;
     public static int SOUND_DISTANCE_DEACREASE_SLOWNESS = 10;
 
     public Map<Integer, InfosTrees> desiredState = new HashMap<>();
