@@ -21,7 +21,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
+
 import android.os.IBinder;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -39,7 +39,6 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import com.forestwave.pdc8g1.forestwave.R;
 import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
-import com.forestwave.pdc8g1.forestwave.model.DaoSession;
 import com.forestwave.pdc8g1.forestwave.service.SoundService;
 
 
@@ -387,7 +386,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if(key.equals(this.getString(R.string.sp_loading_done)) && pbLoading!= null && pbLoading.getVisibility()==View.VISIBLE){
             int value = sharedPreferences.getInt(this.getString(R.string.sp_loading_done), 0);
-            if(value < 17){
+            if(value < DaoMaster.NB_PAGES_API){
                 pbLoading.setProgress(value);
             }else{
                 disableLoadingView();

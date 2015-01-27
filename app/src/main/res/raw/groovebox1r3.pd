@@ -8,7 +8,7 @@
 #X obj 1008 898 outlet;
 #X obj 837 643 moses 0.1;
 #X obj 105 245 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 36711 1;
+-258699 -1 992 1;
 #X obj 664 105 hradio 8 1 1 2 sqp3 sqp3r half -30 6 0 8 -262144 -1
 -1 0;
 #X obj 896 682 int;
@@ -1387,7 +1387,7 @@
 #N canvas 0 193 1167 779 dsq1 0;
 #X obj 616 758 outlet;
 #X obj 109 160 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 4961 1;
+-258699 -1 992 1;
 #X obj 667 105 hradio 8 1 1 2 sqp8 sqp8r empty 0 -6 0 8 -262144 -1
 -1 0;
 #X obj 341 104 bng 12 250 50 0 empty empty clear -25 6 0 8 -262144
@@ -2531,7 +2531,7 @@
 #N canvas 20 180 1167 779 dsq3 0;
 #X obj 616 734 outlet;
 #X obj 109 159 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 4961 1;
+-258699 -1 992 1;
 #X obj 667 106 hradio 8 1 1 2 sqp10 sqp10r empty 0 -6 0 8 -262144 -1
 -1 0;
 #X obj 343 104 bng 12 250 50 0 empty empty clear -25 6 0 8 -262144
@@ -3904,7 +3904,7 @@
 #N canvas 20 180 1167 779 dsq2 0;
 #X obj 660 753 outlet;
 #X obj 109 159 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 36711 1;
+-258699 -1 992 1;
 #X obj 669 106 hradio 8 1 1 2 sqp9 sqp9r empty 0 -6 0 8 -262144 -1
 -1 0;
 #X obj 344 105 bng 12 250 50 0 empty empty clear -25 6 0 8 -262144
@@ -5125,7 +5125,7 @@
 #X obj 1050 798 outlet;
 #X obj 1004 517 moses 0.1;
 #X obj 108 245 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 36711 1;
+-258699 -1 992 1;
 #X obj 665 105 hradio 8 1 1 2 sqp6 sqp6r half -30 6 0 8 -262144 -1
 -1 0;
 #X obj 1037 566 int;
@@ -6743,7 +6743,7 @@ and predelay.;
 #N canvas 90 117 1167 796 motion1 0;
 #X obj 607 693 outlet;
 #X obj 106 170 hsl 636 8 1 65 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 48617 1;
+-258699 -1 0 1;
 #X obj 656 105 hradio 8 1 1 2 sqp7 sqp7r empty 0 -6 0 8 -262144 -1
 -1 1;
 #X obj 128 212 change;
@@ -15226,34 +15226,46 @@ midi record \, transpose \, etc.);
 #X msg 1236 321 bang;
 #X obj 1380 363 t b;
 #X obj 1293 338 print patch loaded;
-#X obj 1243 196 bng 15 250 50 0 empty play_1 play_1 17 7 0 10 -262144
+#X obj 1298 176 bng 15 250 50 0 empty play_1 play_1 17 7 0 10 -262144
 -1 -1;
 #X obj 1423 464 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
-0 -8 0 10 -262144 -1 -1 1 256;
+0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 1124 437 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
-0 -8 0 10 -262144 -1 -1 1 256;
+0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 1317 484 *~ 1;
 #X obj 1196 502 *~ 1;
-#X obj 1759 539 dac~;
-#X obj 1737 261 soundfiler;
-#X msg 1738 293 bang;
-#X obj 1882 335 t b;
-#X obj 1795 310 print patch loaded;
-#X obj 1746 176 bng 15 250 50 0 empty play_2 play_2 17 7 0 10 -262144
+#X obj 1770 533 dac~;
+#X obj 1748 255 soundfiler;
+#X msg 1749 287 bang;
+#X obj 1893 329 t b;
+#X obj 1806 304 print patch loaded;
+#X obj 1757 170 bng 15 250 50 0 empty play_2 play_2 17 7 0 10 -262144
 -1 -1;
-#X obj 1921 453 nbx 5 14 0.01 1 1 0 empty volume_right_2 volume_right_2
+#X obj 1932 447 nbx 5 14 0.01 1 1 0 empty volume_right_2 volume_right_2
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 1627 409 nbx 5 14 0.01 1 1 0 empty volume_left_2 volume_left_2
+#X obj 1638 403 nbx 5 14 0.01 1 1 0 empty volume_left_2 volume_left_2
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 1819 456 *~ 1;
-#X obj 1698 474 *~ 1;
+#X obj 1830 450 *~ 1;
+#X obj 1709 468 *~ 1;
 #X obj 1494 105 table array_1;
 #X obj 1494 125 table array_2;
-#X obj 1739 359 tabplay~ array_2;
+#X obj 1750 353 tabplay~ array_2;
 #X obj 1236 387 tabplay~ array_1;
-#X msg 1230 253 read -maxsize 1e+08 -resize acoustic_guitar.wav array_1
+#X msg 1265 227 read -maxsize 1e+08 -resize acoustic_guitar.wav array_1
 ;
-#X msg 1757 220 read -maxsize 1e+08 -resize rhodes.wav array_2;
+#X msg 1768 214 read -maxsize 1e+08 -resize rhodes.wav array_2;
+#X obj 1172 196 bng 15 250 50 0 empty stop_1 stop_1 17 7 0 10 -262144
+-1 -1;
+#X obj 1685 175 bng 15 250 50 0 empty stop_2 stop_2 17 7 0 10 -262144
+-1 -1;
+#X msg 1093 222 0.01 500 100;
+#X msg 1346 194 1 500;
+#X obj 1186 224 delay 600;
+#X msg 1604 201 0.01 500 100;
+#X obj 1700 202 delay 600;
+#X msg 1806 191 1 500;
+#X msg 1153 256 \; array_1 const 0 \;;
+#X msg 1667 234 \; array_2 const 0 \;;
 #X connect 1 0 38 0;
 #X connect 1 1 3 1;
 #X connect 2 0 5 0;
@@ -15375,6 +15387,7 @@ midi record \, transpose \, etc.);
 #X connect 95 0 116 0;
 #X connect 96 0 116 0;
 #X connect 98 0 117 0;
+#X connect 98 0 122 0;
 #X connect 99 0 101 1;
 #X connect 100 0 102 1;
 #X connect 101 0 93 1;
@@ -15384,6 +15397,7 @@ midi record \, transpose \, etc.);
 #X connect 105 0 115 0;
 #X connect 106 0 115 0;
 #X connect 108 0 118 0;
+#X connect 108 0 126 0;
 #X connect 109 0 111 1;
 #X connect 110 0 112 1;
 #X connect 111 0 103 1;
@@ -15396,5 +15410,20 @@ midi record \, transpose \, etc.);
 #X connect 116 1 96 0;
 #X connect 117 0 94 0;
 #X connect 118 0 104 0;
+#X connect 119 0 121 0;
+#X connect 119 0 123 0;
+#X connect 120 0 124 0;
+#X connect 120 0 125 0;
+#X connect 121 0 100 0;
+#X connect 121 0 99 0;
+#X connect 122 0 100 0;
+#X connect 122 0 99 0;
+#X connect 123 0 127 0;
+#X connect 124 0 110 0;
+#X connect 124 0 109 0;
+#X connect 125 0 128 0;
+#X connect 126 0 110 0;
+#X connect 126 0 109 0;
+#X connect 128 0 104 0;
 #X coords 0 -1 1 1 970 700 1 0 0;
 #X restore -28 4 pd groovebox;
