@@ -116,7 +116,10 @@ public class Tree {
         this.longitude = longitude;
     }
 
-    public float computeUserRange(Double latitude, Double longitude) {
+    /**
+     * Retourne la distance en m au point donné
+     */
+    public float getDistance(Double latitude, Double longitude) {
 
         float[] results = new float[3];
         Location.distanceBetween(latitude, longitude, this.latitude, this.longitude, results);
