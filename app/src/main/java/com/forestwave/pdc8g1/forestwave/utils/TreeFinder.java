@@ -109,7 +109,7 @@ public class TreeFinder implements Runnable {
         for (Integer playingTrack : serviceWeakReference.get().playingTracks) {
             if (!desiredState.containsKey(playingTrack)) {
                 //TODO : Appeler le stop chez PD
-
+                PdBase.sendBang("stop_" + playingTrack);
                 serviceWeakReference.get().playingTracks.remove(playingTrack);
             }
         }
