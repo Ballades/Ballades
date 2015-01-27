@@ -8,7 +8,7 @@
 #X obj 1008 898 outlet;
 #X obj 837 643 moses 0.1;
 #X obj 105 245 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 1984 1;
+-258699 -1 54570 1;
 #X obj 664 105 hradio 8 1 1 2 sqp3 sqp3r half -30 6 0 8 -262144 -1
 -1 0;
 #X obj 896 682 int;
@@ -1387,7 +1387,7 @@
 #N canvas 0 193 1167 779 dsq1 0;
 #X obj 616 758 outlet;
 #X obj 109 160 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 1984 1;
+-258699 -1 22820 1;
 #X obj 667 105 hradio 8 1 1 2 sqp8 sqp8r empty 0 -6 0 8 -262144 -1
 -1 0;
 #X obj 341 104 bng 12 250 50 0 empty empty clear -25 6 0 8 -262144
@@ -2414,7 +2414,7 @@
 #X obj 25 833 outlet~;
 #X msg 36 487 0;
 #X obj 66 365 pack f f;
-#X msg -145 457 1 1;
+#X msg -145 457 0 1;
 #X msg 65 393 set \$1 \$2;
 #X msg 66 325 bang;
 #X obj 6 536 line 0 5;
@@ -2531,7 +2531,7 @@
 #N canvas 20 180 1167 779 dsq3 0;
 #X obj 616 734 outlet;
 #X obj 109 159 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 1984 1;
+-258699 -1 6945 1;
 #X obj 667 106 hradio 8 1 1 2 sqp10 sqp10r empty 0 -6 0 8 -262144 -1
 -1 0;
 #X obj 343 104 bng 12 250 50 0 empty empty clear -25 6 0 8 -262144
@@ -3904,7 +3904,7 @@
 #N canvas 20 180 1167 779 dsq2 0;
 #X obj 660 753 outlet;
 #X obj 109 159 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 1984 1;
+-258699 -1 54570 1;
 #X obj 669 106 hradio 8 1 1 2 sqp9 sqp9r empty 0 -6 0 8 -262144 -1
 -1 0;
 #X obj 344 105 bng 12 250 50 0 empty empty clear -25 6 0 8 -262144
@@ -5012,7 +5012,7 @@
 #X obj 25 833 outlet~;
 #X msg 36 487 0;
 #X obj 66 365 pack f f;
-#X msg -145 457 1 1;
+#X msg -145 457 0 1;
 #X msg 65 393 set \$1 \$2;
 #X msg 66 325 bang;
 #X obj 6 536 line 0 5;
@@ -5125,7 +5125,7 @@
 #X obj 1050 798 outlet;
 #X obj 1004 517 moses 0.1;
 #X obj 108 245 hsl 636 8 0 64 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 1984 1;
+-258699 -1 54570 1;
 #X obj 665 105 hradio 8 1 1 2 sqp6 sqp6r half -30 6 0 8 -262144 -1
 -1 0;
 #X obj 1037 566 int;
@@ -6743,7 +6743,7 @@ and predelay.;
 #N canvas 90 117 1167 796 motion1 0;
 #X obj 607 693 outlet;
 #X obj 106 170 hsl 636 8 1 65 0 0 empty empty empty -2 -6 0 8 -262144
--258699 -1 31750 1;
+-258699 -1 25797 1;
 #X obj 656 105 hradio 8 1 1 2 sqp7 sqp7r empty 0 -6 0 8 -262144 -1
 -1 1;
 #X obj 128 212 change;
@@ -15290,9 +15290,9 @@ midi record \, transpose \, etc.);
 #X obj 2348 331 print patch loaded;
 #X obj 2353 169 bng 15 250 50 0 empty play_3 play_3 17 7 0 10 -262144
 -1 -1;
-#X obj 2478 457 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 2478 457 nbx 5 14 0.01 1 1 0 empty volume_right_3 volume_right_3
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 2179 430 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 2179 430 nbx 5 14 0.01 1 1 0 empty volume_left_3 volume_left_3
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 2372 477 *~ 1;
 #X obj 2251 495 *~ 1;
@@ -15309,9 +15309,9 @@ midi record \, transpose \, etc.);
 #X obj 2926 324 print patch loaded;
 #X obj 2931 162 bng 15 250 50 0 empty play_4 play_4 17 7 0 10 -262144
 -1 -1;
-#X obj 3056 450 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 3056 450 nbx 5 14 0.01 1 1 0 empty volume_right_4 volume_right_4
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 2757 423 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 2756 423 nbx 5 14 0.01 1 1 0 empty volume_left_4 volume_left_4
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 2950 470 *~ 1;
 #X obj 2829 488 *~ 1;
@@ -15330,9 +15330,9 @@ midi record \, transpose \, etc.);
 #X obj 3492 318 print patch loaded;
 #X obj 3497 156 bng 15 250 50 0 empty play_5 play_5 17 7 0 10 -262144
 -1 -1;
-#X obj 3622 444 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 3622 444 nbx 5 14 0.01 1 1 0 empty volume_right_5 volume_right_5
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 3323 417 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 3323 417 nbx 5 14 0.01 1 1 0 empty volume_left_5 volume_left_5
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 3516 464 *~ 1;
 #X obj 3395 482 *~ 1;
@@ -15354,9 +15354,9 @@ midi record \, transpose \, etc.);
 #X obj 1395 782 print patch loaded;
 #X obj 1400 620 bng 15 250 50 0 empty play_6 play_6 17 7 0 10 -262144
 -1 -1;
-#X obj 1525 908 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 1525 908 nbx 5 14 0.01 1 1 0 empty volume_right_6 volume_right_6
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 1226 881 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 1226 881 nbx 5 14 0.01 1 1 0 empty volume_left_6 volume_left_6
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 1419 928 *~ 1;
 #X obj 1298 946 *~ 1;
@@ -15367,9 +15367,9 @@ midi record \, transpose \, etc.);
 #X obj 1906 751 print patch loaded;
 #X obj 1863 613 bng 15 250 50 0 empty play_7 play_7 17 7 0 10 -262144
 -1 -1;
-#X obj 2032 894 nbx 5 14 0.01 1 1 0 empty volume_right_2 volume_right_2
+#X obj 2032 894 nbx 5 14 0.01 1 1 0 empty volume_right_7 volume_right_7
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 1738 850 nbx 5 14 0.01 1 1 0 empty volume_left_2 volume_left_2
+#X obj 1738 850 nbx 5 14 0.01 1 1 0 empty volume_left_7 volume_left_7
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 1930 897 *~ 1;
 #X obj 1809 915 *~ 1;
@@ -15390,9 +15390,9 @@ midi record \, transpose \, etc.);
 #X obj 2404 778 print patch loaded;
 #X obj 2409 616 bng 15 250 50 0 empty play_8 play_8 17 7 0 10 -262144
 -1 -1;
-#X obj 2534 904 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 2534 904 nbx 5 14 0.01 1 1 0 empty volume_right_8 volume_right_8
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 2235 877 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 2235 877 nbx 5 14 0.01 1 1 0 empty volume_left_8 volume_left_8
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 2428 924 *~ 1;
 #X obj 2307 942 *~ 1;
@@ -15408,9 +15408,9 @@ midi record \, transpose \, etc.);
 #X obj 2982 771 print patch loaded;
 #X obj 2987 609 bng 15 250 50 0 empty play_9 play_9 17 7 0 10 -262144
 -1 -1;
-#X obj 3112 897 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 3112 897 nbx 5 14 0.01 1 1 0 empty volume_right_9 volume_right_9
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 2813 870 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 2813 870 nbx 5 14 0.01 1 1 0 empty volume_left_9 volume_left_9
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 3006 917 *~ 1;
 #X obj 2885 935 *~ 1;
@@ -15426,9 +15426,9 @@ midi record \, transpose \, etc.);
 #X obj 3548 765 print patch loaded;
 #X obj 3553 603 bng 15 250 50 0 empty play_10 play_10 17 7 0 10 -262144
 -1 -1;
-#X obj 3678 891 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 3678 891 nbx 5 14 0.01 1 1 0 empty volume_right_10 volume_right_10
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 3379 864 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 3379 864 nbx 5 14 0.01 1 1 0 empty volume_left_10 volume_left_10
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 3572 911 *~ 1;
 #X obj 3451 929 *~ 1;
@@ -15444,9 +15444,9 @@ midi record \, transpose \, etc.);
 #X obj 1340 1226 print patch loaded;
 #X obj 1345 1064 bng 15 250 50 0 empty play_11 play_11 17 7 0 10 -262144
 -1 -1;
-#X obj 1470 1352 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 1470 1352 nbx 5 14 0.01 1 1 0 empty volume_right_11 volume_right_11
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 1171 1325 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 1171 1325 nbx 5 14 0.01 1 1 0 empty volume_left_11 volume_left_11
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 1364 1372 *~ 1;
 #X obj 1243 1390 *~ 1;
@@ -15457,9 +15457,9 @@ midi record \, transpose \, etc.);
 #X obj 1851 1195 print patch loaded;
 #X obj 1808 1057 bng 15 250 50 0 empty play_12 play_12 17 7 0 10 -262144
 -1 -1;
-#X obj 1977 1338 nbx 5 14 0.01 1 1 0 empty volume_right_2 volume_right_2
+#X obj 1977 1338 nbx 5 14 0.01 1 1 0 empty volume_right_12 volume_right_12
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 1683 1294 nbx 5 14 0.01 1 1 0 empty volume_left_2 volume_left_2
+#X obj 1683 1294 nbx 5 14 0.01 1 1 0 empty volume_left_12 volume_left_12
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 1875 1341 *~ 1;
 #X obj 1754 1359 *~ 1;
@@ -15480,9 +15480,9 @@ midi record \, transpose \, etc.);
 #X obj 2349 1222 print patch loaded;
 #X obj 2354 1060 bng 15 250 50 0 empty play_13 play_13 17 7 0 10 -262144
 -1 -1;
-#X obj 2479 1348 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 2479 1348 nbx 5 14 0.01 1 1 0 empty volume_right_13 volume_right_13
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 2180 1321 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 2180 1321 nbx 5 14 0.01 1 1 0 empty volume_left_13 volume_left_13
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 2373 1368 *~ 1;
 #X obj 2252 1386 *~ 1;
@@ -15498,9 +15498,9 @@ midi record \, transpose \, etc.);
 #X obj 2927 1215 print patch loaded;
 #X obj 2932 1053 bng 15 250 50 0 empty play_14 play_14 17 7 0 10 -262144
 -1 -1;
-#X obj 3057 1341 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 3057 1341 nbx 5 14 0.01 1 1 0 empty volume_right_14 volume_right_14
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 2758 1314 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 2758 1314 nbx 5 14 0.01 1 1 0 empty volume_left_14 volume_left_14
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 2951 1361 *~ 1;
 #X obj 2830 1379 *~ 1;
@@ -15516,9 +15516,9 @@ midi record \, transpose \, etc.);
 #X obj 3493 1209 print patch loaded;
 #X obj 3498 1047 bng 15 250 50 0 empty play_15 play_15 17 7 0 10 -262144
 -1 -1;
-#X obj 3623 1335 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 3623 1335 nbx 5 14 0.01 1 1 0 empty volume_right_15 volume_right_15
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 3324 1308 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 3324 1308 nbx 5 14 0.01 1 1 0 empty volume_left_15 volume_left_15
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 3517 1355 *~ 1;
 #X obj 3396 1373 *~ 1;
@@ -15534,9 +15534,9 @@ midi record \, transpose \, etc.);
 #X obj 1308 1701 print patch loaded;
 #X obj 1313 1539 bng 15 250 50 0 empty play_16 play_16 17 7 0 10 -262144
 -1 -1;
-#X obj 1438 1827 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 1438 1827 nbx 5 14 0.01 1 1 0 empty volume_right_16 volume_right_16
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 1139 1800 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 1139 1800 nbx 5 14 0.01 1 1 0 empty volume_left_16 volume_left_16
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 1332 1847 *~ 1;
 #X obj 1211 1865 *~ 1;
@@ -15547,9 +15547,9 @@ midi record \, transpose \, etc.);
 #X obj 1819 1670 print patch loaded;
 #X obj 1776 1532 bng 15 250 50 0 empty play_17 play_17 17 7 0 10 -262144
 -1 -1;
-#X obj 1945 1813 nbx 5 14 0.01 1 1 0 empty volume_right_2 volume_right_2
+#X obj 1945 1813 nbx 5 14 0.01 1 1 0 empty volume_right_17 volume_right_17
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 1651 1769 nbx 5 14 0.01 1 1 0 empty volume_left_2 volume_left_2
+#X obj 1651 1769 nbx 5 14 0.01 1 1 0 empty volume_left_17 volume_left_17
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 1843 1816 *~ 1;
 #X obj 1722 1834 *~ 1;
@@ -15570,9 +15570,9 @@ midi record \, transpose \, etc.);
 #X obj 2317 1697 print patch loaded;
 #X obj 2322 1535 bng 15 250 50 0 empty play_18 play_18 17 7 0 10 -262144
 -1 -1;
-#X obj 2447 1823 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
+#X obj 2447 1823 nbx 5 14 0.01 1 1 0 empty volume_right_18 volume_right_18
 0 -8 0 10 -262144 -1 -1 0.01 256;
-#X obj 2148 1796 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
+#X obj 2148 1796 nbx 5 14 0.01 1 1 0 empty volume_left_18 volume_left_18
 0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 2341 1843 *~ 1;
 #X obj 2220 1861 *~ 1;
@@ -15588,10 +15588,10 @@ midi record \, transpose \, etc.);
 #X obj 2895 1690 print patch loaded;
 #X obj 2900 1528 bng 15 250 50 0 empty play_19 play_19 17 7 0 10 -262144
 -1 -1;
-#X obj 3025 1816 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
-0 -8 0 10 -262144 -1 -1 1 256;
-#X obj 2726 1789 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
-0 -8 0 10 -262144 -1 -1 1 256;
+#X obj 3025 1816 nbx 5 14 0.01 1 1 0 empty volume_right_19 volume_right_19
+0 -8 0 10 -262144 -1 -1 0.01 256;
+#X obj 2726 1789 nbx 5 14 0.01 1 1 0 empty volume_left_19 volume_left_19
+0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 2919 1836 *~ 1;
 #X obj 2798 1854 *~ 1;
 #X obj 2788 1532 bng 15 250 50 0 empty stop_19 stop_19 17 7 0 10 -262144
@@ -15606,10 +15606,10 @@ midi record \, transpose \, etc.);
 #X obj 3461 1684 print patch loaded;
 #X obj 3466 1522 bng 15 250 50 0 empty play_20 play_20 17 7 0 10 -262144
 -1 -1;
-#X obj 3591 1810 nbx 5 14 0.01 1 1 0 empty volume_right_1 volume_right_1
-0 -8 0 10 -262144 -1 -1 1 256;
-#X obj 3292 1783 nbx 5 14 0.01 1 1 0 empty volume_left_1 volume_left_1
-0 -8 0 10 -262144 -1 -1 1 256;
+#X obj 3591 1810 nbx 5 14 0.01 1 1 0 empty volume_right_20 volume_right_20
+0 -8 0 10 -262144 -1 -1 0.01 256;
+#X obj 3292 1783 nbx 5 14 0.01 1 1 0 empty volume_left_20 volume_left_20
+0 -8 0 10 -262144 -1 -1 0.01 256;
 #X obj 3485 1830 *~ 1;
 #X obj 3364 1848 *~ 1;
 #X obj 3354 1526 bng 15 250 50 0 empty stop_20 stop_20 17 7 0 10 -262144

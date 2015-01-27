@@ -141,10 +141,6 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initGui();
-
-
-
-
     };
 
     @Override
