@@ -23,9 +23,6 @@ import de.greenrobot.dao.query.Query;
 public class TreeFinder implements Runnable {
 
     private final static String TAG = "TreeFinder";
-    public static final int SPECIES_EQUALITY_FACTOR = 1;
-    public static final int SCORE_FACILITY = 1000;
-    public static final int SOUND_DISTANCE_DEACREASE_SLOWNESS = 1;
 
     private TreeDao treeDao =  null;
     private SoundService soundService;
@@ -37,7 +34,7 @@ public class TreeFinder implements Runnable {
         DaoMaster daoMaster = new DaoMaster(db);
         DaoSession daoSession = daoMaster.newSession();
         treeDao = daoSession.getTreeDao();
-
+        Thread.currentThread().setPriority(4);
     }
 
     @Override
@@ -130,7 +127,7 @@ public class TreeFinder implements Runnable {
     private Double getScore(Tree tree) {
         Location userLocation = soundService.provider.getLocation();
         double distance = tree.getDistance(userLocation.getLatitude(), userLocation.getLongitude());
-        double score = SOUND_DISTANCE_DEACREASE_SLOWNESS*SCORE_FACILITY/(distance+SOUND_DISTANCE_DEACREASE_SLOWNESS);
+        double score = SoundService.SOUND_DISTANCE_DEACREASE_SLOWNESS*SoundService.SCORE_FACILITY/(distance+SoundService.SOUND_DISTANCE_DEACREASE_SLOWNESS);
 
         return score;
     }
@@ -196,7 +193,7 @@ public class TreeFinder implements Runnable {
      */
     private double getSpeciesVolumeScoreMultiplier(Species species) {
         double speciesCount = species.getCount();
-        Log.v(TAG, "FFF"+(SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR)));
-        return SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR);
+        Log.v(TAG, "FFF"+(SoundService.SPECIES_EQUALITY_FACTOR /(speciesCount+SoundService.SPECIES_EQUALITY_FACTOR)));
+        return SoundService.SPECIES_EQUALITY_FACTOR /(speciesCount+SoundService.SPECIES_EQUALITY_FACTOR);
     }
 }
