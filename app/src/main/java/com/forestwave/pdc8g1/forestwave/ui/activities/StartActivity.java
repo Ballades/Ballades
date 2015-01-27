@@ -21,7 +21,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
+
 import android.os.IBinder;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -39,7 +39,6 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import com.forestwave.pdc8g1.forestwave.R;
 import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
-import com.forestwave.pdc8g1.forestwave.model.DaoSession;
 import com.forestwave.pdc8g1.forestwave.service.SoundService;
 
 
@@ -142,10 +141,6 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initGui();
-
-
-
-
     };
 
     @Override
@@ -258,8 +253,45 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
             PdBase.subscribe("android");
             InputStream in1 = res.openRawResource(R.raw.acoustic_guitar);
             patchFile = IoUtils.extractResource(in1, "acoustic_guitar.wav", getCacheDir());
-            InputStream in2 = res.openRawResource(R.raw.rhodes);
-            patchFile = IoUtils.extractResource(in2, "rhodes.wav", getCacheDir());
+            InputStream in2 = res.openRawResource(R.raw.ballons);
+            patchFile = IoUtils.extractResource(in2, "ballons.wav", getCacheDir());
+            InputStream in3 = res.openRawResource(R.raw.banjo);
+            patchFile = IoUtils.extractResource(in3, "banjo.wav", getCacheDir());
+            InputStream in4 = res.openRawResource(R.raw.clarinet);
+            patchFile = IoUtils.extractResource(in4, "clarinet.wav", getCacheDir());
+            InputStream in5 = res.openRawResource(R.raw.ds);
+            patchFile = IoUtils.extractResource(in5, "ds.wav", getCacheDir());
+            InputStream in6 = res.openRawResource(R.raw.ebow);
+            patchFile = IoUtils.extractResource(in6, "ebow.wav", getCacheDir());
+            InputStream in7 = res.openRawResource(R.raw.electribe);
+            patchFile = IoUtils.extractResource(in7, "electribe.wav", getCacheDir());
+            InputStream in8 = res.openRawResource(R.raw.electric_bass);
+            patchFile = IoUtils.extractResource(in8, "electric_bass.wav", getCacheDir());
+            InputStream in9 = res.openRawResource(R.raw.flute_piano);
+            patchFile = IoUtils.extractResource(in9, "flute_piano.wav", getCacheDir());
+            InputStream in10 = res.openRawResource(R.raw.guitar);
+            patchFile = IoUtils.extractResource(in10, "guitar.wav", getCacheDir());
+            InputStream in11 = res.openRawResource(R.raw.harmon_trumpet);
+            patchFile = IoUtils.extractResource(in11, "harmon_trumpet.wav", getCacheDir());
+            InputStream in12 = res.openRawResource(R.raw.information);
+            patchFile = IoUtils.extractResource(in12, "information.wav", getCacheDir());
+            InputStream in13 = res.openRawResource(R.raw.love);
+            patchFile = IoUtils.extractResource(in13, "love.wav", getCacheDir());
+            InputStream in14 = res.openRawResource(R.raw.mallet);
+            patchFile = IoUtils.extractResource(in14, "mallet.wav", getCacheDir());
+            InputStream in15 = res.openRawResource(R.raw.omnichord_qchord);
+            patchFile = IoUtils.extractResource(in15, "omnichord_qchord.wav", getCacheDir());
+            InputStream in16 = res.openRawResource(R.raw.pad_synth);
+            patchFile = IoUtils.extractResource(in16, "pad_synth.wav", getCacheDir());
+            InputStream in17 = res.openRawResource(R.raw.piano_tender);
+            patchFile = IoUtils.extractResource(in17, "piano_tender.wav", getCacheDir());
+            InputStream in18 = res.openRawResource(R.raw.rhodes);
+            patchFile = IoUtils.extractResource(in18, "rhodes.wav", getCacheDir());
+            InputStream in19 = res.openRawResource(R.raw.strings);
+            patchFile = IoUtils.extractResource(in19, "strings.wav", getCacheDir());
+            InputStream in20 = res.openRawResource(R.raw.vocals);
+            patchFile = IoUtils.extractResource(in20, "vocals.wav", getCacheDir());
+
 
             InputStream in = res.openRawResource(R.raw.groovebox1r3);
             patchFile = IoUtils.extractResource(in, "groovebox1r3.pd", getCacheDir());
@@ -387,7 +419,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if(key.equals(this.getString(R.string.sp_loading_done)) && pbLoading!= null && pbLoading.getVisibility()==View.VISIBLE){
             int value = sharedPreferences.getInt(this.getString(R.string.sp_loading_done), 0);
-            if(value < 17){
+            if(value < DaoMaster.NB_PAGES_API){
                 pbLoading.setProgress(value);
             }else{
                 disableLoadingView();
