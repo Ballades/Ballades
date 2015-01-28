@@ -13,9 +13,6 @@ import com.forestwave.pdc8g1.forestwave.model.Tree;
 import com.forestwave.pdc8g1.forestwave.model.TreeDao;
 import com.forestwave.pdc8g1.forestwave.service.SoundService;
 
-import org.puredata.core.PdBase;
-
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,46 +20,48 @@ import java.util.Map;
 
 import de.greenrobot.dao.query.Query;
 
-/**
- * Created by leo on 17/01/15.
- */
 public class TreeFinder implements Runnable {
-    private final static String TAG="TreeFinder";
-    public static final int SPECIES_EQUALITY_FACTOR = 1;
-    public static final int SCORE_FACILITY = 1000;
-    public static final int SOUND_DISTANCE_DEACREASE_SLOWNESS = 1;
+
+    private final static String TAG = "TreeFinder";
 
     private TreeDao treeDao =  null;
-    private WeakReference<SoundService> serviceWeakReference;
+    private SoundService soundService;
 
     public TreeFinder(SoundService service) {
-        serviceWeakReference =new WeakReference<>(service);
+        this.soundService = service;
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(service.getApplicationContext(), "forestWaves-db", null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
         DaoSession daoSession = daoMaster.newSession();
         treeDao = daoSession.getTreeDao();
-
+        Thread.currentThread().setPriority(4);
     }
 
     @Override
+    /**
+     * Boucle qui rafraîchit le desiredState (tracks à jouer avec leur position) assez fréquemment
+     */
     public void run() {
 
-        if(serviceWeakReference.get().provider.getLocation() != null && serviceWeakReference.get().isRunning()) {
-            Double latitude = serviceWeakReference.get().provider.getLocation().getLatitude();
-            Double longitude = serviceWeakReference.get().provider.getLocation().getLongitude();
+        if(soundService.provider.getLocation() != null && soundService.isRunning()) {
+            Double latitude = soundService.provider.getLocation().getLatitude();
+            Double longitude = soundService.provider.getLocation().getLongitude();
             Log.d(TAG, "Latitude : " + latitude + ", Longitude : " + longitude);
             Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.05, latitude + 0.05), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
             List<Tree> trees = query.list();
             //List<Tree> trees = getTestTrees(); //TEMP
 
             Log.d(TAG, "Nombre d'arbres pris en compte : " + Integer.toString(trees.size()));
-            Map<Integer, InfosTrees> desiredState = calculateDesiredState(trees, serviceWeakReference.get().provider);
-            this.applyState(desiredState);
+            Map<Integer, InfosTrees> desiredState = calculateDesiredState(trees, soundService.provider);
+
+            soundService.setDesiredState(desiredState);
         }
-        serviceWeakReference.get().handler.postDelayed(this, 1000);
+        soundService.handler.postDelayed(this, 5000);
     }
 
+    /**
+     * Renvoie deux arbres avec leur species pour les données de test
+     */
     private List<Tree> getTestTrees() { //TEMP
         ArrayList<Tree> testTrees = new ArrayList<>();
         Species species1 = new Species((long)1212121, "sequoya de la petite ile", 1, 100);
@@ -77,71 +76,7 @@ public class TreeFinder implements Runnable {
     }
 
     /**
-     * Applique l'état désiré sur la sortie sonore (mode ambient)
-     */
-    private void applyState(Map<Integer, InfosTrees> desiredState) {
-        Log.d(TAG, "Nombre de tracks simultanées : " + desiredState.size());
-
-        // Jouer les tracks désirées
-        for (Map.Entry<Integer, InfosTrees> entry : desiredState.entrySet())
-        {
-            int track = entry.getKey();
-            InfosTrees infos = entry.getValue();
-            Log.d(TAG, "track : " + track + ", volume : " + infos.getVolume());
-            Log.d(TAG, "latitude : " + infos.getLocation()[0] + ", longitude : " + infos.getLocation()[1]);
-
-            // Jouer la piste si non démarrée
-            if (!serviceWeakReference.get().playingTracks.contains(track)) {
-                PdBase.sendBang("play_" + track);
-                serviceWeakReference.get().playingTracks.add(track);
-                Log.d(TAG, "NOW PLAYING : "+ track);
-            }
-
-            // Calculer les valeurs des canaux
-            double[] inputsValue = this.getInputsValue(serviceWeakReference.get().provider, infos.getLocation());
-
-            // Appliquer les valeurs
-            PdBase.sendFloat("volume_left_" + track, (float)(inputsValue[0]*infos.getVolume()));
-            PdBase.sendFloat("volume_right_" + track, (float)(inputsValue[1]*infos.getVolume()));
-        }
-
-        // Retirer les tracks non-présentes
-        for (Integer playingTrack : serviceWeakReference.get().playingTracks) {
-            if (!desiredState.containsKey(playingTrack)) {
-                //TODO : Appeler le stop chez PD
-                PdBase.sendBang("stop_" + playingTrack);
-                serviceWeakReference.get().playingTracks.remove(playingTrack);
-            }
-        }
-    }
-
-    /**
-     * Calcule les valeurs à mettre dans les sorties droites et gauche pour simuler l'angle voulu,
-     * à partir d'une position
-     */
-    private double[] getInputsValue(LocationProvider provider, Double[] locationSound) {
-        double[] inputsValue = {0.0, 0.0};
-        double deltaX = locationSound[1] - provider.getLocation().getLongitude();
-        double deltaY = locationSound[0] - provider.getLocation().getLatitude();
-        Log.v(TAG, "deltaX : " + deltaX*10000);
-        Log.v(TAG, "deltaY : " + deltaY*10000);
-        double a = Math.atan(deltaX / deltaY);
-        double soundToNorthAngle = ((Math.signum(deltaX) == Math.signum(deltaX)) ? a : -a) + ((deltaY < 0) ? Math.toRadians(180) : 0);
-
-        double angle = soundToNorthAngle - Math.toRadians(provider.getLocation().getBearing());
-        Log.v(TAG, "NtoSound : " + Math.toDegrees(Math.atan(deltaX/deltaY)));
-        Log.v(TAG, "bearing : " + provider.getLocation().getBearing());
-        Log.v(TAG, "angle : " + Math.toDegrees(angle));
-
-        inputsValue[1] = Math.sin(angle)/2+0.5;
-        inputsValue[0] = 1-inputsValue[1];
-        Log.d(TAG, "Left : " + inputsValue[0]);
-        Log.d(TAG, "Right : " + inputsValue[1]);
-
-        return inputsValue;
-    }
-    /**
-     * Fonction princpale : Calcule l'état désiré
+     * Calcule le desiredState
      */
     public Map<Integer, InfosTrees> calculateDesiredState(List<Tree> trees, LocationProvider locationProvider) {
         Map<Species, InfosTrees> infosBySpecies = new HashMap<>();
@@ -190,11 +125,11 @@ public class TreeFinder implements Runnable {
      * Renvoie le score d'un arbre
      */
     private Double getScore(Tree tree) {
-        Location userLocation = serviceWeakReference.get().provider.getLocation();
-        //double distance = tree.getDistance(userLocation); //TODO : Attendre Léo
-        double distance = 10; //TEMP
-        double score = SOUND_DISTANCE_DEACREASE_SLOWNESS*SCORE_FACILITY/(distance+SOUND_DISTANCE_DEACREASE_SLOWNESS);
-
+        Location userLocation = soundService.provider.getLocation();
+        double distance = tree.getDistance(userLocation.getLatitude(), userLocation.getLongitude());
+        Log.d(TAG, "SDDS distance : " + distance);
+        double score = SoundService.SOUND_DISTANCE_DEACREASE_SLOWNESS*SoundService.SCORE_FACILITY/(distance*distance*distance+SoundService.SOUND_DISTANCE_DEACREASE_SLOWNESS);
+        Log.d(TAG, "SDDS score : " + score);
         return score;
     }
 
@@ -259,7 +194,7 @@ public class TreeFinder implements Runnable {
      */
     private double getSpeciesVolumeScoreMultiplier(Species species) {
         double speciesCount = species.getCount();
-        Log.v(TAG, "FFF"+(SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR)));
-        return SPECIES_EQUALITY_FACTOR /(speciesCount+SPECIES_EQUALITY_FACTOR);
+        Log.v(TAG, "FFF"+(SoundService.SPECIES_EQUALITY_FACTOR /(speciesCount+SoundService.SPECIES_EQUALITY_FACTOR)));
+        return SoundService.SPECIES_EQUALITY_FACTOR /(speciesCount+SoundService.SPECIES_EQUALITY_FACTOR);
     }
 }

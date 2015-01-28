@@ -52,12 +52,15 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     private EditText msg;
     private Button prefs;
     private TextView logs;
-    private SeekBar seekBarTempo;
-    private SeekBar seekBarStyle;
-    private TextView tvChooseStyle;
-    private TextView tvLoading;
     private GridLayout gridLayout;
     private ProgressBar pbLoading;
+
+    private SeekBar seekBarEquality;
+    private SeekBar seekBarDistance;
+    private TextView tvEquality;
+    private TextView tvScore;
+
+
     public SoundService pdService = null;
 
     private Toast toast = null;
@@ -171,15 +174,16 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         prefs.setOnClickListener(this);
         logs = (TextView) findViewById(R.id.log_box);
         logs.setMovementMethod(new ScrollingMovementMethod());
-        seekBarTempo = (SeekBar) findViewById(R.id.seekBarTempo);
-        seekBarTempo.setMax(100);
-        seekBarTempo.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBarEquality = (SeekBar) findViewById(R.id.seekBarTempo);
+        seekBarEquality.setMax(1200);
+        seekBarEquality.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                PdBase.sendFloat("sqp11r", 50.0f + progresValue);
+                SoundService.SPECIES_EQUALITY_FACTOR = progresValue;
+                tvEquality.setText(getResources().getText(R.string.choose_SEF) + " " + String.valueOf(progress));
             }
 
             @Override
@@ -190,16 +194,16 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        seekBarStyle = (SeekBar) findViewById(R.id.seekBarStyle);
-        seekBarStyle.setMax(32);
-        seekBarStyle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBarDistance = (SeekBar) findViewById(R.id.seekBarStyle);
+        seekBarDistance.setMax(200);
+        seekBarDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                PdBase.sendFloat("style",progress);
-                StartActivity.this.tvChooseStyle.setText(getResources().getText(R.string.style)+" "+String.valueOf(progress));
+                tvEquality.setText(getResources().getText(R.string.choose_SDDS) + " " + String.valueOf(progress));
+                SoundService.SOUND_DISTANCE_DEACREASE_SLOWNESS = progresValue;
             }
 
             @Override
@@ -216,9 +220,9 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         sharedPref.registerOnSharedPreferenceChangeListener(this);
         SharedPreferences.Editor editor = sharedPref.edit();
         int value = sharedPref.getInt(this.getString(R.string.sp_loading_done), 0);
-        tvChooseStyle = (TextView) findViewById(R.id.textViewStyle);
-        tvChooseStyle.setText(getResources().getText(R.string.style) + " " + String.valueOf(seekBarStyle.getProgress()));
-        tvLoading = (TextView) findViewById(R.id.tv_loading);
+        tvEquality = (TextView) findViewById(R.id.textViewStyle);
+        tvEquality.setText(getResources().getText(R.string.style) + " " + String.valueOf(seekBarDistance.getProgress()));
+        tvScore = (TextView) findViewById(R.id.tv_loading);
         pbLoading = (ProgressBar) findViewById(R.id.pb_loading);
         if(value!=DaoMaster.NB_PAGES_API) {
             pbLoading.setProgress(value);
@@ -233,10 +237,10 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         msg.setVisibility(View.VISIBLE);
         prefs.setVisibility(View.VISIBLE);
         logs.setVisibility(View.VISIBLE);
-        seekBarTempo.setVisibility(View.VISIBLE);
-        seekBarStyle.setVisibility(View.VISIBLE);
-        tvChooseStyle.setVisibility(View.VISIBLE);
-        tvLoading.setVisibility(View.GONE);
+        seekBarEquality.setVisibility(View.VISIBLE);
+        seekBarDistance.setVisibility(View.VISIBLE);
+        tvEquality.setVisibility(View.VISIBLE);
+        tvScore.setVisibility(View.GONE);
         gridLayout = (GridLayout) findViewById(R.id.glayout);
         gridLayout.setVisibility(View.VISIBLE);
         pbLoading.setVisibility(View.GONE);
@@ -308,7 +312,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     private void startAudio() {
         String name = getResources().getString(R.string.app_name);
         try {
-            pdService.initAudio(44100, -1, -1, -1);   // negative values will be replaced with defaults/preferences
+            pdService.initAudio(16000, -1, -1, -1);   // negative values will be replaced with defaults/preferences
             pdService.startAudio(new Intent(this, StartActivity.class), R.drawable.ic_launcher, name, "Return to " + name + ".");
         } catch (IOException e) {
             toast(e.toString());
