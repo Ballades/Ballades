@@ -1,7 +1,12 @@
 package com.forestwave.pdc8g1.forestwave.service;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.util.Log;
+import android.view.animation.RotateAnimation;
 
 import com.forestwave.pdc8g1.forestwave.location.LocationProvider;
 
@@ -18,18 +23,32 @@ import org.puredata.android.service.PdService;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SoundService extends PdService  {
+public class SoundService extends PdService implements SensorEventListener {
 
     private final static String TAG = "SoundService";
     public LocationProvider provider;
     public Handler handler;
 
-    public static int SPECIES_EQUALITY_FACTOR = 10;
-    public static int SCORE_FACILITY = 10;
-    public static int SOUND_DISTANCE_DEACREASE_SLOWNESS = 10;
+    public static int SPECIES_EQUALITY_FACTOR = 500;
+    public static int SCORE_FACILITY = 500;
+    public static int SOUND_DISTANCE_DEACREASE_SLOWNESS = 1;
 
     public Map<Integer, InfosTrees> desiredState = new HashMap<>();
     public Map<Integer, InfosTrees> actualState = new HashMap<>();
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private Sensor mMagnetometer;
+    private float[] mLastAccelerometer = new float[3];
+    private float[] mLastMagnetometer = new float[3];
+    private boolean mLastAccelerometerSet = false;
+    private boolean mLastMagnetometerSet = false;
+    private float[] mR = new float[9];
+    private float[] mOrientation = new float[3];
+
+
+
+    private float mCurrentDegree = 0f;
 
     public SoundService() {
 
@@ -45,6 +64,13 @@ public class SoundService extends PdService  {
         PdPreferences.initPreferences(getApplicationContext());
         if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()) == ConnectionResult.SUCCESS) {
             Log.v("LocationTest", "Play Services available");
+
+            mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+            mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+            mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
+            mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_GAME);
+
             provider = new LocationProvider(this);
 
             handler = new Handler();
@@ -58,6 +84,39 @@ public class SoundService extends PdService  {
         else{
             Log.v("LocationTest", "Play Services unavailable, " +GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()));
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        mSensorManager.unregisterListener(this, mAccelerometer);
+        mSensorManager.unregisterListener(this, mMagnetometer);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor == mAccelerometer) {
+            System.arraycopy(event.values, 0, mLastAccelerometer, 0, event.values.length);
+            mLastAccelerometerSet = true;
+        } else if (event.sensor == mMagnetometer) {
+            System.arraycopy(event.values, 0, mLastMagnetometer, 0, event.values.length);
+            mLastMagnetometerSet = true;
+        }
+        if (mLastAccelerometerSet && mLastMagnetometerSet) {
+            SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer);
+            SensorManager.getOrientation(mR, mOrientation);
+            float azimuthInRadians = mOrientation[0];
+            float azimuthInDegress = (float)(Math.toDegrees(azimuthInRadians)+360)%360;
+            //Log.d(TAG,String.valueOf(-azimuthInDegress));
+
+
+            mCurrentDegree = azimuthInDegress;
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
     /**
@@ -87,6 +146,10 @@ public class SoundService extends PdService  {
      */
     public void setActualState(Map<Integer, InfosTrees> actualState) {
         this.actualState = actualState;
+    }
+
+    public float getmCurrentDegree() {
+        return mCurrentDegree;
     }
 
 }
