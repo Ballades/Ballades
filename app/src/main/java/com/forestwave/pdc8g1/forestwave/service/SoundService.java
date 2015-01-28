@@ -45,6 +45,9 @@ public class SoundService extends PdService implements SensorEventListener {
     private boolean mLastMagnetometerSet = false;
     private float[] mR = new float[9];
     private float[] mOrientation = new float[3];
+
+
+
     private float mCurrentDegree = 0f;
 
     public SoundService() {
@@ -104,10 +107,10 @@ public class SoundService extends PdService implements SensorEventListener {
             SensorManager.getOrientation(mR, mOrientation);
             float azimuthInRadians = mOrientation[0];
             float azimuthInDegress = (float)(Math.toDegrees(azimuthInRadians)+360)%360;
-            Log.d(TAG,String.valueOf(-azimuthInDegress));
+            //Log.d(TAG,String.valueOf(-azimuthInDegress));
 
 
-            mCurrentDegree = -azimuthInDegress;
+            mCurrentDegree = azimuthInDegress;
         }
     }
 
@@ -143,6 +146,10 @@ public class SoundService extends PdService implements SensorEventListener {
      */
     public void setActualState(Map<Integer, InfosTrees> actualState) {
         this.actualState = actualState;
+    }
+
+    public float getmCurrentDegree() {
+        return mCurrentDegree;
     }
 
 }

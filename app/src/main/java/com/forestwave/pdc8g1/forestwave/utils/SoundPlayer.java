@@ -91,9 +91,9 @@ public class SoundPlayer implements Runnable {
         double a = Math.atan(deltaX / deltaY);
         double soundToNorthAngle = ((Math.signum(deltaX) == Math.signum(deltaX)) ? a : -a) + ((deltaY < 0) ? Math.toRadians(180) : 0);
 
-        double angle = soundToNorthAngle - Math.toRadians(provider.getLocation().getBearing());
+        double angle = soundToNorthAngle  - Math.toRadians(soundService.getmCurrentDegree());
         Log.v(TAG, "NtoSound : " + Math.toDegrees(Math.atan(deltaX/deltaY)));
-        Log.v(TAG, "bearing : " + provider.getLocation().getBearing());
+        Log.v(TAG, "bearing : " + soundService.getmCurrentDegree());
         Log.v(TAG, "angle : " + Math.toDegrees(angle));
 
         inputsValue[1] = Math.exp(Math.sin(angle)/2+0.5)/Math.exp(1);

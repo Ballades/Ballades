@@ -17,7 +17,7 @@
             android:name=".ui.activities.StartActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
-
+x
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
