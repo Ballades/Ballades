@@ -3,15 +3,9 @@ package com.forestwave.pdc8g1.forestwave.ui.activities;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
 
-import org.puredata.android.service.PdPreferences;
 import org.puredata.android.service.PdService;
 import org.puredata.core.PdBase;
-import org.puredata.core.PdReceiver;
 import org.puredata.core.utils.IoUtils;
 
 import android.app.Activity;
@@ -22,38 +16,33 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 
+import android.net.Uri;
 import android.os.IBinder;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+
 import com.forestwave.pdc8g1.forestwave.R;
 import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
 import com.forestwave.pdc8g1.forestwave.service.SoundService;
+import com.forestwave.pdc8g1.forestwave.ui.dialogs.AboutDialog;
 
 
-
-public class StartActivity extends Activity implements OnClickListener, OnEditorActionListener,SharedPreferences.OnSharedPreferenceChangeListener {
+public class StartActivity extends Activity implements OnClickListener,SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "StartActivity";
 
-    private Button play;
-    private CheckBox ckBass, ckSnare, ckMelody, ckKick, ckHighHat;
-    private EditText msg;
-    private Button prefs;
-    private TextView logs;
-    private GridLayout gridLayout;
+    private ImageButton play;
     private ProgressBar pbLoading;
+    private TextView tvLoading;
 
     private SeekBar seekBarEquality;
     private SeekBar seekBarDistance;
@@ -63,67 +52,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
 
     public SoundService pdService = null;
 
-    private Toast toast = null;
 
-
-    private void toast(final String msg) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (toast == null) {
-                    toast = Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT);
-                }
-                toast.setText(TAG + ": " + msg);
-                toast.show();
-            }
-        });
-    }
-
-    private void post(final String s) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                logs.append(s + ((s.endsWith("\n")) ? "" : "\n"));
-            }
-        });
-    }
-
-    private PdReceiver receiver = new PdReceiver() {
-
-        private void pdPost(String msg) {
-            toast("Pure Data says, \"" + msg + "\"");
-        }
-
-        @Override
-        public void print(String s) {
-            post(s);
-        }
-
-        @Override
-        public void receiveBang(String source) {
-            pdPost("bang");
-        }
-
-        @Override
-        public void receiveFloat(String source, float x) {
-            pdPost("float: " + x);
-        }
-
-        @Override
-        public void receiveList(String source, Object... args) {
-            pdPost("list: " + Arrays.toString(args));
-        }
-
-        @Override
-        public void receiveMessage(String source, String symbol, Object... args) {
-            pdPost("message: " + Arrays.toString(args));
-        }
-
-        @Override
-        public void receiveSymbol(String source, String symbol) {
-            pdPost("symbol: " + symbol);
-        }
-    };
 
     private final ServiceConnection pdConnection = new ServiceConnection() {
         @Override
@@ -131,6 +60,9 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
             pdService = (SoundService) ((PdService.PdBinder)service).getService();
             if(!pdService.isRunning()){
                 initPd();
+            }else if(play!=null){
+                play.setImageDrawable(getResources().getDrawable(R.drawable.ic_av_pause));
+                play.setPaddingRelative(0, 0, 0, 0);
             }
         }
 
@@ -152,28 +84,49 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         cleanup();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_start, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                AboutDialog dialog = new AboutDialog();
+                dialog.show(getFragmentManager(),"AboutDialog");
+                return true;
+            case R.id.action_contact:
+                String[] TO = {"sylvain.abadie2099@gmail.com"};
+                String[] CC = {"reynolds.nicorr@gmail.com"};
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setData(Uri.parse("mailto:"));
+                emailIntent.setType("text/plain");
 
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+                emailIntent.putExtra(Intent.EXTRA_CC, CC);
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Votre sujet");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Votre email");
+
+                try {
+                    startActivity(Intent.createChooser(emailIntent, "Envoyez le mail..."));
+                    finish();
+                    Log.i("Email envoyé", "");
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(StartActivity.this,
+                            "Il n'y a pas de client mail installé", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     private void initGui() {
         setContentView(R.layout.activity_start);
-        play = (Button) findViewById(R.id.play_button);
+        play = (ImageButton) findViewById(R.id.play_button);
         play.setOnClickListener(this);
-        ckBass = (CheckBox) findViewById(R.id.bass_box);
-        ckBass.setOnClickListener(this);
-        ckSnare = (CheckBox) findViewById(R.id.snare_box);
-        ckSnare.setOnClickListener(this);
-        ckMelody = (CheckBox) findViewById(R.id.melody_box);
-        ckMelody.setOnClickListener(this);
-        ckKick = (CheckBox) findViewById(R.id.kick_box);
-        ckKick.setOnClickListener(this);
-        ckHighHat = (CheckBox) findViewById(R.id.hihat_box);
-        ckHighHat.setOnClickListener(this);
-
-        msg = (EditText) findViewById(R.id.msg_box);
-        msg.setOnEditorActionListener(this);
-        prefs = (Button) findViewById(R.id.pref_button);
-        prefs.setOnClickListener(this);
-        logs = (TextView) findViewById(R.id.log_box);
-        logs.setMovementMethod(new ScrollingMovementMethod());
         seekBarEquality = (SeekBar) findViewById(R.id.seekBarTempo);
         seekBarEquality.setMax(1200);
         seekBarEquality.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -224,6 +177,7 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         tvEquality.setText(getResources().getText(R.string.style) + " " + String.valueOf(seekBarDistance.getProgress()));
         tvScore = (TextView) findViewById(R.id.tv_loading);
         pbLoading = (ProgressBar) findViewById(R.id.pb_loading);
+        tvLoading = (TextView) findViewById(R.id.tv_loading);
         if(value!=DaoMaster.NB_PAGES_API) {
             pbLoading.setProgress(value);
             DaoMaster.initDatabase(this);
@@ -234,16 +188,12 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
     }
     public void disableLoadingView(){
         play.setVisibility(View.VISIBLE);
-        msg.setVisibility(View.VISIBLE);
-        prefs.setVisibility(View.VISIBLE);
-        logs.setVisibility(View.VISIBLE);
         seekBarEquality.setVisibility(View.VISIBLE);
         seekBarDistance.setVisibility(View.VISIBLE);
         tvEquality.setVisibility(View.VISIBLE);
-        tvScore.setVisibility(View.GONE);
-        gridLayout = (GridLayout) findViewById(R.id.glayout);
-        gridLayout.setVisibility(View.VISIBLE);
+        tvScore.setVisibility(View.VISIBLE);
         pbLoading.setVisibility(View.GONE);
+        tvLoading.setVisibility(View.GONE);
         Intent serviceIntent = new Intent(this, SoundService.class);
         bindService(serviceIntent, pdConnection, BIND_AUTO_CREATE);
     }
@@ -253,7 +203,6 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         Resources res = getResources();
         File patchFile = null;
         try {
-            PdBase.setReceiver(receiver);
             PdBase.subscribe("android");
             InputStream in1 = res.openRawResource(R.raw.acoustic_guitar);
             patchFile = IoUtils.extractResource(in1, "acoustic_guitar.wav", getCacheDir());
@@ -313,9 +262,9 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
         String name = getResources().getString(R.string.app_name);
         try {
             pdService.initAudio(16000, -1, -1, -1);   // negative values will be replaced with defaults/preferences
-            pdService.startAudio(new Intent(this, StartActivity.class), R.drawable.ic_launcher, name, "Return to " + name + ".");
+            pdService.startAudio(new Intent(this, StartActivity.class), R.drawable.ic_stat_hardware_headset, name, "Return to " + name + ".");
         } catch (IOException e) {
-            toast(e.toString());
+            Log.d(TAG,e.toString());
         }
     }
 
@@ -340,84 +289,20 @@ public class StartActivity extends Activity implements OnClickListener, OnEditor
             case R.id.play_button:
                 if (pdService.isRunning()) {
                     stopAudio();
+                    play.setImageDrawable(getResources().getDrawable(R.drawable.ic_av_play_arrow));
+                    float scale = getResources().getDisplayMetrics().density;
+                    int dpAsPixels = (int) (6*scale + 0.5f);
+                    play.setPaddingRelative(dpAsPixels,0,0,0);
                 } else {
                     startAudio();
+                    play.setImageDrawable(getResources().getDrawable(R.drawable.ic_av_pause));
+                    play.setPaddingRelative(0, 0, 0, 0);
                 }
-            case R.id.bass_box:
-                PdBase.sendFloat("togle_b", ckBass.isChecked() ? 1 : 0);
-                break;
-            case R.id.snare_box:
-                PdBase.sendFloat("togle_sn",ckSnare.isChecked() ? 1 : 0);
-                break;
-            case R.id.melody_box:
-                PdBase.sendFloat("togle_m", ckMelody.isChecked() ? 1 : 0);
-                break;
-            case R.id.kick_box :
-                PdBase.sendFloat("togle_k", ckKick.isChecked() ? 1 : 0);
-                break;
-            case R.id.hihat_box :
-                PdBase.sendFloat("togle_hh", ckHighHat.isChecked() ? 1 : 0);
-                break;
-            case R.id.pref_button:
-                startActivity(new Intent(this, PdPreferences.class));
-                break;
             default:
                 break;
         }
     }
 
-    @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        evaluateMessage(msg.getText().toString());
-        return true;
-    }
-
-    private void evaluateMessage(String s) {
-        String dest = "test", symbol = null;
-        boolean isAny = s.length() > 0 && s.charAt(0) == ';';
-        Scanner sc = new Scanner(isAny ? s.substring(1) : s);
-        if (isAny) {
-            if (sc.hasNext()) dest = sc.next();
-            else {
-                toast("Message not sent (empty recipient)");
-                return;
-            }
-            if (sc.hasNext()) symbol = sc.next();
-            else {
-                toast("Message not sent (empty symbol)");
-            }
-        }
-        List<Object> list = new ArrayList<Object>();
-        while (sc.hasNext()) {
-            if (sc.hasNextInt()) {
-                list.add(Float.valueOf(sc.nextInt()));
-            } else if (sc.hasNextFloat()) {
-                list.add(sc.nextFloat());
-            } else {
-                list.add(sc.next());
-            }
-        }
-        if (isAny) {
-            PdBase.sendMessage(dest, symbol, list.toArray());
-        } else {
-            switch (list.size()) {
-                case 0:
-                    PdBase.sendBang(dest);
-                    break;
-                case 1:
-                    Object x = list.get(0);
-                    if (x instanceof String) {
-                        PdBase.sendSymbol(dest, (String) x);
-                    } else {
-                        PdBase.sendFloat(dest, (Float) x);
-                    }
-                    break;
-                default:
-                    PdBase.sendList(dest, list.toArray());
-                    break;
-            }
-        }
-    }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {

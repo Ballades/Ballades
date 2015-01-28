@@ -2,34 +2,24 @@
 <resources>
 
     <string name="app_name">Forest Wave</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_location_test">LocationTest</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="bass_label">Bass</string>
-    <string name="snare_label">Snare</string>
-    <string name="melody_label">Melody</string>
-    <string name="hihat_label">HighHat</string>
-    <string name="kick_label">Kick</string>
 
-    <string name="default_msg">Enter message to Pure Data</string>
-    <string name="pref_button_text">Preferences</string>
-    <string name="about_title">About Pure Data</string>
-	<string name="about_msg">Pure Data is a real-time graphical programming
-		environment for audio, video, and graphical processing, originally
-		developed by Miller Puckette and company at IRCAM. Android port by
-		Peter Brinkmann, Peter Kirn, Hans-Christoph Steiner, and others.
-	</string>
-    <string name="play_button_text">Play/Pause</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="tempo">Choose tempo</string>
+    <string name="action_about">A propos</string>
+    <string name="action_contact">Contactez nous</string>
+
+    <string name="tempo">Adjust Sound settings</string>
     <string name="sp_loading">"com.forestwave.pdc8g1.forestwave.sp_loading"</string>
     <string name="sp_loading_done">"com.forestwave.pdc8g1.forestwave.sp_loading_done"</string>
-    <string name="loading_message">Loading Content</string>
+    <string name="loading_message">Initialisation</string>
 
     <string name="choose_SDDS">Ajuster le SDDS</string>
     <string name="choose_SEF">Ajuster le SEF</string>
+
+    <string name="about_dialog_content">Forest Waves est une application d’expérience sonore. Muni de vos écouteurs dans le parc de la tête d’Or, vous entendrez pour chaque arbre autour de vous un son. L’ensemble de la forêt créera pour vous une ambiance relaxante, un paysage sonore unique. Branchez vos écouteurs et laissez-vous guider par le son !
+Vivez une expérience d’immersion. L’ambiance que vous entendrez dépendra directement de votre position, au bord d’une forêt de pin ou au milieu de Hêtres. Sentez votre environnement évoluer au fur et à mesure de vos déplacements.
+Chaque arbre est unique. Chaque végétal existe dans sa splendeur et son unicité. Le son de chaque arbre est le reflet de cette variété : il est différent selon les familles, espèces, l’âge et même la hauteur de chaque arbre !
+L’ambiance que vous désirez. Jouez avec votre imagination en fonction de vos envies, avec les différents paysages sonores disponibles : Forêt Enchantée, Plaine Africaine, Dans les profondeurs de la Terre, et bien d’autres à découvrir...
+</string>
+    <string name="about_dialog_title">A propos</string>
+    <string name="about_dialog_validate">Ok</string>
 
 </resources>
