@@ -7,3 +7,11 @@
 **Chaque arbre est unique.** Chaque végétal existe dans sa splendeur et son unicité. Le son de chaque arbre est le reflet de cette variété : il est différent selon les familles, espèces, l’âge et même la hauteur de chaque arbre !
 
 **L’ambiance que vous désirez.** Jouez avec votre imagination en fonction de vos envies, avec les différents paysages sonores disponibles : Forêt Enchantée, Plaine Africaine, Dans les profondeurs de la Terre, et bien d’autres à découvrir...
+
+# Installation de ForestWaves
+
+Pour profiter de l'expérience ForestWaves le plus simple est d'installer l'application grâce au Google Store directement depuis votre smartphone Android. 
+
+Pour les plus téméraire vous pouvez aussi récupérez le code souce, le compiler sur votre ordinaeur et l'installer vous même sur votre smartphone. Bon courage !
+
+Si vous souhaitez plus d'informations sur l'application le wiki est à votre disposition.
