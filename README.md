@@ -15,3 +15,5 @@ Pour profiter de l'expérience ForestWaves le plus simple est d'installer l'appl
 Pour les plus téméraires vous pouvez aussi récupérez le code souce, le compiler sur votre ordinaeur et l'installer vous même sur votre smartphone. Bon courage !
 
 Si vous souhaitez plus d'informations sur l'application le wiki est à votre disposition.
+
+# Exigences minimales requises
