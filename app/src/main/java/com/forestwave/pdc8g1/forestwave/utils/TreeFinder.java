@@ -24,6 +24,9 @@ public class TreeFinder implements Runnable {
 
     private final static String TAG = "TreeFinder";
     public final static double MIN_VOLUME = 0.1;
+    public final static double DISTANCE_DETECTION_MAX = 0.0005;
+    public final static Integer REFRESH_TIME_TREES = 750;
+    public final static Integer PRIORITY_TREE_FINDER = 4;
 
     private TreeDao treeDao =  null;
     private SoundService soundService;
@@ -35,7 +38,7 @@ public class TreeFinder implements Runnable {
         DaoMaster daoMaster = new DaoMaster(db);
         DaoSession daoSession = daoMaster.newSession();
         treeDao = daoSession.getTreeDao();
-        Thread.currentThread().setPriority(4);
+        Thread.currentThread().setPriority(PRIORITY_TREE_FINDER);
     }
 
     @Override
@@ -48,7 +51,7 @@ public class TreeFinder implements Runnable {
             Double latitude = soundService.provider.getLocation().getLatitude();
             Double longitude = soundService.provider.getLocation().getLongitude();
             Log.d(TAG, "Latitude : " + latitude + ", Longitude : " + longitude);
-            Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.05, latitude + 0.05), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
+            Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - DISTANCE_DETECTION_MAX, latitude + DISTANCE_DETECTION_MAX), TreeDao.Properties.Longitude.between(longitude - DISTANCE_DETECTION_MAX, longitude + DISTANCE_DETECTION_MAX)).build();
             List<Tree> trees = query.list();
             //List<Tree> trees = getTestTrees(); //TEST
 
@@ -57,7 +60,7 @@ public class TreeFinder implements Runnable {
 
             soundService.setDesiredState(desiredState);
         }
-        soundService.handler.postDelayed(this, 5000);
+        soundService.handler.postDelayed(this, REFRESH_TIME_TREES);
     }
 
     /**

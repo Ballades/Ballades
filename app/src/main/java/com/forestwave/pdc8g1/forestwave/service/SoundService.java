@@ -27,9 +27,9 @@ public class SoundService extends PdService implements SensorEventListener {
     public LocationProvider provider;
     public Handler handler;
 
-    public static int SPECIES_EQUALITY_FACTOR = 500;
+    public static int SPECIES_EQUALITY_FACTOR = 750;
     public static int SCORE_FACILITY = 500;
-    public static int SOUND_DISTANCE_DEACREASE_SLOWNESS = 10;
+    public static int SOUND_DISTANCE_DEACREASE_SLOWNESS = 15;
 
     public Map<Integer, InfosTrees> desiredState = new HashMap<>();
     public Map<Integer, InfosTrees> actualState = new HashMap<>();
@@ -43,8 +43,6 @@ public class SoundService extends PdService implements SensorEventListener {
     private boolean mLastMagnetometerSet = false;
     private float[] mR = new float[9];
     private float[] mOrientation = new float[3];
-
-
 
     private float mCurrentDegree = 0f;
 
