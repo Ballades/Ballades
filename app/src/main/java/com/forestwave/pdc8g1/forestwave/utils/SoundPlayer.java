@@ -73,6 +73,16 @@ public class SoundPlayer implements Runnable {
     }
 
     /**
+<<<<<<< Updated upstream
+=======
+     * Applique l'état désiré sur la sortie sonore (mode ambient)
+     */
+    private void applyDesiredState() {
+
+    }
+
+    /**
+>>>>>>> Stashed changes
      * Calcule les valeurs à mettre dans les sorties droites et gauche pour simuler l'angle voulu,
      * à partir d'une position
      */

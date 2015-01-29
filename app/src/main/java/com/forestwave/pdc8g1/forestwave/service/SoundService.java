@@ -107,9 +107,6 @@ public class SoundService extends PdService implements SensorEventListener {
             SensorManager.getOrientation(mR, mOrientation);
             float azimuthInRadians = mOrientation[0];
             float azimuthInDegress = (float)(Math.toDegrees(azimuthInRadians)+360)%360;
-            //Log.d(TAG,String.valueOf(-azimuthInDegress));
-
-
             mCurrentDegree = azimuthInDegress;
         }
     }
