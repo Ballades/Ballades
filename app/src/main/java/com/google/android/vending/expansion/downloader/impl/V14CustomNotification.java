@@ -16,12 +16,12 @@
 
 package com.google.android.vending.expansion.downloader.impl;
 
-import com.forestwave.pdc8g1.forestwave.R;
-import com.google.android.vending.expansion.downloader.Helpers;
-
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
+
+import com.forestwave.pdc8g1.forestwave.R;
+import com.google.android.vending.expansion.downloader.Helpers;
 
 public class V14CustomNotification implements DownloadNotification.ICustomNotification {
 

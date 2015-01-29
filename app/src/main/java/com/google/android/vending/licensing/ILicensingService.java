@@ -3,12 +3,12 @@
  * Original file: aidl/ILicensingService.aidl
  */
 package com.google.android.vending.licensing;
-import java.lang.String;
-import android.os.RemoteException;
+
+import android.os.Binder;
 import android.os.IBinder;
 import android.os.IInterface;
-import android.os.Binder;
 import android.os.Parcel;
+import android.os.RemoteException;
 public interface ILicensingService extends IInterface
 {
 /** Local-side IPC implementation stub class. */

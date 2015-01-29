@@ -16,6 +16,10 @@
 
 package com.google.android.vending.licensing;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
@@ -24,10 +28,6 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 
 /**
  * Default policy. All policy decisions are based off of response data received

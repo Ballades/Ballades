@@ -16,8 +16,6 @@
 
 package com.google.android.vending.expansion.downloader;
 
-import com.google.android.vending.expansion.downloader.impl.DownloaderService;
-
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -31,6 +29,8 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
+
+import com.google.android.vending.expansion.downloader.impl.DownloaderService;
 
 
 

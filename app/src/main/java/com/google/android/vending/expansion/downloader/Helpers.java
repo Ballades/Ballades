@@ -16,13 +16,13 @@
 
 package com.google.android.vending.expansion.downloader;
 
-import com.forestwave.pdc8g1.forestwave.R;
-
 import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
 import android.os.SystemClock;
 import android.util.Log;
+
+import com.forestwave.pdc8g1.forestwave.R;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

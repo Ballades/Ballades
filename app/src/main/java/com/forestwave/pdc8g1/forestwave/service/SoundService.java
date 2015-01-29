@@ -6,10 +6,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.util.Log;
-import android.view.animation.RotateAnimation;
 
 import com.forestwave.pdc8g1.forestwave.location.LocationProvider;
-
 import com.forestwave.pdc8g1.forestwave.model.InfosTrees;
 import com.forestwave.pdc8g1.forestwave.utils.SoundPlayer;
 import com.forestwave.pdc8g1.forestwave.utils.TreeFinder;

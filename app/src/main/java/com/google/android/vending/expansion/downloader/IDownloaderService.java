@@ -16,7 +16,6 @@
 
 package com.google.android.vending.expansion.downloader;
 
-import com.google.android.vending.expansion.downloader.impl.DownloaderService;
 import android.os.Messenger;
 
 /**

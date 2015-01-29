@@ -16,6 +16,12 @@
 
 package com.google.android.vending.expansion.downloader.impl;
 
+import android.content.Context;
+import android.net.Proxy;
+import android.os.PowerManager;
+import android.os.Process;
+import android.util.Log;
+
 import com.google.android.vending.expansion.downloader.Constants;
 import com.google.android.vending.expansion.downloader.Helpers;
 import com.google.android.vending.expansion.downloader.IDownloaderClient;
@@ -25,12 +31,6 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.params.ConnRouteParams;
-
-import android.content.Context;
-import android.net.Proxy;
-import android.os.PowerManager;
-import android.os.Process;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -16,14 +16,14 @@
 
 package com.google.android.vending.expansion.downloader;
 
-import com.google.android.vending.expansion.downloader.impl.DownloaderService;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+
+import com.google.android.vending.expansion.downloader.impl.DownloaderService;
 
 
 
