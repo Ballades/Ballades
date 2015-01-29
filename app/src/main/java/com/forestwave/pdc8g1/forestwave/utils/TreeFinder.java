@@ -23,6 +23,7 @@ import de.greenrobot.dao.query.Query;
 public class TreeFinder implements Runnable {
 
     private final static String TAG = "TreeFinder";
+    public final static double MIN_VOLUME = 0.1;
 
     private TreeDao treeDao =  null;
     private SoundService soundService;
@@ -49,7 +50,7 @@ public class TreeFinder implements Runnable {
             Log.d(TAG, "Latitude : " + latitude + ", Longitude : " + longitude);
             Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.05, latitude + 0.05), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
             List<Tree> trees = query.list();
-            //List<Tree> trees = getTestTrees(); //TEMP
+            //List<Tree> trees = getTestTrees(); //TEST
 
             Log.d(TAG, "Nombre d'arbres pris en compte : " + Integer.toString(trees.size()));
             Map<Integer, InfosTrees> desiredState = calculateDesiredState(trees, soundService.provider);
@@ -62,7 +63,7 @@ public class TreeFinder implements Runnable {
     /**
      * Renvoie deux arbres avec leur species pour les données de test
      */
-    private List<Tree> getTestTrees() { //TEMP
+    private List<Tree> getTestTrees() { //TEST
         ArrayList<Tree> testTrees = new ArrayList<>();
         Species species1 = new Species((long)1212121, "sequoya de la petite ile", 1, 100);
         Species species2 = new Species((long)1212122, "sequoya de la grande ile", 2, 100);
@@ -152,6 +153,7 @@ public class TreeFinder implements Runnable {
      */
     private Map<Integer, InfosTrees> scoresToVolumes(Map<Species, InfosTrees> infosBySpecies) {
         Map<Integer, InfosTrees> infosByTrack = new HashMap<>();
+        ArrayList<Integer> tracksTooQuiet = new ArrayList<>();
         Log.v(TAG, "IN scoresToVolumes");
         // Regrouper les scores par track
         for (Map.Entry<Species, InfosTrees> entry : infosBySpecies.entrySet())
@@ -180,11 +182,17 @@ public class TreeFinder implements Runnable {
         {
             int track = entry.getKey();
             InfosTrees infos = entry.getValue();
+            double volume = Math.tanh(infos.getScore());
 
-            infos.setVolume(Math.tanh(infos.getScore()));
+            infos.setVolume(volume);
+            if (volume < MIN_VOLUME) {
+                tracksTooQuiet.add(track);
+            }
         }
 
-        // TODO : Limiter le nombre de tracks en fonction du volume
+        for (Integer trackTooQuietInteger: tracksTooQuiet) {
+            infosByTrack.remove(trackTooQuietInteger);
+        }
 
         return infosByTrack;
     }

@@ -36,7 +36,7 @@ public class SoundPlayer implements Runnable {
             {
                 int track = entry.getKey();
                 InfosTrees infos = entry.getValue();
-                Log.d(TAG, "track : " + track + ", volume : " + infos.getVolume());
+                Log.d(TAG, "track : " + track + ", volume : " + Math.round(infos.getVolume()*100));
                 Log.d(TAG, "latitude : " + infos.getLocation()[0] + ", longitude : " + infos.getLocation()[1]);
 
                 // Jouer la piste si non démarrée
@@ -52,6 +52,8 @@ public class SoundPlayer implements Runnable {
                 // Appliquer les valeurs
                 PdBase.sendFloat("volume_left_" + track, (float)(inputsValue[0]*infos.getVolume()));
                 PdBase.sendFloat("volume_right_" + track, (float)(inputsValue[1]*infos.getVolume()));
+                Log.d(TAG, "VOL IN Left : " + Math.round(inputsValue[0]*infos.getVolume()*100));
+                Log.d(TAG, "VOL IN Right : " + Math.round(inputsValue[1]*infos.getVolume()*100));
             }
 
             // Retirer les tracks non-présentes
@@ -68,14 +70,6 @@ public class SoundPlayer implements Runnable {
             soundService.setActualState(desiredState);
         }
         soundService.handler.postDelayed(this, 500);
-    }
-
-    /**
-     * Applique l'état désiré sur la sortie sonore (mode ambient)
-     */
-    private void applyDesiredState() {
-
-
     }
 
     /**
@@ -96,10 +90,8 @@ public class SoundPlayer implements Runnable {
         Log.v(TAG, "bearing : " + soundService.getmCurrentDegree());
         Log.v(TAG, "angle : " + Math.toDegrees(angle));
 
-        inputsValue[1] = Math.exp(Math.sin(angle)/2+0.5)/Math.exp(1);
+        inputsValue[1] = Math.sin(angle)/2+0.5;
         inputsValue[0] = 1-inputsValue[1];
-        Log.d(TAG, "Left : " + inputsValue[0]);
-        Log.d(TAG, "Right : " + inputsValue[1]);
 
         return inputsValue;
     }

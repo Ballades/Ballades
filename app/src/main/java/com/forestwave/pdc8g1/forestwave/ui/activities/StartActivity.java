@@ -130,7 +130,7 @@ public class StartActivity extends Activity implements OnClickListener,SharedPre
         seekBarEquality = (SeekBar) findViewById(R.id.seekBarTempo);
         seekBarEquality.setMax(1200);
         seekBarEquality.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
+            int progress = 500;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
@@ -150,7 +150,7 @@ public class StartActivity extends Activity implements OnClickListener,SharedPre
         seekBarDistance = (SeekBar) findViewById(R.id.seekBarStyle);
         seekBarDistance.setMax(200);
         seekBarDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
+            int progress = 10;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
@@ -178,12 +178,11 @@ public class StartActivity extends Activity implements OnClickListener,SharedPre
         tvScore = (TextView) findViewById(R.id.tv_loading);
         pbLoading = (ProgressBar) findViewById(R.id.pb_loading);
         tvLoading = (TextView) findViewById(R.id.tv_loading);
-        if(value!=DaoMaster.NB_PAGES_API) {
+        if(value < DaoMaster.PROGRESS_MAX) {
             pbLoading.setProgress(value);
             DaoMaster.initDatabase(this);
-        }else {
+        } else {
             disableLoadingView();
-
         }
     }
     public void disableLoadingView(){
@@ -308,9 +307,10 @@ public class StartActivity extends Activity implements OnClickListener,SharedPre
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if(key.equals(this.getString(R.string.sp_loading_done)) && pbLoading!= null && pbLoading.getVisibility()==View.VISIBLE){
             int value = sharedPreferences.getInt(this.getString(R.string.sp_loading_done), 0);
-            if(value < DaoMaster.NB_PAGES_API){
+
+            if(value < DaoMaster.PROGRESS_MAX) {
                 pbLoading.setProgress(value);
-            }else{
+            } else {
                 disableLoadingView();
             }
         }

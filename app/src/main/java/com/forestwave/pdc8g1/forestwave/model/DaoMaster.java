@@ -26,9 +26,9 @@ import de.greenrobot.dao.identityscope.IdentityScopeType;
 
 public class DaoMaster extends AbstractDaoMaster {
 
+    public static final int PROGRESS_MAX = 800;
     public static final int SCHEMA_VERSION = 1000;
     private static final String TAG = "DaoMaster";
-    public static final int NB_PAGES_API = 17;
     public static HashMap<Long, Species> speciesKeys = new HashMap<>();
     public Context mContext= null;
 
@@ -59,6 +59,10 @@ public class DaoMaster extends AbstractDaoMaster {
         TreeDao treeDao = daoSession.getTreeDao();
         SpeciesDao speciesDao = daoSession.getSpeciesDao();
 
+        SharedPreferences sharedPref = mContext.getSharedPreferences(mContext.getString(R.string.sp_loading), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        int value = sharedPref.getInt(mContext.getString(R.string.sp_loading_done), 0);
+
         // Ajouter les species à la base de données
         Resources res = mContext.getResources();
         InputStream in1 = res.openRawResource(R.raw.species);
@@ -77,68 +81,54 @@ public class DaoMaster extends AbstractDaoMaster {
                 speciesDao.insert(species);
                 speciesKeys.put(id, species);
                 Log.d(TAG, "Insterting species " + id + " : " + name);
+
+                // Barre de progression
+                if (cpt%10 == 0) {
+                    value++;
+                    editor.putInt(mContext.getString(R.string.sp_loading_done), value);
+                    editor.commit();
+                    Log.d(TAG, "progessbar value : " + value);
+                }
             }
         } catch (Exception e) {
             Log.d("JSONException", e.getMessage());
         }
-        db.close();
-        for( int i = 1; i <= NB_PAGES_API; i++) {
-            String url = "http://rencontres-arbres.herokuapp.com/api/trees/?page="+Integer.toString(i);
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,new Response.Listener() {
-                @Override
-                public void onResponse(Object response) {
-                    DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mContext, "forestWaves-db", null);
-                    SQLiteDatabase db = helper.getWritableDatabase();
-                    DaoMaster daoMaster = new DaoMaster(db);
-                    DaoSession daoSession = daoMaster.newSession();
-                    TreeDao treeDao = daoSession.getTreeDao();
 
-                    JSONObject jTrees;
-                    try {
-                        jTrees = new JSONObject(response.toString());
+        // Ajouter les arbres
+        InputStream in = res.openRawResource(R.raw.trees);
+        String jsonTrees = convertStreamToString(in);
+        try {
+            JSONObject json = new JSONObject(jsonTrees);
+            for(int cpt = 0; cpt < json.getJSONArray("results").length(); cpt++) {
+                JSONObject jTree = new JSONObject(json.getJSONArray("results").get(cpt).toString());
 
-                        for(long cpt = 0; cpt < jTrees.getJSONArray("results").length(); cpt++) {
+                long speciesId = jTree.getLong("species_id");
+                Species species = speciesKeys.get(speciesId);
+                Integer height = jTree.getInt("height");
+                Double latitude = jTree.getDouble("latitude");
+                Double longitude = jTree.getDouble("longitude");
 
-                            JSONObject jTree = new JSONObject(jTrees.getJSONArray("results").get((int)cpt).toString());
-                            String speciesURL = jTree.getString("genre").substring(0, jTree.getString("genre").length()-1);
-                            long speciesId = Long.parseLong(speciesURL.substring(speciesURL.lastIndexOf("/")+1, speciesURL.length()));
-                            Species species = speciesKeys.get(speciesId);
-                            Integer height = jTree.getInt("height");
-                            Double latitude = jTree.getDouble("latitude");
-                            Double longitude = jTree.getDouble("longitude");
-                            if(species != null && latitude != null && longitude != null) {
-                                Tree tree = new Tree(null, species, height, latitude, longitude);
-                                treeDao.insert(tree);
-                                Log.d(TAG, "Tree inserted : speciesId : " + speciesId + ", " + species.getName());
-                            }
-                            if(species == null) {
-                                Log.d(TAG, "null speciesId : " + speciesId);
-                            }
-                        }
-                    } catch (JSONException e) {
-                        Log.d("JSONException", e.getMessage());
-                    }
-                    db.close();
-                    SharedPreferences sharedPref = mContext.getSharedPreferences(mContext.getString(R.string.sp_loading),Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    int value = sharedPref.getInt(mContext.getString(R.string.sp_loading_done), 0);
-                    editor.putInt(mContext.getString(R.string.sp_loading_done), value+1);
+                if(species != null && latitude != null && longitude != null) {
+                    Tree tree = new Tree(null, species, height, latitude, longitude);
+                    treeDao.insert(tree);
+                    Log.d(TAG, "Tree inserted : speciesId : " + speciesId + ", " + species.getName());
+                }
+                if(species == null) {
+                    Log.d(TAG, "null speciesId : " + speciesId);
+                }
+
+                // Barre de progression
+                if (cpt%10 == 0) {
+                    editor.putInt(mContext.getString(R.string.sp_loading_done), ++value);
                     editor.commit();
+                    Log.d(TAG, "progessbar value : " + value);
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("ERROR", error.toString());
-                }
-            });
+            }
 
-            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-            queue.add(stringRequest);
+        } catch (Exception e) {
+            Log.d("JSONException", e.getMessage());
         }
+        db.close();
     }
 
     public static abstract class OpenHelper extends SQLiteOpenHelper {
