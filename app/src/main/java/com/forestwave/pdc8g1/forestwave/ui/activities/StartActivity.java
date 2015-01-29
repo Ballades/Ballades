@@ -246,8 +246,8 @@ public class StartActivity extends Activity implements OnClickListener,SharedPre
             patchFile = IoUtils.extractResource(in20, "vocals.wav", getCacheDir());
 
 
-            InputStream in = res.openRawResource(R.raw.groovebox1r3);
-            patchFile = IoUtils.extractResource(in, "groovebox1r3.pd", getCacheDir());
+            InputStream in = res.openRawResource(R.raw.sample_player);
+            patchFile = IoUtils.extractResource(in, "sample_player.pd", getCacheDir());
             PdBase.openPatch(patchFile);
 
         } catch (IOException e) {
