@@ -1,9 +1,5 @@
 package com.forestwave.pdc8g1.forestwave.location;
 
-/**
- * Created by Quentin on 12/01/2015.
- */
-import android.app.Activity;
 import android.app.Service;
 import android.location.Location;
 import android.os.Bundle;
@@ -21,11 +17,8 @@ public class LocationProvider implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private static final long INTERVAL = 1000 * 2;
-    private static final long FASTEST_INTERVAL = 1000 * 5;
-    private static final long ONE_MIN = 1000 * 60;
-    private static final long REFRESH_TIME = ONE_MIN * 5;
-    private static final float MINIMUM_ACCURACY = 50.0f;
+    private static final long INTERVAL = 1400;
+    private static final long FASTEST_INTERVAL = 800;
 
     private Service service;
     private LocationRequest locationRequest;

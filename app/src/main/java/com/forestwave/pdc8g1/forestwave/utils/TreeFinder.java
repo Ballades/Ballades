@@ -50,7 +50,7 @@ public class TreeFinder implements Runnable {
             Log.d(TAG, "Latitude : " + latitude + ", Longitude : " + longitude);
             Query query = treeDao.queryBuilder().where(TreeDao.Properties.Latitude.between(latitude - 0.05, latitude + 0.05), TreeDao.Properties.Longitude.between(longitude - 0.01/76, longitude + 0.01/76)).build();
             List<Tree> trees = query.list();
-            //List<Tree> trees = getTestTrees(); //TEMP
+            //List<Tree> trees = getTestTrees(); //TEST
 
             Log.d(TAG, "Nombre d'arbres pris en compte : " + Integer.toString(trees.size()));
             Map<Integer, InfosTrees> desiredState = calculateDesiredState(trees, soundService.provider);
@@ -63,7 +63,7 @@ public class TreeFinder implements Runnable {
     /**
      * Renvoie deux arbres avec leur species pour les données de test
      */
-    private List<Tree> getTestTrees() { //TEMP
+    private List<Tree> getTestTrees() { //TEST
         ArrayList<Tree> testTrees = new ArrayList<>();
         Species species1 = new Species((long)1212121, "sequoya de la petite ile", 1, 100);
         Species species2 = new Species((long)1212122, "sequoya de la grande ile", 2, 100);
@@ -182,7 +182,7 @@ public class TreeFinder implements Runnable {
         {
             int track = entry.getKey();
             InfosTrees infos = entry.getValue();
-            double volume = Math.exp(Math.tanh(infos.getScore()))/Math.exp(1);
+            double volume = Math.tanh(infos.getScore());
 
             infos.setVolume(volume);
             if (volume < MIN_VOLUME) {
