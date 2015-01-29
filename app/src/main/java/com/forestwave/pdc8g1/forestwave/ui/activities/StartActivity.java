@@ -130,7 +130,7 @@ public class StartActivity extends Activity implements OnClickListener,SharedPre
         seekBarEquality = (SeekBar) findViewById(R.id.seekBarTempo);
         seekBarEquality.setMax(1200);
         seekBarEquality.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
+            int progress = 500;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
@@ -150,7 +150,7 @@ public class StartActivity extends Activity implements OnClickListener,SharedPre
         seekBarDistance = (SeekBar) findViewById(R.id.seekBarStyle);
         seekBarDistance.setMax(200);
         seekBarDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
+            int progress = 10;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
