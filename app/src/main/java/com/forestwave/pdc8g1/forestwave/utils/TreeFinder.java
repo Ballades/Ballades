@@ -23,7 +23,7 @@ import de.greenrobot.dao.query.Query;
 public class TreeFinder implements Runnable {
 
     private final static String TAG = "TreeFinder";
-    public final static double MIN_VOLUME = 0.1;
+    public final static double MIN_VOLUME = 0.01;
     public final static double DISTANCE_DETECTION_MAX = 0.0005;
     public final static Integer REFRESH_TIME_TREES = 750;
     public final static Integer PRIORITY_TREE_FINDER = 4;
@@ -193,6 +193,7 @@ public class TreeFinder implements Runnable {
             }
         }
 
+        // Supprimer les tracks trop silencieuses
         for (Integer trackTooQuietInteger: tracksTooQuiet) {
             infosByTrack.remove(trackTooQuietInteger);
         }
