@@ -60,6 +60,7 @@ public class ExpansionFileDownloaderActivity extends Activity implements IDownlo
     private TextView mTimeRemaining;
 
     private View mDashboard;
+    private View mDashboard2;
     private View mCellMessage;
 
     private Button mPauseButton;
@@ -173,6 +174,7 @@ public class ExpansionFileDownloaderActivity extends Activity implements IDownlo
             @Override
             protected void onPreExecute() {
                 mDashboard.setVisibility(View.VISIBLE);
+                mDashboard2.setVisibility(View.VISIBLE);
                 mCellMessage.setVisibility(View.GONE);
                 mStatusText.setText(R.string.text_verifying_download);
                 mPauseButton.setOnClickListener(new View.OnClickListener() {
@@ -296,6 +298,8 @@ public class ExpansionFileDownloaderActivity extends Activity implements IDownlo
             protected void onPostExecute(Boolean result) {
                 if (result) {
                     mDashboard.setVisibility(View.VISIBLE);
+                    mDashboard2.setVisibility(View.VISIBLE);
+
                     mCellMessage.setVisibility(View.GONE);
                     mStatusText.setText(R.string.text_validation_complete);
                     mPauseButton.setOnClickListener(new View.OnClickListener() {
@@ -308,6 +312,7 @@ public class ExpansionFileDownloaderActivity extends Activity implements IDownlo
                     mPauseButton.setText(android.R.string.ok);
                 } else {
                     mDashboard.setVisibility(View.VISIBLE);
+                    mDashboard2.setVisibility(View.VISIBLE);
                     mCellMessage.setVisibility(View.GONE);
                     mStatusText.setText(R.string.text_validation_failed);
                     mPauseButton.setOnClickListener(new View.OnClickListener() {
@@ -334,7 +339,7 @@ public class ExpansionFileDownloaderActivity extends Activity implements IDownlo
     private void initializeDownloadUI() {
         mDownloaderClientStub = DownloaderClientMarshaller.CreateStub
                 (this, MyDownloadService.class);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_download);
 
         mPB = (ProgressBar) findViewById(R.id.progressBar);
         mStatusText = (TextView) findViewById(R.id.statusText);
@@ -343,6 +348,8 @@ public class ExpansionFileDownloaderActivity extends Activity implements IDownlo
         mAverageSpeed = (TextView) findViewById(R.id.progressAverageSpeed);
         mTimeRemaining = (TextView) findViewById(R.id.progressTimeRemaining);
         mDashboard = findViewById(R.id.downloaderDashboard);
+        mDashboard2 = findViewById(R.id.downloaderDashboard2);
+
         mCellMessage = findViewById(R.id.approveCellular);
         mPauseButton = (Button) findViewById(R.id.pauseButton);
         mWiFiSettingsButton = (Button) findViewById(R.id.wifiSettingsButton);
@@ -549,6 +556,9 @@ public class ExpansionFileDownloaderActivity extends Activity implements IDownlo
         int newDashboardVisibility = showDashboard ? View.VISIBLE : View.GONE;
         if (mDashboard.getVisibility() != newDashboardVisibility) {
             mDashboard.setVisibility(newDashboardVisibility);
+        }
+        if (mDashboard2.getVisibility() != newDashboardVisibility) {
+            mDashboard2.setVisibility(newDashboardVisibility);
         }
         int cellMessageVisibility = showCellMessage ? View.VISIBLE : View.GONE;
         if (mCellMessage.getVisibility() != cellMessageVisibility) {

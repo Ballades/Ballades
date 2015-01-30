@@ -53,7 +53,7 @@ Version en Bêta : N\'hésitez pas à nous donnez vos impressions :-)
     <string name="state_paused_wifi_unavailable">Téléchargement en pause : wifi non disponible</string>
     <string name="state_paused_wifi_disabled">Téléchargement en pause : wifi désactivé</string>
     <string name="state_paused_roaming">Téléchargement en pause : connection itinérante détectée</string>
-    <string name="state_paused_sdcard_unavailable">Téléchargement échoué : le stockage externe n'est pas disponible</string>
+    <string name="state_paused_sdcard_unavailable">Téléchargement échoué : le stockage externe n\'est pas disponible</string>
     <string name="state_failed_unlicensed">Téléchargement échoué : licence non valide</string>
     <string name="state_failed_fetching_url">Téléchargement échoué : les musiques ne sont pas disponibles</string>
     <string name="state_failed_sdcard_full">Téléchargement échoué : le stockage est plein</string>
@@ -69,7 +69,7 @@ Version en Bêta : N\'hésitez pas à nous donnez vos impressions :-)
     <string name="text_button_resume_cellular">Reprendre le téléchargement</string>
     <string name="text_button_wifi_settings">Paramètres Wi-Fi</string>
     <string name="text_verifying_download">Vérification des données</string>
-    <string name="text_validation_complete">Données validées. Appuyez sur OK pour commencer l'expérience.</string>
+    <string name="text_validation_complete">Données validées. Appuyez sur OK pour commencer l\'expérience.</string>
     <string name="text_validation_failed">La validation des données a échoué.</string>
     <string name="text_button_pause">Pause</string>
     <string name="text_button_resume">Reprendre</string>
