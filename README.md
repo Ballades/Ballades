@@ -16,10 +16,7 @@ Pour les plus courageux vous pouvez aussi récupérez le code souce, le compiler
 
 Le fonctionnement de l'application sur émulateur n'est pas recommandé. 
 
-Vous aurez tout d'abord besoin des ressources musicales utilisées : téléchargez le zip suivant et décompressez le :
-https://drive.google.com/open?id=0B-r2j-k8ibLqWEVYUEcxTXVMRFk&authuser=0. Ce dossier (com.forestwave....) est à placer sur votre téléphone de test dans le dossier Android/obb/ de votre stockage interne. 
-
-Vous pouvez ensuite récupérer le projet sur la branche dev, l'ouvrir dans Android Studio V1.+ et l'éxécuter sur votre téléphone.
+Vous pouvez ensuite récupérer le projet sur la branche dev, l'ouvrir dans Android Studio V1.+ et l'éxécuter sur votre téléphone. Le téléchargement des données sonores se fera automatiquement au lancement de l'application.
 
 Si vous souhaitez plus d'informations sur l'application le wiki est à votre disposition.
 
