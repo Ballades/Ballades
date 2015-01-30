@@ -9,8 +9,8 @@
     <string name="tempo">Ajuster les options de son</string>
     <string name="sp_loading">"com.forestwave.pdc8g1.forestwave.sp_loading"</string>
     <string name="sp_loading_done">"com.forestwave.pdc8g1.forestwave.sp_loading_done"</string>
-    <string name="loading_message">Initialisation</string>
-
+    <string name="loading_message">Initialisation de la forêt</string>
+    <string name="loading_sounds">Chargement des sons</string>
     <string name="choose_SDDS">Ajuster le SDDS</string>
     <string name="choose_SEF">Ajuster le SEF</string>
 

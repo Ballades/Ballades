@@ -27,6 +27,8 @@ import com.forestwave.pdc8g1.forestwave.R;
 import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
 import com.forestwave.pdc8g1.forestwave.service.SoundService;
 import com.forestwave.pdc8g1.forestwave.ui.dialogs.AboutDialog;
+import com.forestwave.pdc8g1.forestwave.utils.InitDatabaseTask;
+import com.forestwave.pdc8g1.forestwave.utils.InitPDTask;
 
 import org.puredata.android.service.PdService;
 import org.puredata.core.PdBase;
@@ -37,7 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-public class StartActivity extends Activity implements OnClickListener,SharedPreferences.OnSharedPreferenceChangeListener{
+public class StartActivity extends Activity implements OnClickListener{
 
     private static final String TAG = "StartActivity";
 
@@ -58,8 +60,11 @@ public class StartActivity extends Activity implements OnClickListener,SharedPre
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             pdService = (SoundService) ((PdService.PdBinder)service).getService();
-            if(!pdService.isRunning()){
-                initPd(pdService.getApplicationContext());
+            if(!pdService.isRunning() && StartActivity.this!=null ){
+                StartActivity.this.pbLoading.setMax(21);
+                StartActivity.this.tvLoading.setText(R.string.loading_sounds);
+                InitPDTask initPDTask =new InitPDTask(StartActivity.this);
+                initPDTask.execute();
             }else if(play!=null){
                 play.setImageDrawable(getResources().getDrawable(R.drawable.ic_av_pause));
                 play.setPaddingRelative(0, 0, 0, 0);
@@ -173,19 +178,20 @@ public class StartActivity extends Activity implements OnClickListener,SharedPre
             }
         });
         SharedPreferences sharedPref = this.getSharedPreferences(this.getString(R.string.sp_loading), Context.MODE_PRIVATE);
-        sharedPref.registerOnSharedPreferenceChangeListener(this);
         SharedPreferences.Editor editor = sharedPref.edit();
-        int value = sharedPref.getInt(this.getString(R.string.sp_loading_done), 0);
+        int value = sharedPref.getInt(this.getString(R.string.sp_loading_done), DaoMaster.DATABASE_UNINITIALIZED);
+
         tvEquality = (TextView) findViewById(R.id.textViewStyle);
-        tvEquality.setText(getResources().getText(R.string.style) + " " + String.valueOf(seekBarDistance.getProgress()));
+        tvEquality.setText( String.valueOf(seekBarDistance.getProgress()));
         tvScore = (TextView) findViewById(R.id.tv_loading);
         pbLoading = (ProgressBar) findViewById(R.id.pb_loading);
         tvLoading = (TextView) findViewById(R.id.tv_loading);
-        if(value < DaoMaster.PROGRESS_MAX) {
+        if(value == DaoMaster.DATABASE_UNINITIALIZED) {
             pbLoading.setProgress(value);
-            DaoMaster.initDatabase(this);
+            InitDatabaseTask initDatabaseTask = new InitDatabaseTask(this);
+            initDatabaseTask.execute();
         } else {
-            disableLoadingView();
+           startSoundService();
         }
     }
     public void disableLoadingView(){
@@ -196,73 +202,12 @@ public class StartActivity extends Activity implements OnClickListener,SharedPre
         tvScore.setVisibility(View.VISIBLE);
         pbLoading.setVisibility(View.GONE);
         tvLoading.setVisibility(View.GONE);
+
+    }
+    public void startSoundService(){
         Intent serviceIntent = new Intent(this, SoundService.class);
         bindService(serviceIntent, pdConnection, BIND_AUTO_CREATE);
     }
-
-    // Initialize pd ressources : wav samples required and pd patches
-    private void initPd(Context appContext) {
-        Resources res = getResources();
-        File patchFile = null;
-        try {
-            PdBase.subscribe("android");
-            // Get a ZipResourceFile representing a merger of both the main and patch files
-            ZipResourceFile expansionFile = APKExpansionSupport.getAPKExpansionZipFile(appContext,
-                            3, 0);
-           // Get an input stream for a known file inside the expansion file ZIPs
-            InputStream in1 = expansionFile.getInputStream("acoustic_guitar.wav");
-            patchFile = IoUtils.extractResource(in1, "acoustic_guitar.wav", getCacheDir());
-            InputStream in2 = expansionFile.getInputStream("ballons.wav");
-            patchFile = IoUtils.extractResource(in2, "ballons.wav", getCacheDir());
-            InputStream in3 = expansionFile.getInputStream("banjo.wav");
-            patchFile = IoUtils.extractResource(in3, "banjo.wav", getCacheDir());
-            InputStream in4 = expansionFile.getInputStream("clarinet.wav");
-            patchFile = IoUtils.extractResource(in4, "clarinet.wav", getCacheDir());
-            InputStream in5 = expansionFile.getInputStream("ds.wav");
-            patchFile = IoUtils.extractResource(in5, "ds.wav", getCacheDir());
-            InputStream in6 = expansionFile.getInputStream("ebow.wav");
-            patchFile = IoUtils.extractResource(in6, "ebow.wav", getCacheDir());
-            InputStream in7 = expansionFile.getInputStream("electribe.wav");
-            patchFile = IoUtils.extractResource(in7, "electribe.wav", getCacheDir());
-            InputStream in8 = expansionFile.getInputStream("electric_bass.wav");
-            patchFile = IoUtils.extractResource(in8, "electric_bass.wav", getCacheDir());
-            InputStream in9 = expansionFile.getInputStream("flute_piano.wav");
-            patchFile = IoUtils.extractResource(in9, "flute_piano.wav", getCacheDir());
-            InputStream in10 = expansionFile.getInputStream("guitar.wav");
-            patchFile = IoUtils.extractResource(in10, "guitar.wav", getCacheDir());
-            InputStream in11 = expansionFile.getInputStream("harmon_trumpet.wav");
-            patchFile = IoUtils.extractResource(in11, "harmon_trumpet.wav", getCacheDir());
-            InputStream in12 = expansionFile.getInputStream("information.wav");
-            patchFile = IoUtils.extractResource(in12, "information.wav", getCacheDir());
-            InputStream in13 = expansionFile.getInputStream("love.wav");
-            patchFile = IoUtils.extractResource(in13, "love.wav", getCacheDir());
-            InputStream in14 = expansionFile.getInputStream("mallet.wav");
-            patchFile = IoUtils.extractResource(in14, "mallet.wav", getCacheDir());
-            InputStream in15 = expansionFile.getInputStream("omnichord_qchord.wav");
-            patchFile = IoUtils.extractResource(in15, "omnichord_qchord.wav", getCacheDir());
-            InputStream in16 = expansionFile.getInputStream("pad_synth.wav");
-            patchFile = IoUtils.extractResource(in16, "pad_synth.wav", getCacheDir());
-            InputStream in17 = expansionFile.getInputStream("piano_tender.wav");
-            patchFile = IoUtils.extractResource(in17, "piano_tender.wav", getCacheDir());
-            InputStream in18 = expansionFile.getInputStream("rhodes.wav");
-            patchFile = IoUtils.extractResource(in18, "rhodes.wav", getCacheDir());
-            InputStream in19 = expansionFile.getInputStream("strings.wav");
-            patchFile = IoUtils.extractResource(in19, "strings.wav", getCacheDir());
-            InputStream in20 = expansionFile.getInputStream("vocals.wav");
-            patchFile = IoUtils.extractResource(in20, "vocals.wav", getCacheDir());
-
-            InputStream in = res.openRawResource(R.raw.sample_player);
-            patchFile = IoUtils.extractResource(in, "sample_player.pd", getCacheDir());
-            PdBase.openPatch(patchFile);
-
-        } catch (IOException e) {
-            Log.e(TAG, e.toString());
-            finish();
-        } finally {
-            if (patchFile != null) patchFile.delete();
-        }
-    }
-
     private void startAudio() {
         String name = getResources().getString(R.string.app_name);
         try {
@@ -307,18 +252,11 @@ public class StartActivity extends Activity implements OnClickListener,SharedPre
                 break;
         }
     }
-
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(this.getString(R.string.sp_loading_done)) && pbLoading!= null && pbLoading.getVisibility()==View.VISIBLE){
-            int value = sharedPreferences.getInt(this.getString(R.string.sp_loading_done), 0);
-
-            if(value < DaoMaster.PROGRESS_MAX) {
-                pbLoading.setProgress(value);
-            } else {
-                disableLoadingView();
-            }
+    public void updateProgress(int progress){
+        if(pbLoading!=null && pbLoading.getVisibility()==View.VISIBLE) {
+            pbLoading.setProgress(progress);
         }
     }
+
+
 }

@@ -55,7 +55,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/style"
         android:id="@+id/textViewStyle"
         android:layout_gravity="center_horizontal"
         android:visibility="gone"
@@ -75,7 +74,7 @@
         android:backgroundTintMode="screen"
         android:background="@drawable/ripple"
         android:stateListAnimator="@anim/fab_anim"
-        android:visibility="visible"
+        android:visibility="gone"
         />
 
 </RelativeLayout>
