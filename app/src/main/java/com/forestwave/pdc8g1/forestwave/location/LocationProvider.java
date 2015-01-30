@@ -17,7 +17,7 @@ public class LocationProvider implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private static final long INTERVAL = 1400;
+    private static final long INTERVAL = 1000;
     private static final long FASTEST_INTERVAL = 800;
 
     private Service service;

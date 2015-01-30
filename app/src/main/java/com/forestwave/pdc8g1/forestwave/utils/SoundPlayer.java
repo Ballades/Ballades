@@ -13,10 +13,13 @@ import java.util.Map;
 public class SoundPlayer implements Runnable {
 
     private final static String TAG = "SoundPlayer";
+    public final static Integer REFRESH_TIME_SOUND = 25;
+    public final static Integer PRIORITY_SOUND_PLAYER = 7;
     private SoundService soundService;
 
     public SoundPlayer(SoundService service) {
         this.soundService = service;
+        Thread.currentThread().setPriority(PRIORITY_SOUND_PLAYER);
     }
 
     @Override
@@ -69,20 +72,10 @@ public class SoundPlayer implements Runnable {
             // Mettre à jour le actualState
             soundService.setActualState(desiredState);
         }
-        soundService.handler.postDelayed(this, 500);
+        soundService.handler.postDelayed(this, REFRESH_TIME_SOUND);
     }
 
     /**
-<<<<<<< Updated upstream
-=======
-     * Applique l'état désiré sur la sortie sonore (mode ambient)
-     */
-    private void applyDesiredState() {
-
-    }
-
-    /**
->>>>>>> Stashed changes
      * Calcule les valeurs à mettre dans les sorties droites et gauche pour simuler l'angle voulu,
      * à partir d'une position
      */
