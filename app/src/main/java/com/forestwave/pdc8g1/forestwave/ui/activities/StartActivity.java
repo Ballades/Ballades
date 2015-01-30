@@ -138,6 +138,7 @@ public class StartActivity extends Activity implements OnClickListener{
         // Debug uniquement, cachées sinon
         seekBarEquality = (SeekBar) findViewById(R.id.seekBarTempo);
         seekBarEquality.setMax(SoundService.SPECIES_EQUALITY_FACTOR*2);
+        seekBarEquality.setProgress(SoundService.SPECIES_EQUALITY_FACTOR);
         seekBarEquality.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = SoundService.SPECIES_EQUALITY_FACTOR;
 
@@ -158,6 +159,7 @@ public class StartActivity extends Activity implements OnClickListener{
         });
         seekBarDistance = (SeekBar) findViewById(R.id.seekBarStyle);
         seekBarDistance.setMax(SoundService.SOUND_DISTANCE_DECREASE_SLOWNESS*2);
+        seekBarDistance.setProgress(SoundService.SOUND_DISTANCE_DECREASE_SLOWNESS);
         seekBarDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = SoundService.SOUND_DISTANCE_DECREASE_SLOWNESS;
 
@@ -195,20 +197,22 @@ public class StartActivity extends Activity implements OnClickListener{
            startSoundService();
         }
     }
+
     public void disableLoadingView(){
         play.setVisibility(View.VISIBLE);
-        seekBarEquality.setVisibility(View.VISIBLE);
-        seekBarDistance.setVisibility(View.VISIBLE);
-        tvEquality.setVisibility(View.VISIBLE);
-        tvScore.setVisibility(View.VISIBLE);
+        seekBarEquality.setVisibility(View.GONE);
+        seekBarDistance.setVisibility(View.GONE);
+        tvEquality.setVisibility(View.GONE);
+        tvScore.setVisibility(View.GONE);
         pbLoading.setVisibility(View.GONE);
         tvLoading.setVisibility(View.GONE);
-
     }
+
     public void startSoundService(){
         Intent serviceIntent = new Intent(this, SoundService.class);
         bindService(serviceIntent, pdConnection, BIND_AUTO_CREATE);
     }
+
     private void startAudio() {
         String name = getResources().getString(R.string.app_name);
         try {
