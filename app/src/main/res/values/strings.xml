@@ -4,6 +4,7 @@
     <string name="app_name">Ballades</string>
 
     <string name="action_about">A propos</string>
+    <string name="action_how_to">Conseils d\'utilisation</string>
     <string name="action_contact">Contactez nous</string>
 
     <string name="tempo">Ajuster les options de son</string>
@@ -11,22 +12,29 @@
     <string name="sp_loading_done">"com.forestwave.pdc8g1.forestwave.sp_loading_done"</string>
     <string name="loading_message">Initialisation de la forêt</string>
     <string name="loading_sounds">Chargement des sons</string>
-    <string name="choose_SDDS">Ajuster le SDDS</string>
-    <string name="choose_SEF">Ajuster le SEF</string>
+    <string name="choose_SDDS">Ajuster le SOUND_DISTANCE_DECREASE_SLOWNESS</string>
+    <string name="choose_SEF">Ajuster le SPECIES_EQUALITY_FACTOR</string>
 
-    <string name="about_dialog_content">Ballades est une application d\'expériences sonores. Muni de vos écouteurs dans le parc de la tête d\'Or, vous entendrez pour chaque arbre autour de vous un son. L\'ensemble de la forêt créera pour vous une ambiance relaxante, un paysage sonore unique.
-
+    <string name="about_dialog_content">Ballades est une application d\'expériences sonores. Muni de vos écouteurs dans le parc de la tête d\'Or, vous entendrez pour chaque arbre autour de vous un son. \n\n L\'ensemble de la forêt créera pour vous une ambiance relaxante, un paysage sonore unique.
+\n\n
 Branchez vos écouteurs et laissez-vous guider par le son !
-
-L\'ambiance que vous entendrez dépendra directement de votre position, au bord d\'une forêt de pin ou au milieu des Hêtres. Sentez votre environnement évoluer au fur et à mesure de vos déplacements.
-
--- Ne fonctionne qu\'au Parc de la tête d\'Or, à Lyon --
-
+\n\n
+L\'ambiance que vous entendrez dépendra directement de votre position, au bord d\'une forêt de pins ou au milieu de hêtres. Sentez votre environnement évoluer au fur et à mesure de vos déplacements.
+\n\n
+— Ne fonctionne qu\'au Parc de la tête d\'Or, à Lyon —
+\n\n
 Version en Bêta : N\'hésitez pas à nous donnez vos impressions :-)
-</string>
+    </string>
+    <string name="how_to_dialog_content">• Rendez-vous à l\'intérieur du Parc de la Tête d\'Or, à Lyon, à moins de 10m de quelques arbres,\n
+• Branchez vos écouteurs à votre téléphone, et augmentez le volume,\n
+• Placez le téléphone face à vous, et gardez le pointé vers l\'avant (vous pouvez éteindre l\'écran),\n
+• Appuyez sur le bouton de lecture, et laissez-vous guider par le son !
+    </string>
 
     <string name="about_dialog_title">A propos</string>
     <string name="about_dialog_validate">Ok</string>
+    <string name="how_to_dialog_title">Conseils d\'utilisation</string>
+    <string name="how_to_dialog_validate">Ok</string>
     <!-- When a download completes, a notification is displayed, and this
           string is used to indicate that the download successfully completed.
           Note that such a download could have been initiated by a variety of
@@ -76,5 +84,7 @@ Version en Bêta : N\'hésitez pas à nous donnez vos impressions :-)
     <string name="text_button_cancel">Annuler</string>
     <string name="text_button_cancel_verify">Annuler la vérification</string>
     <string name="download_activity_title">Téléchargement</string>
+
+    <string name="play_button">Commencer l\'expérience</string>
 
 </resources>
