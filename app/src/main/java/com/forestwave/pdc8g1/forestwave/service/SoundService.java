@@ -1,10 +1,13 @@
 package com.forestwave.pdc8g1.forestwave.service;
 
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.forestwave.pdc8g1.forestwave.location.LocationProvider;
@@ -76,10 +79,27 @@ public class SoundService extends PdService implements SensorEventListener {
             handler = new Handler();
             final SoundPlayer soundPlayer =new SoundPlayer(this);
             handler.post(soundPlayer);
+            initSystemServices();
+
         }
         else{
             Log.v("LocationTest", "Play Services unavailable, " +GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()));
         }
+    }
+
+    private void initSystemServices() {
+        TelephonyManager telephonyManager =  (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        telephonyManager.listen(new PhoneStateListener() {
+            @Override
+            public void onCallStateChanged(int state, String incomingNumber) {
+                if (this == null) return;
+                if (state == TelephonyManager.CALL_STATE_IDLE) {
+                    //TODO: restart properly
+                } else {
+                    stopAudio();
+                }
+            }
+        }, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
     @Override
