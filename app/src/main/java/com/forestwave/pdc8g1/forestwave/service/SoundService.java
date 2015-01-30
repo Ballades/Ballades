@@ -124,6 +124,7 @@ public class SoundService extends PdService implements SensorEventListener {
             float azimuthInRadians = mOrientation[0];
             float azimuthInDegress = (float)(Math.toDegrees(azimuthInRadians)+360)%360;
             mCurrentDegree = azimuthInDegress;
+            Log.v(TAG, "mCurrentDegree : " + mCurrentDegree);
         }
     }
 

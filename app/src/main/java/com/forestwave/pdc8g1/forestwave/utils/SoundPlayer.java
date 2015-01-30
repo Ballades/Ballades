@@ -13,7 +13,7 @@ import java.util.Map;
 public class SoundPlayer implements Runnable {
 
     private final static String TAG = "SoundPlayer";
-    public final static Integer REFRESH_TIME_SOUND = 25;
+    public final static Integer REFRESH_TIME_SOUND = 39;
     public final static Integer PRIORITY_SOUND_PLAYER = 7;
     private SoundService soundService;
 
