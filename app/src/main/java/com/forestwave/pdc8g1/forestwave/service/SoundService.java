@@ -32,7 +32,7 @@ public class SoundService extends PdService implements SensorEventListener {
 
     public static int SPECIES_EQUALITY_FACTOR = 750;
     public static int SCORE_FACILITY = 500;
-    public static int SOUND_DISTANCE_DEACREASE_SLOWNESS = 15;
+    public static int SOUND_DISTANCE_DECREASE_SLOWNESS = 15;
 
     public Map<Integer, InfosTrees> desiredState = new HashMap<>();
     public Map<Integer, InfosTrees> actualState = new HashMap<>();
@@ -124,7 +124,7 @@ public class SoundService extends PdService implements SensorEventListener {
             float azimuthInRadians = mOrientation[0];
             float azimuthInDegress = (float)(Math.toDegrees(azimuthInRadians)+360)%360;
             mCurrentDegree = azimuthInDegress;
-            Log.v(TAG, "mCurrentDegree : " + mCurrentDegree);
+            //Log.v(TAG, "mCurrentDegree : " + mCurrentDegree);
         }
     }
 

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
@@ -21,22 +20,18 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.vending.expansion.zipfile.APKExpansionSupport;
-import com.android.vending.expansion.zipfile.ZipResourceFile;
 import com.forestwave.pdc8g1.forestwave.R;
 import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
 import com.forestwave.pdc8g1.forestwave.service.SoundService;
 import com.forestwave.pdc8g1.forestwave.ui.dialogs.AboutDialog;
+import com.forestwave.pdc8g1.forestwave.ui.dialogs.HowToDialog;
 import com.forestwave.pdc8g1.forestwave.utils.InitDatabaseTask;
 import com.forestwave.pdc8g1.forestwave.utils.InitPDTask;
 
 import org.puredata.android.service.PdService;
 import org.puredata.core.PdBase;
-import org.puredata.core.utils.IoUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 
 public class StartActivity extends Activity implements OnClickListener{
@@ -109,6 +104,10 @@ public class StartActivity extends Activity implements OnClickListener{
                 AboutDialog dialog = new AboutDialog();
                 dialog.show(getFragmentManager(),"AboutDialog");
                 return true;
+            case R.id.action_how_to:
+                HowToDialog dialog2 = new HowToDialog();
+                dialog2.show(getFragmentManager(),"HowToDialog");
+                return true;
             case R.id.action_contact:
                 String[] TO = {"contact@ballad.es"};
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
@@ -135,15 +134,18 @@ public class StartActivity extends Activity implements OnClickListener{
         setContentView(R.layout.activity_start);
         play = (ImageButton) findViewById(R.id.play_button);
         play.setOnClickListener(this);
+
+        // Debug uniquement, cachées sinon
         seekBarEquality = (SeekBar) findViewById(R.id.seekBarTempo);
-        seekBarEquality.setMax(1200);
+        seekBarEquality.setMax(SoundService.SPECIES_EQUALITY_FACTOR*2);
+        seekBarEquality.setProgress(SoundService.SPECIES_EQUALITY_FACTOR);
         seekBarEquality.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 500;
+            int progress = SoundService.SPECIES_EQUALITY_FACTOR;
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                progress = progresValue;
-                SoundService.SPECIES_EQUALITY_FACTOR = progresValue;
+            public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
+                progress = progressValue;
+                SoundService.SPECIES_EQUALITY_FACTOR = progressValue;
                 tvEquality.setText(getResources().getText(R.string.choose_SEF) + " " + String.valueOf(progress));
             }
 
@@ -156,15 +158,16 @@ public class StartActivity extends Activity implements OnClickListener{
             }
         });
         seekBarDistance = (SeekBar) findViewById(R.id.seekBarStyle);
-        seekBarDistance.setMax(200);
+        seekBarDistance.setMax(SoundService.SOUND_DISTANCE_DECREASE_SLOWNESS*2);
+        seekBarDistance.setProgress(SoundService.SOUND_DISTANCE_DECREASE_SLOWNESS);
         seekBarDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 10;
+            int progress = SoundService.SOUND_DISTANCE_DECREASE_SLOWNESS;
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                progress = progresValue;
+            public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
+                progress = progressValue;
                 tvEquality.setText(getResources().getText(R.string.choose_SDDS) + " " + String.valueOf(progress));
-                SoundService.SOUND_DISTANCE_DEACREASE_SLOWNESS = progresValue;
+                SoundService.SOUND_DISTANCE_DECREASE_SLOWNESS = progressValue;
             }
 
             @Override
@@ -194,20 +197,22 @@ public class StartActivity extends Activity implements OnClickListener{
            startSoundService();
         }
     }
+
     public void disableLoadingView(){
         play.setVisibility(View.VISIBLE);
-        seekBarEquality.setVisibility(View.VISIBLE);
-        seekBarDistance.setVisibility(View.VISIBLE);
-        tvEquality.setVisibility(View.VISIBLE);
-        tvScore.setVisibility(View.VISIBLE);
+        seekBarEquality.setVisibility(View.GONE);
+        seekBarDistance.setVisibility(View.GONE);
+        tvEquality.setVisibility(View.GONE);
+        tvScore.setVisibility(View.GONE);
         pbLoading.setVisibility(View.GONE);
         tvLoading.setVisibility(View.GONE);
-
     }
+
     public void startSoundService(){
         Intent serviceIntent = new Intent(this, SoundService.class);
         bindService(serviceIntent, pdConnection, BIND_AUTO_CREATE);
     }
+
     private void startAudio() {
         String name = getResources().getString(R.string.app_name);
         try {

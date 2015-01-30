@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/image">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,6 +16,8 @@
             android:id="@+id/statusText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@android:style/TextAppearance.DeviceDefault"
+            android:textColor="@color/element_bright"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
@@ -33,8 +37,10 @@
 
                 <TextView
                     android:id="@+id/progressAsFraction"
-                    style="@android:style/TextAppearance.Small"
+                    style="@android:style/TextAppearance.DeviceDefault"
+                    android:textColor="@color/element_bright"
                     android:layout_width="wrap_content"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"
@@ -43,7 +49,9 @@
 
                 <TextView
                     android:id="@+id/progressAsPercentage"
-                    style="@android:style/TextAppearance.Small"
+                    style="@android:style/TextAppearance.DeviceDefault"
+                    android:textColor="@color/element_bright"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@+id/progressBar"
@@ -63,16 +71,20 @@
 
                 <TextView
                     android:id="@+id/progressAverageSpeed"
-                    style="@android:style/TextAppearance.Small"
+                    style="@android:style/TextAppearance.DeviceDefault"
+                    android:textColor="@color/element_bright"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:visibility="gone"
                     android:layout_below="@+id/progressBar"
                     android:layout_marginLeft="5dp" />
 
                 <TextView
                     android:id="@+id/progressTimeRemaining"
-                    style="@android:style/TextAppearance.Small"
+                    style="@android:style/TextAppearance.DeviceDefault"
+                    android:textColor="@color/element_bright"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@+id/progressBar"
@@ -91,10 +103,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/background_button"
                     android:layout_weight="0"
+                    android:padding="10dp"
                     android:minHeight="40dp"
                     android:minWidth="94dp"
                     android:text="@string/text_button_pause" />
@@ -109,6 +123,9 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="0"
+                    android:padding="10dp"
+                    android:drawable="@color/primary_dark"
+                    android:background="@drawable/background_button"
                     android:minHeight="40dp"
                     android:minWidth="94dp"
                     android:text="@string/text_button_cancel"
@@ -129,15 +146,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:textColor="@color/element_bright"
+            style="@android:style/TextAppearance.DeviceDefault.Large"
             android:id="@+id/textPausedParagraph1"
             android:text="@string/text_paused_cellular" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:id="@+id/textPausedParagraph2"
-            android:text="@string/text_paused_cellular_2" />
 
         <LinearLayout
             android:id="@+id/buttonRow"
@@ -151,14 +163,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
+                android:padding="10dp"
+                android:background="@drawable/background_button"
                 android:text="@string/text_button_resume_cellular" />
 
             <Button
                 android:id="@+id/wifiSettingsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
+                android:background="@drawable/background_button"
                 android:text="@string/text_button_wifi_settings" />
             </LinearLayout>
     </LinearLayout>

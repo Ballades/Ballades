@@ -309,7 +309,7 @@ public class ExpansionFileDownloaderActivity extends Activity implements IDownlo
                             finish();
                         }
                     });
-                    mPauseButton.setText(android.R.string.ok);
+                    mPauseButton.setText(R.string.play_button);
                 } else {
                     mDashboard.setVisibility(View.VISIBLE);
                     mDashboard2.setVisibility(View.VISIBLE);
