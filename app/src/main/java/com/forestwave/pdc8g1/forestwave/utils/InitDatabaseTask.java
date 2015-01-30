@@ -1,6 +1,5 @@
 package com.forestwave.pdc8g1.forestwave.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -22,9 +21,6 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.util.HashMap;
 
-/**
- * Created by Sylvain on 30/01/15.
- */
 public class InitDatabaseTask extends AsyncTask<Void, Integer, Long> {
     private static final String TAG="InitDatabaseTask";
     private HashMap<Long, Species> speciesKeys = new HashMap<>();
