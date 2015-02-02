@@ -32,7 +32,7 @@ public class SoundService extends PdService implements SensorEventListener {
 
     public static int SPECIES_EQUALITY_FACTOR = 500;
     public static int SCORE_FACILITY = 500;
-    public static int SOUND_DISTANCE_DECREASE_SLOWNESS = 15;
+    public static int SOUND_DISTANCE_DECREASE_SLOWNESS = 50;
 
     public Map<Integer, InfosTrees> desiredState = new HashMap<>();
     public Map<Integer, InfosTrees> actualState = new HashMap<>();

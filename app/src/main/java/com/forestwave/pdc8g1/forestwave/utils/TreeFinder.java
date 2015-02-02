@@ -23,7 +23,7 @@ import de.greenrobot.dao.query.Query;
 public class TreeFinder implements Runnable {
 
     private final static String TAG = "TreeFinder";
-    public final static double MIN_VOLUME = 0.01;
+    public final static double MIN_VOLUME = 0.02;
     public final static double DISTANCE_DETECTION_MAX = 0.0005;
     public final static Integer REFRESH_TIME_TREES = 750;
     public final static Integer PRIORITY_TREE_FINDER = 4;
@@ -132,7 +132,7 @@ public class TreeFinder implements Runnable {
         Location userLocation = soundService.provider.getLocation();
         double distance = tree.getDistance(userLocation.getLatitude(), userLocation.getLongitude());
         Log.d(TAG, "SDDS distance : " + distance);
-        double score = SoundService.SOUND_DISTANCE_DECREASE_SLOWNESS *SoundService.SCORE_FACILITY/(distance*distance*distance*distance+SoundService.SOUND_DISTANCE_DECREASE_SLOWNESS);
+        double score = SoundService.SOUND_DISTANCE_DECREASE_SLOWNESS *SoundService.SCORE_FACILITY/(distance*distance*distance*distance*distance+SoundService.SOUND_DISTANCE_DECREASE_SLOWNESS);
         Log.d(TAG, "SDDS score : " + score);
         return score;
     }

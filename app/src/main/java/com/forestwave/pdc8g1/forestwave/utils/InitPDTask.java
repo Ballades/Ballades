@@ -30,7 +30,7 @@ import java.util.HashMap;
 public class InitPDTask extends AsyncTask<Void, Integer, Long> {
     private static final String TAG="InitDatabaseTask";
     private StartActivity mStartActivity;
-    public static final int MAIN_VERSION = 6;
+    public static final int MAIN_VERSION = 3;
     public static final long MAIN_SIZE = 73171756L;
 
     public InitPDTask(StartActivity startActivity){
