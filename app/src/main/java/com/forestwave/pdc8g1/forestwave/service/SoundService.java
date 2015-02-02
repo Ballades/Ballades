@@ -30,7 +30,7 @@ public class SoundService extends PdService implements SensorEventListener {
     public LocationProvider provider;
     public Handler handler;
 
-    public static int SPECIES_EQUALITY_FACTOR = 750;
+    public static int SPECIES_EQUALITY_FACTOR = 500;
     public static int SCORE_FACILITY = 500;
     public static int SOUND_DISTANCE_DECREASE_SLOWNESS = 15;
 
