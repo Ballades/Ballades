@@ -2,11 +2,9 @@
 <resources>
 
     <string name="app_name">Ballades</string>
-
     <string name="action_about">À propos</string>
     <string name="action_how_to">Conseils d\'utilisation</string>
     <string name="action_contact">Contactez nous</string>
-
     <string name="tempo">Ajuster les options de son</string>
     <string name="sp_loading">"com.forestwave.pdc8g1.forestwave.sp_loading"</string>
     <string name="sp_loading_done">"com.forestwave.pdc8g1.forestwave.sp_loading_done"</string>
@@ -23,32 +21,50 @@ L\'ambiance que vous entendrez dépendra directement de votre position, au bord 
 \n\n
 — Ne fonctionne qu\'au Parc de la tête d\'Or, à Lyon —
 \n\n
-Version en Bêta : N\'hésitez pas à nous donnez vos impressions :-)
-    </string>
+Version en Bêta : N\'hésitez pas à nous donnez vos impressions :-)</string>
+    <string name="about_dialog_title">À propos</string>
+    <string name="about_dialog_validate">Ok</string>
+
     <string name="how_to_dialog_content">• Rendez-vous à l\'intérieur du Parc de la Tête d\'Or, à Lyon, à moins de 10m de quelques arbres,\n
 • Branchez vos écouteurs à votre téléphone, et augmentez le volume,\n
 • Placez le téléphone face à vous, et gardez le pointé vers l\'avant (vous pouvez éteindre l\'écran),\n
-• Appuyez sur le bouton de lecture, et laissez-vous guider par le son !
-    </string>
-
-    <string name="about_dialog_title">À propos</string>
-    <string name="about_dialog_validate">Ok</string>
+• Appuyez sur le bouton de lecture, et laissez-vous guider par le son !</string>
     <string name="how_to_dialog_title">Conseils d\'utilisation</string>
     <string name="how_to_dialog_validate">Ok</string>
-    <!-- When a download completes, a notification is displayed, and this
+
+    <string name="no_location_dialog_content">Bonjour, il semblerait que votre GPS ne fonctionne pas correctement.\n\nVérifiez que celui-ci fonctionne correctement pour continuer.</string>
+    <string name="no_location_dialog_title">GPS non-fonctionnel</string>
+    <string name="no_location_dialog_change">Aller aux Paramètres</string>
+    <string name="no_location_dialog_cancel">Annuler</string>
+
+    <string name="wrong_location_dialog_content">Bonjour ! Il semblerait que vous n\'êtes pas actuellement dans le Parc de la tête d\'Or, à Lyon.\n\n
+        L\'application Ballades ne fonctionne qu\'à cet endroit !\n\n
+        Rendez-vous là bas pour découvrir le chant de ses abrbres :)</string>
+    <string name="wrong_location_dialog_title">Vous n\'êtes pas dans le Parc</string>
+    <string name="wrong_location_dialog_validate">Ok</string>
+
+    <string name="no_GPS_dialog_content">Bonjour, il semblerait que votre GPS ne soit pas allumé !\n\nAllumez-le pour bénéficier d\'une localisation plus précise :)</string>
+    <string name="no_GPS_dialog_title">GPS non-allumé</string>
+    <string name="no_GPS_dialog_change">Aller aux Paramètres</string>
+    <string name="no_GPS_dialog_cancel">Retour</string>
+
+    <!--
+         When a download completes, a notification is displayed, and this
           string is used to indicate that the download successfully completed.
           Note that such a download could have been initiated by a variety of
           applications, including (but not limited to) the browser, an email
-          application, a content marketplace. -->
+          application, a content marketplace.
+    -->
     <string name="notification_download_complete">Récupération réussie</string>
 
-    <!-- When a download completes, a notification is displayed, and this
+    <!--
+         When a download completes, a notification is displayed, and this
         string is used to indicate that the download failed.
         Note that such a download could have been initiated by a variety of
         applications, including (but not limited to) the browser, an email
-        application, a content marketplace. -->
+        application, a content marketplace.
+    -->
     <string name="notification_download_failed">Récupération échouée</string>
-
     <string name="state_unknown">Démarrage…</string>
     <string name="state_idle">En attente du démarrage de la récupération</string>
     <string name="state_fetching_url">Recherche des musiques…</string>
@@ -67,11 +83,9 @@ Version en Bêta : N\'hésitez pas à nous donnez vos impressions :-)
     <string name="state_failed_sdcard_full">Récupération échouéeé : le stockage est plein</string>
     <string name="state_failed_cancelled">Récupération annulée</string>
     <string name="state_failed">Récupération échouée</string>
-
     <string name="kilobytes_per_second">%1$s KB/s</string>
     <string name="time_remaining">Temps restant : %1$s</string>
     <string name="time_remaining_notification">%1$s restantes</string>
-
     <string name="text_paused_cellular">Voulez-vous récupérer les musiques avec votre connexion actuelle, ou attendre d\'être connecté en Wi-Fi ? (~60Mo)</string>
     <string name="text_button_resume_cellular">Connexion actuelle</string>
     <string name="text_button_wifi_settings">Wi-Fi</string>
@@ -83,7 +97,7 @@ Version en Bêta : N\'hésitez pas à nous donnez vos impressions :-)
     <string name="text_button_cancel">Annuler</string>
     <string name="text_button_cancel_verify">Annuler la vérification</string>
     <string name="download_activity_title">Récupération des musiques</string>
-
     <string name="play_button">Commencer</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -78,6 +78,23 @@ public class LocationProvider implements
         }
     }
 
+    /**
+     * Retourne 1 si l'utilisateur est localisé dans le parc de la tête d'or, 2 si à l'extérieur, 3 si la location est nulle
+     * @return
+     */
+    public int userIsInParc() {
+
+        if (location == null) {
+            return 3;
+        }
+        if (location.getLatitude() < 45.785866 || location.getLatitude() > 45.770467
+         || location.getLongitude() < 4.860543 || location.getLongitude() > 4.843018) {
+            return 2;
+        }
+
+        return 1;
+    }
+
     public Location getLocation() {
         return this.location;
     }

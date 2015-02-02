@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
@@ -25,6 +26,9 @@ import com.forestwave.pdc8g1.forestwave.model.DaoMaster;
 import com.forestwave.pdc8g1.forestwave.service.SoundService;
 import com.forestwave.pdc8g1.forestwave.ui.dialogs.AboutDialog;
 import com.forestwave.pdc8g1.forestwave.ui.dialogs.HowToDialog;
+import com.forestwave.pdc8g1.forestwave.ui.dialogs.NoGPSDialog;
+import com.forestwave.pdc8g1.forestwave.ui.dialogs.NoLocationDialog;
+import com.forestwave.pdc8g1.forestwave.ui.dialogs.WrongLocationDialog;
 import com.forestwave.pdc8g1.forestwave.utils.InitDatabaseTask;
 import com.forestwave.pdc8g1.forestwave.utils.InitPDTask;
 
@@ -242,26 +246,49 @@ public class StartActivity extends Activity implements OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.play_button:
-                if (pdService.isRunning()) {
-                    stopAudio();
-                    play.setImageDrawable(getResources().getDrawable(R.drawable.ic_av_play_arrow));
-                    float scale = getResources().getDisplayMetrics().density;
-                    int dpAsPixels = (int) (6*scale + 0.5f);
-                    play.setPaddingRelative(dpAsPixels,0,0,0);
-                } else {
-                    startAudio();
-                    play.setImageDrawable(getResources().getDrawable(R.drawable.ic_av_pause));
-                    play.setPaddingRelative(0, 0, 0, 0);
-                }
+                    if (pdService.isRunning()) {
+                        stopAudio();
+                        play.setImageDrawable(getResources().getDrawable(R.drawable.ic_av_play_arrow));
+                        float scale = getResources().getDisplayMetrics().density;
+                        int dpAsPixels = (int) (6 * scale + 0.5f);
+                        play.setPaddingRelative(dpAsPixels, 0, 0, 0);
+                    } else {
+                        startAudio();
+                        play.setImageDrawable(getResources().getDrawable(R.drawable.ic_av_pause));
+                        play.setPaddingRelative(0, 0, 0, 0);
+
+                        this.sendWarningMessages();
+                    }
             default:
                 break;
         }
     }
+
     public void updateProgress(int progress){
         if(pbLoading!=null && pbLoading.getVisibility()==View.VISIBLE) {
             pbLoading.setProgress(progress);
         }
     }
 
+    /**
+     * Envoie si besoin est les messages d'avertissements liés au GPS et à la position de l'utilisateur
+     */
+    private void sendWarningMessages() {
+        if (pdService.provider.userIsInParc() < 1) {
+            if (pdService.provider.userIsInParc() == 3) {
+                NoLocationDialog dialog = new NoLocationDialog();
+                dialog.show(getFragmentManager(), "NoLocationDialog");
+            } else {
+                WrongLocationDialog dialog = new WrongLocationDialog();
+                dialog.show(getFragmentManager(), "WrongLocationDialog");
+            }
+        } else {
+            LocationManager mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                NoGPSDialog dialog = new NoGPSDialog();
+                dialog.show(getFragmentManager(), "NoGPSDialog");
+            }
+        }
+    }
 
 }
