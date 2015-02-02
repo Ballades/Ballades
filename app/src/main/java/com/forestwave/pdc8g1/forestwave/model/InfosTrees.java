@@ -1,9 +1,5 @@
 package com.forestwave.pdc8g1.forestwave.model;
 
-import android.location.Location;
-
-import java.util.ArrayList;
-
 /**
  * Cette classe a pour objectif de stocker des informations de traitement pour le compositionEngine, de manière pratique
  */

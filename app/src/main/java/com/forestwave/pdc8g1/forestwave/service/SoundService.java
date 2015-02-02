@@ -1,15 +1,16 @@
 package com.forestwave.pdc8g1.forestwave.service;
 
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.animation.RotateAnimation;
 
 import com.forestwave.pdc8g1.forestwave.location.LocationProvider;
-
 import com.forestwave.pdc8g1.forestwave.model.InfosTrees;
 import com.forestwave.pdc8g1.forestwave.utils.SoundPlayer;
 import com.forestwave.pdc8g1.forestwave.utils.TreeFinder;
@@ -29,9 +30,9 @@ public class SoundService extends PdService implements SensorEventListener {
     public LocationProvider provider;
     public Handler handler;
 
-    public static int SPECIES_EQUALITY_FACTOR = 500;
+    public static int SPECIES_EQUALITY_FACTOR = 750;
     public static int SCORE_FACILITY = 500;
-    public static int SOUND_DISTANCE_DEACREASE_SLOWNESS = 1;
+    public static int SOUND_DISTANCE_DECREASE_SLOWNESS = 15;
 
     public Map<Integer, InfosTrees> desiredState = new HashMap<>();
     public Map<Integer, InfosTrees> actualState = new HashMap<>();
@@ -45,8 +46,6 @@ public class SoundService extends PdService implements SensorEventListener {
     private boolean mLastMagnetometerSet = false;
     private float[] mR = new float[9];
     private float[] mOrientation = new float[3];
-
-
 
     private float mCurrentDegree = 0f;
 
@@ -80,10 +79,27 @@ public class SoundService extends PdService implements SensorEventListener {
             handler = new Handler();
             final SoundPlayer soundPlayer =new SoundPlayer(this);
             handler.post(soundPlayer);
+            initSystemServices();
+
         }
         else{
             Log.v("LocationTest", "Play Services unavailable, " +GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()));
         }
+    }
+
+    private void initSystemServices() {
+        TelephonyManager telephonyManager =  (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        telephonyManager.listen(new PhoneStateListener() {
+            @Override
+            public void onCallStateChanged(int state, String incomingNumber) {
+                if (this == null) return;
+                if (state == TelephonyManager.CALL_STATE_IDLE) {
+                    //TODO: restart properly
+                } else {
+                    stopAudio();
+                }
+            }
+        }, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
     @Override
@@ -107,10 +123,8 @@ public class SoundService extends PdService implements SensorEventListener {
             SensorManager.getOrientation(mR, mOrientation);
             float azimuthInRadians = mOrientation[0];
             float azimuthInDegress = (float)(Math.toDegrees(azimuthInRadians)+360)%360;
-            //Log.d(TAG,String.valueOf(-azimuthInDegress));
-
-
             mCurrentDegree = azimuthInDegress;
+            //Log.v(TAG, "mCurrentDegree : " + mCurrentDegree);
         }
     }
 

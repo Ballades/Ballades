@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/pb_loading"
         style="@android:style/Widget.Material.ProgressBar.Horizontal"
-        android:max="16"
+        android:max="820"
         android:progress="10"
         android:visibility="visible"/>
 
@@ -18,7 +18,7 @@
         android:id="@+id/tv_loading"
         android:text="@string/loading_message"
         android:textAlignment="center"
-        android:textColor="@android:color/white"
+        android:textColor="@color/element_bright"
         android:gravity="center"
         android:textSize="40sp"
         android:visibility="visible"
@@ -31,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/seekBarTempo"
+        android:progress="750"
         android:layout_gravity="center_horizontal"
         android:visibility="gone"/>
 
@@ -48,6 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/seekBarStyle"
+        android:progress="15"
         android:layout_gravity="center_horizontal"
         android:visibility="gone"
         android:layout_below="@+id/textViewTempo"/>
@@ -55,7 +57,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/style"
         android:id="@+id/textViewStyle"
         android:layout_gravity="center_horizontal"
         android:visibility="gone"
@@ -63,19 +64,19 @@
 
     <ImageButton
         android:id="@+id/play_button"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:paddingStart="6dp"
-        android:layout_alignParentBottom="true"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:contentDescription="@string/play_button"
         android:src="@drawable/ic_av_play_arrow"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:tint="@android:color/white"
-        android:backgroundTint="@android:color/white"
+        android:tint="@color/element_bright"
+        android:backgroundTint="@color/element_bright"
         android:backgroundTintMode="screen"
         android:background="@drawable/ripple"
+        android:layout_gravity="center_horizontal"
         android:stateListAnimator="@anim/fab_anim"
-        android:visibility="visible"
-        />
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"/>
 
 </RelativeLayout>

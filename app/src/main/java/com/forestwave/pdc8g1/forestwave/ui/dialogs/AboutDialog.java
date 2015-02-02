@@ -8,9 +8,6 @@ import android.os.Bundle;
 
 import com.forestwave.pdc8g1.forestwave.R;
 
-/**
- * Created by Sylvain on 28/01/15.
- */
 public class AboutDialog extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
