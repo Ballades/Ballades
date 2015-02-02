@@ -31,6 +31,7 @@ import com.android.vending.expansion.zipfile.ZipResourceFile;
 import com.android.vending.expansion.zipfile.ZipResourceFile.ZipEntryRO;
 import com.forestwave.pdc8g1.forestwave.R;
 import com.forestwave.pdc8g1.forestwave.service.MyDownloadService;
+import com.forestwave.pdc8g1.forestwave.utils.InitPDTask;
 import com.google.android.vending.expansion.downloader.Constants;
 import com.google.android.vending.expansion.downloader.DownloadProgressInfo;
 import com.google.android.vending.expansion.downloader.DownloaderClientMarshaller;
@@ -116,9 +117,9 @@ public class ExpansionFileDownloaderActivity extends Activity implements IDownlo
     private static final XAPKFile[] xAPKS = {
             new XAPKFile(
                     true, // true signifies a main file
-                    3, // the version of the APK that the file was uploaded
+                    InitPDTask.MAIN_VERSION, // the version of the APK that the file was uploaded
                     // against
-                    73171756L // the length of the file in bytes
+                    InitPDTask.MAIN_SIZE // the length of the file in bytes
             )
     };
 

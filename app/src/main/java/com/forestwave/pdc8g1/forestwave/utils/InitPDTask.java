@@ -27,12 +27,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
-/**
- * Created by Sylvain on 30/01/15.
- */
 public class InitPDTask extends AsyncTask<Void, Integer, Long> {
     private static final String TAG="InitDatabaseTask";
     private StartActivity mStartActivity;
+    public static final int MAIN_VERSION = 6;
+    public static final long MAIN_SIZE = 73171756L;
 
     public InitPDTask(StartActivity startActivity){
         this.mStartActivity=startActivity;
@@ -49,7 +48,7 @@ public class InitPDTask extends AsyncTask<Void, Integer, Long> {
                 PdBase.subscribe("android");
                 // Get a ZipResourceFile representing a merger of both the main and patch files
                 ZipResourceFile expansionFile = APKExpansionSupport.getAPKExpansionZipFile(appContext,
-                        3, 0);
+                        MAIN_VERSION, 0);
                 // Get an input stream for a known file inside the expansion file ZIPs
                 InputStream in1 = expansionFile.getInputStream("acoustic_guitar.wav");
                 patchFile = IoUtils.extractResource(in1, "acoustic_guitar.wav", mStartActivity.getCacheDir());
