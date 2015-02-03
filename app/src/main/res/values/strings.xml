@@ -90,7 +90,7 @@ Version en Bêta : N\'hésitez pas à nous donnez vos impressions :-)</string>
     <string name="text_button_resume_cellular">Connexion actuelle</string>
     <string name="text_button_wifi_settings">Wi-Fi</string>
     <string name="text_verifying_download">Vérification des données</string>
-    <string name="text_validation_complete">Vous êtes accepté. Voulez-vous commencer l\'expérience ?</string>
+    <string name="text_validation_complete">Musiques récupérées :) Continuer ?</string>
     <string name="text_validation_failed">La validation des données a échoué.</string>
     <string name="text_button_pause">Pause</string>
     <string name="text_button_resume">Reprendre</string>
