@@ -21,7 +21,10 @@ L\'ambiance que vous entendrez dépendra directement de votre position, au bord 
 \n\n
 — Ne fonctionne qu\'au Parc de la tête d\'Or, à Lyon —
 \n\n
-Version en Bêta : N\'hésitez pas à nous donnez vos impressions :-)</string>
+Version en Bêta : N\'hésitez pas à nous donner vos impressions :-) (dans "Contactez-nous")
+\n\n
+Ballades est une application gratuite, open-source et sans publicité
+    </string>
     <string name="about_dialog_title">À propos</string>
     <string name="about_dialog_validate">Ok</string>
 
@@ -90,7 +93,6 @@ Version en Bêta : N\'hésitez pas à nous donnez vos impressions :-)</string>
     <string name="text_button_resume_cellular">Connexion actuelle</string>
     <string name="text_button_wifi_settings">Wi-Fi</string>
     <string name="text_verifying_download">Vérification des données</string>
-    <string name="text_validation_complete">Musiques récupérées :) Continuer ?</string>
     <string name="text_validation_failed">La validation des données a échoué.</string>
     <string name="text_button_pause">Pause</string>
     <string name="text_button_resume">Reprendre</string>

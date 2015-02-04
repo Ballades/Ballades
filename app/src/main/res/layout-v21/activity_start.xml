@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/pb_loading"
-        style="?android:attr/progressBarStyleHorizontal"
+        style="@android:style/Widget.Material.ProgressBar.Horizontal"
         android:max="820"
         android:progress="10"
         android:visibility="visible"/>
@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tv_loading"
         android:text="@string/loading_message"
+        android:textAlignment="center"
         android:textColor="@color/element_bright"
         android:gravity="center"
         android:textSize="40sp"
@@ -68,9 +69,11 @@
         android:contentDescription="@string/play_button"
         android:src="@drawable/ic_av_play_arrow"
         android:layout_centerHorizontal="true"
+        android:tint="@color/element_bright"
+        android:background="@drawable/ripple"
         android:layout_gravity="center_horizontal"
+        android:stateListAnimator="@anim/fab_anim"
         android:visibility="gone"
-        android:background="@color/transparent"
         android:layout_centerInParent="true"
         android:layout_centerVertical="true"/>
 

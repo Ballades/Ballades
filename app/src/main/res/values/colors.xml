@@ -5,7 +5,7 @@
     <color name="accent">#E0D600</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="actionbar_text">#000000</color>
-
+    <color name="element_bright_less">#AAAAAA</color>
     <color name="element_bright">#FFFFFF</color>
     <color name="transparent">#00000000</color>
 

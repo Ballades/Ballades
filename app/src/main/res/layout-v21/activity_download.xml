@@ -110,7 +110,8 @@
                     android:padding="10dp"
                     android:minHeight="40dp"
                     android:minWidth="94dp"
-                    android:background="@color/primary"
+                    android:drawable="@color/primary_dark"
+                    android:background="@drawable/background_button"
                     android:text="@string/text_button_pause" />
 
                 <Button
@@ -124,11 +125,11 @@
                     android:layout_marginTop="10dp"
                     android:layout_weight="0"
                     android:padding="10dp"
-                    android:drawable="@color/primary_dark"
                     android:minHeight="40dp"
                     android:minWidth="94dp"
-                    android:background="@color/primary"
                     android:text="@string/text_button_cancel"
+                    android:drawable="@color/primary_dark"
+                    android:background="@drawable/background_button"
                     android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
@@ -164,8 +165,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:padding="10dp"
-                android:background="@color/primary"
-                android:drawable="@color/primary_dark"
+                android:background="@drawable/background_button"
                 android:text="@string/text_button_resume_cellular" />
 
             <Button
@@ -175,8 +175,7 @@
                 android:padding="10dp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:background="@color/primary"
-                android:drawable="@color/primary_dark"
+                android:background="@drawable/background_button"
                 android:text="@string/text_button_wifi_settings" />
             </LinearLayout>
     </LinearLayout>

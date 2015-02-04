@@ -300,17 +300,9 @@ public class ExpansionFileDownloaderActivity extends Activity implements IDownlo
                 if (result) {
                     mDashboard.setVisibility(View.VISIBLE);
                     mDashboard2.setVisibility(View.VISIBLE);
-
                     mCellMessage.setVisibility(View.GONE);
-                    mStatusText.setText(R.string.text_validation_complete);
-                    mPauseButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            startActivity(new Intent(ExpansionFileDownloaderActivity.this, StartActivity.class));
-                            finish();
-                        }
-                    });
-                    mPauseButton.setText(R.string.play_button);
+                    startActivity(new Intent(ExpansionFileDownloaderActivity.this, StartActivity.class));
+                    finish();
                 } else {
                     mDashboard.setVisibility(View.VISIBLE);
                     mDashboard2.setVisibility(View.VISIBLE);

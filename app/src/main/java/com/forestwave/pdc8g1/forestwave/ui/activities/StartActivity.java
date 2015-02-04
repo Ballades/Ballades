@@ -66,7 +66,9 @@ public class StartActivity extends Activity implements OnClickListener{
                 initPDTask.execute();
             }else if(play!=null){
                 play.setImageDrawable(getResources().getDrawable(R.drawable.ic_av_pause));
-                play.setPaddingRelative(0, 0, 0, 0);
+                if (android.os.Build.VERSION.SDK_INT >= 17) {
+                    play.setPaddingRelative(0, 0, 0, 0);
+                }
             }
         }
 
@@ -251,11 +253,15 @@ public class StartActivity extends Activity implements OnClickListener{
                         play.setImageDrawable(getResources().getDrawable(R.drawable.ic_av_play_arrow));
                         float scale = getResources().getDisplayMetrics().density;
                         int dpAsPixels = (int) (6 * scale + 0.5f);
-                        play.setPaddingRelative(dpAsPixels, 0, 0, 0);
+                        if (android.os.Build.VERSION.SDK_INT >= 17) {
+                            play.setPaddingRelative(dpAsPixels, 0, 0, 0);
+                        }
                     } else {
                         startAudio();
                         play.setImageDrawable(getResources().getDrawable(R.drawable.ic_av_pause));
-                        play.setPaddingRelative(0, 0, 0, 0);
+                        if (android.os.Build.VERSION.SDK_INT >= 17) {
+                            play.setPaddingRelative(0, 0, 0, 0);
+                        }
 
                         this.sendWarningMessages();
                     }
