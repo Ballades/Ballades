@@ -1,6 +1,5 @@
 package com.forestwave.pdc8g1.forestwave.ui.activities;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +8,7 @@ import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.IBinder;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +38,7 @@ import org.puredata.core.PdBase;
 import java.io.IOException;
 
 
-public class StartActivity extends Activity implements OnClickListener{
+public class StartActivity extends ActionBarActivity implements OnClickListener{
 
     private static final String TAG = "StartActivity";
 

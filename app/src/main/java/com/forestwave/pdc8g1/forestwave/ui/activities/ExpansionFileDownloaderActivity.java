@@ -11,7 +11,6 @@ package com.forestwave.pdc8g1.forestwave.ui.activities;
  *
  */
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +20,7 @@ import android.os.Bundle;
 import android.os.Messenger;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -50,7 +50,7 @@ import java.util.zip.CRC32;
  * implements the IDownloaderClient that the client marshaler will talk to as
  * messages are delivered from the DownloaderService.
  */
-public class ExpansionFileDownloaderActivity extends Activity implements IDownloaderClient {
+public class ExpansionFileDownloaderActivity extends ActionBarActivity implements IDownloaderClient {
     private static final String LOG_TAG = "LVLDownloader";
     private ProgressBar mPB;
 
@@ -301,8 +301,15 @@ public class ExpansionFileDownloaderActivity extends Activity implements IDownlo
                     mDashboard.setVisibility(View.VISIBLE);
                     mDashboard2.setVisibility(View.VISIBLE);
                     mCellMessage.setVisibility(View.GONE);
-                    startActivity(new Intent(ExpansionFileDownloaderActivity.this, StartActivity.class));
-                    finish();
+
+                    mPauseButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivity(new Intent(ExpansionFileDownloaderActivity.this, StartActivity.class));
+                            finish();
+                        }
+                    });
+                    mPauseButton.setText(R.string.play_button);
                 } else {
                     mDashboard.setVisibility(View.VISIBLE);
                     mDashboard2.setVisibility(View.VISIBLE);
