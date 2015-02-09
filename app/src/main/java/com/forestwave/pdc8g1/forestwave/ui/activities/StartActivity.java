@@ -143,16 +143,16 @@ public class StartActivity extends ActionBarActivity implements OnClickListener{
 
         // Debug uniquement, cachées sinon
         seekBarEquality = (SeekBar) findViewById(R.id.seekBarTempo);
-        seekBarEquality.setMax(SoundService.SPECIES_EQUALITY_FACTOR*2);
-        seekBarEquality.setProgress(SoundService.SPECIES_EQUALITY_FACTOR);
+        seekBarEquality.setMax(SoundService.SCORE_FACILITY*2);
+        seekBarEquality.setProgress(SoundService.SCORE_FACILITY);
         seekBarEquality.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = SoundService.SPECIES_EQUALITY_FACTOR;
+            int progress = SoundService.SCORE_FACILITY;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
                 progress = progressValue;
-                SoundService.SPECIES_EQUALITY_FACTOR = progressValue;
-                tvEquality.setText(getResources().getText(R.string.choose_SEF) + " " + String.valueOf(progress));
+                SoundService.SCORE_FACILITY = progressValue;
+                tvEquality.setText(getResources().getText(R.string.choose_SF) + " " + String.valueOf(progress));
             }
 
             @Override
@@ -205,11 +205,18 @@ public class StartActivity extends ActionBarActivity implements OnClickListener{
     }
 
     public void disableLoadingView(){
-        play.setVisibility(View.VISIBLE);
-        seekBarEquality.setVisibility(View.GONE);
+        seekBarEquality.setVisibility(View.GONE); // MODE PRODUCTION
         seekBarDistance.setVisibility(View.GONE);
         tvEquality.setVisibility(View.GONE);
         tvScore.setVisibility(View.GONE);
+
+        /*play.setVisibility(View.VISIBLE); // MODE DEBUG
+        seekBarEquality.setVisibility(View.VISIBLE);
+        seekBarDistance.setVisibility(View.VISIBLE);
+        tvEquality.setVisibility(View.VISIBLE);
+        tvScore.setVisibility(View.VISIBLE);*/
+
+        play.setVisibility(View.VISIBLE);
         pbLoading.setVisibility(View.GONE);
         tvLoading.setVisibility(View.GONE);
     }
@@ -280,7 +287,7 @@ public class StartActivity extends ActionBarActivity implements OnClickListener{
      * Envoie si besoin est les messages d'avertissements liés au GPS et à la position de l'utilisateur
      */
     private void sendWarningMessages() {
-        if (pdService.provider.userIsInParc() < 1) {
+        if (pdService.provider.userIsInParc() > 1) {
             if (pdService.provider.userIsInParc() == 3) {
                 NoLocationDialog dialog = new NoLocationDialog();
                 dialog.show(getFragmentManager(), "NoLocationDialog");

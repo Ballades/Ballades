@@ -148,6 +148,20 @@ public class TreeFinder implements Runnable {
         double newLong = (position1[1]*weight1 + position2[1]*weight2)/(weight1+weight2);
         centerPosition[1] = newLong;
 
+        /*// Location non-moyennée
+        Location userLocation = soundService.provider.getLocation();
+        float[] distance1 = new float[1];
+        float[] distance2 = new float[1];
+        Location.distanceBetween(position1[0], position1[1], userLocation.getLatitude(), userLocation.getLongitude(), distance1);
+        Location.distanceBetween(position2[0], position2[1], userLocation.getLatitude(), userLocation.getLongitude(), distance2);
+        if (distance1[0] < distance2[0]) {
+            centerPosition[0] = position1[0];
+            centerPosition[1] = position1[1];
+        } else {
+            centerPosition[0] = position2[0];
+            centerPosition[1] = position2[1];
+        }*/
+
         return centerPosition;
     }
 

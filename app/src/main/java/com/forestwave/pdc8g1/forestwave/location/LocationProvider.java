@@ -87,8 +87,8 @@ public class LocationProvider implements
         if (location == null) {
             return 3;
         }
-        if (location.getLatitude() < 45.785866 || location.getLatitude() > 45.770467
-         || location.getLongitude() < 4.860543 || location.getLongitude() > 4.843018) {
+        if (location.getLatitude() > 45.785866 || location.getLatitude() < 45.770467
+         || location.getLongitude() > 4.860543 || location.getLongitude() < 4.843018) {
             return 2;
         }
 

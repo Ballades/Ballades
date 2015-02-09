@@ -12,6 +12,7 @@
     <string name="loading_sounds">Éveil de la Forêt…</string>
     <string name="choose_SDDS">Ajuster le SOUND_DISTANCE_DECREASE_SLOWNESS</string>
     <string name="choose_SEF">Ajuster le SPECIES_EQUALITY_FACTOR</string>
+    <string name="choose_SF">Ajuster le SCORE_FACILITY</string>
 
     <string name="about_dialog_content">Ballades est une application d\'expériences sonores. Muni de vos écouteurs dans le parc de la tête d\'Or, vous entendrez pour chaque arbre autour de vous un son. \n\n L\'ensemble de la forêt créera pour vous une ambiance relaxante, un paysage sonore unique.
 \n\n
@@ -42,7 +43,7 @@ Ballades est une application gratuite, open-source et sans publicité
 
     <string name="wrong_location_dialog_content">Bonjour ! Il semblerait que vous n\'êtes pas actuellement dans le Parc de la tête d\'Or, à Lyon.\n\n
         L\'application Ballades ne fonctionne qu\'à cet endroit !\n\n
-        Rendez-vous là bas pour découvrir le chant de ses abrbres :)</string>
+        Rendez-vous là bas pour découvrir le chant de ses arbres :)</string>
     <string name="wrong_location_dialog_title">Vous n\'êtes pas dans le Parc</string>
     <string name="wrong_location_dialog_validate">Ok</string>
 
